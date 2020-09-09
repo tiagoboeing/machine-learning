@@ -1,5 +1,5 @@
 class Logger():  
-  def log(self, message):
+  def log(message):
     print('-' * 80)
     if (message):
-      print(f'{message}')
+      print(message)
