@@ -1,5 +1,4 @@
 import os
-import sys
 import cv2
 from logger import Logger
 from range_color import Range
