@@ -30,4 +30,5 @@ class Weka():
       imagesData.append(ReadImage().read(f'{self.images_directory}/{image}'))
       Logger.log(f'Data added to index {index}', True)
 
-    print(imagesData)
+    # TODO: paramos aqui
+    Logger.log(imagesData)

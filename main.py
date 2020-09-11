@@ -1,6 +1,7 @@
 from weka import Weka
 
-IS_DEBUG = True
+global IS_DEBUG
+IS_DEBUG = True # Change to log or not in terminal
 
 if __name__ == "__main__":
     Weka('./images').extract()
