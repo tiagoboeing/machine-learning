@@ -2,8 +2,7 @@ import os
 import cv2
 from logger import Logger
 from range_color import Range
-
-class Main():  
+class ReadImage():  
     def __init__(self):
       self.__width = 0
       self.__height = 0
@@ -16,13 +15,14 @@ class Main():
       self.__renderedImage = None
       self.__features = []                  
 
-    def readImage(self, img):
+    def read(self, img, cloneImage = False):
       Logger.log(f'Image received {img}') 
       image = cv2.imread(img)       
 
-      Logger.log('Image copied')
-      self.__renderedImage = image.copy()                  
-      self.__height, self.__width, channels = image.shape
+      if cloneImage == True:
+        Logger.log('Cloned image')
+        self.__renderedImage = image.copy()                  
+        self.__height, self.__width, channels = image.shape
 
       Logger.log('Handle width and height')
       for height in range(self.__height):
@@ -30,11 +30,14 @@ class Main():
           pixel = image[height, width]
           self.handleRangeColors(pixel, width, height)          
 
-      self.normalizeFeatures(img)
+      definedFeatures = self.normalizeFeatures(img)
 
-      cv2.imshow('image', self.__renderedImage)
-      cv2.waitKey(0)
-      cv2.destroyAllWindows()
+      if cloneImage == True:
+        cv2.imshow('image', self.__renderedImage)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+      return definedFeatures
 
     """
       Receive a pixel (R, G, B) and call range_color.py
@@ -43,8 +46,6 @@ class Main():
     def handleRangeColors(self, pixel, index_width, index_height):
         range = Range()
         b, g, r = pixel
-
-        # print(range.isBartOrangeShirt(r, g, b))
         
         if range.isBartOrangeShirt(r, g, b):
           self.__bartOrangeShirt += 1 
@@ -77,19 +78,25 @@ class Main():
     """
     def set_color(self, variable, index_width, index_height):
       self.__renderedImage[index_height][index_width] = [0, 255, 128]
-          
+
+    def calcNormalize(self, value):
+      if(value != 0.0):
+        return (value / (self.__width * self.__height)) * 100
+
+      return 0.0
+
     """
       Normalizes the features by the number of total pixels of the image to % 
     """
     def normalizeFeatures(self, img):      
       Logger.log('Normalize Features')      
       
-      self.__bartOrangeShirt = (self.__bartOrangeShirt / (self.__width * self.__height)) * 100;
-      self.__bartBlueShorts = (self.__bartBlueShorts / (self.__width * self.__height)) * 100;
-      self.__bartBlueShoe = (self.__bartBlueShoe / (self.__width * self.__height)) * 100;
-      self.__homerBluePants = (self.__homerBluePants / (self.__width * self.__height)) * 100;
-      self.__homerBrownMouth = (self.__homerBrownMouth / (self.__width * self.__height)) * 100;
-      self.__homerGreyShoe = (self.__homerGreyShoe / (self.__width * self.__height)) * 100;        
+      self.__bartOrangeShirt = self.calcNormalize(self.__bartOrangeShirt);
+      self.__bartBlueShorts = self.calcNormalize(self.__bartBlueShorts);
+      self.__bartBlueShoe = self.calcNormalize(self.__bartBlueShoe);
+      self.__homerBluePants = self.calcNormalize(self.__homerBluePants);
+      self.__homerBrownMouth = self.calcNormalize(self.__homerBrownMouth);
+      self.__homerGreyShoe = self.calcNormalize(self.__homerGreyShoe);        
     
       bartOrHome = 0.0 # Bart
       filename = os.path.basename(img)[0]
@@ -107,9 +114,5 @@ class Main():
         bartOrHome
       ]
 
-      for value in list(features):
-        print(f'Valor {value}')  
-      
-
-if __name__ == "__main__":
-    Main().readImage('test.bmp')
+      Logger.log(features)
+      return features
