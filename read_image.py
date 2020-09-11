@@ -36,14 +36,12 @@ class ReadImage():
                 pixel = image[height, width]
                 self.handleRangeColors(pixel, width, height)
 
-        definedFeatures = self.normalizeFeatures(img)
-
         if self.__cloneImage == True:
             cv2.imshow('image', self.__renderedImage)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-        return definedFeatures
+        return self.normalizeFeatures(img)
 
     """
       Receive a pixel (R, G, B) and call range_color.py
