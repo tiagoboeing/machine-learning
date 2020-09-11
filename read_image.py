@@ -2,7 +2,6 @@ import os
 import cv2
 from logger import Logger
 from range_color import Range
-from weka import Weka
 
 class Main():  
     def __init__(self):
@@ -15,7 +14,7 @@ class Main():
       self.__homerBrownMouth = 0
       self.__homerGreyShoe = 0
       self.__renderedImage = None
-      self.__features = []            
+      self.__features = []                  
 
     def readImage(self, img):
       Logger.log(f'Image received {img}') 
@@ -113,5 +112,4 @@ class Main():
       
 
 if __name__ == "__main__":
-    Weka('./images').extract() 
     Main().readImage('test.bmp')
