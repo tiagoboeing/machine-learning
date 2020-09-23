@@ -3,7 +3,6 @@ from os.path import isfile, join
 from read_image import ReadImage
 from logger import Logger
 
-
 class Weka():
     def __init__(self, images_directory):
         self.images_directory = images_directory
@@ -32,11 +31,12 @@ class Weka():
 
         for index, image in enumerate(list(self.list_directory_files())):
             Logger.log(f'Extracting characteristics from {image}')
+            
             features = ReadImage().read(f'{self.images_directory}/{image}')
             features[6] = "Bart" if features[6] == 0.0 else "Homer"
             imagesData.append(features)
-            Logger.log(f'Data added to index {index}')
 
+            Logger.log(f'Data added to index {index}')
             Logger.log('Extracted Features:')
             Logger.log(f'Bart Orange T-Shirt = {features[0]}')
             Logger.log(f'Bart Blue Shorts = {features[1]}')
@@ -54,3 +54,4 @@ class Weka():
             fp.write(self.body)
 
         Logger.log('All Done!')
+        return imagesData
