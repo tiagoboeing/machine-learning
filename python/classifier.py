@@ -36,7 +36,7 @@ class Classifier:
 
     return X_train, y_train, X_test, y_test
 
-  # TODO: paramos aqui
+  # TODO: paramos aqui 
   def NaiveBayes():
     preprocessing
     Logger.log('')
