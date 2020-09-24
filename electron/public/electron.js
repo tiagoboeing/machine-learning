@@ -9,6 +9,7 @@ class Main {
     app.on("ready", this.createWindow);
     app.on("window-all-closed", this.onWindowAllClosed);
     app.on("activate", this.onActivate);
+    this.listenerActions();
   }
 
   listenerActions() {
