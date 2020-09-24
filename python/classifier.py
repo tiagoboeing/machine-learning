@@ -1,10 +1,10 @@
-# import pandas
 import numpy as np
-# import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sn
+import matplotlib.pyplot as plt
 
 from time import time
 from sklearn import model_selection, linear_model, preprocessing, metrics, naive_bayes
-# from sklearn.metrics import plot_confusion_matrix
 from logger import Logger
 
 class Classifier:
@@ -37,9 +37,13 @@ class Classifier:
     return X_train, y_train, X_test, y_test
 
   # TODO: paramos aqui 
-  def NaiveBayes():
+  def NaiveBayes(self):
     preprocessing
     Logger.log('')
+
+  def confusion_matrix(self, y_true, y_pred):    
+    metrics.confusion_matrix(y_true, y_pred)
+    
 
 
 
