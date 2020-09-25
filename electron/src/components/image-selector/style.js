@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ImageWrapper = styled.aside`
   display: block;
-  width:90%;
+  width:92%;
   margin:50px auto 0px auto;
   color:#61dafb;
   text-transform:uppercase;

@@ -13,7 +13,7 @@ export const ColumnContent = styled.div`
     flex-wrap: wrap;
     justify-content:center;
     vertical-align:middle;
-
+    padding:5px 12px;
     min-height:85vmin;
     max-height:85vmin;
     width:50%;
