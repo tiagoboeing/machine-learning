@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { HeaderWrapper, NavButton } from './style';
+import * as React from "react";
+import IconSvg from "../icons-svg/icons";
+import { HeaderWrapper, GroupButtons, NavButton } from "./style";
 
-export interface IHeaderProps {}
+export interface IHeaderProps { }
 
-export interface IHeaderState {}
+export interface IHeaderState { }
 
 export default class Header extends React.Component<
   IHeaderProps,
   IHeaderState
-> {
+  > {
   private ipcRenderer?: any;
 
   constructor(props: IHeaderProps) {
@@ -40,10 +41,10 @@ export default class Header extends React.Component<
   public render() {
     return (
       <HeaderWrapper>
-        <NavButton onClick={() => this.openTrainingMode()}>
-          Treinamento
-        </NavButton>
-        <NavButton onClick={() => this.exitApp()}>Sair</NavButton>
+        <GroupButtons>
+          <NavButton onClick={() => this.openTrainingMode()}>Executar Treinamento</NavButton>
+        </GroupButtons>
+        <NavButton onClick={() => this.exitApp()}>Sair <IconSvg icon="exit" color="#61dafb" /> </NavButton>
       </HeaderWrapper>
     );
   }
