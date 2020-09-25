@@ -7,11 +7,15 @@ export const ContentWrapper = styled.div`
 
 export const LeftContent = styled.div`
     display:flex;
-    border:1px solid red;
-    width:49%;
+    min-height:94vmin;
+    max-height:94vmin;
+    border-right:1px solid red;
+    width:50%;
 `;
 
 export const RightContent = styled.div`
     display:flex;
-    width:50%;
+    min-height:94vmin;
+    max-height:94vmin;
+    width:50%;    
 `;
