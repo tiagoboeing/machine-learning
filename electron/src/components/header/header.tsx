@@ -27,15 +27,15 @@ export default class Header extends React.Component<
     if (!window || !window.process || !window.require) {
       throw new Error(`Unable to require renderer process`);
     }
-    this.ipcRenderer = window.require("electron").ipcRenderer;
+    this.ipcRenderer = window.require('electron').ipcRenderer;
   };
 
   openTrainingMode = () => {
-    this.ipcRenderer.send("open-training", "ping");
+    this.ipcRenderer.send('open-training', 'ping');
   };
 
   exitApp = () => {
-    this.ipcRenderer.send("close-program", "ping");
+    this.ipcRenderer.send('close-program', 'ping');
   };
 
   public render() {
