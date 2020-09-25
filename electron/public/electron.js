@@ -15,7 +15,7 @@ class Main {
   listenerActions() {
     //Training Action
     ipcMain.on("open-training", (event, arg) => {
-      console.log("Training", event);
+      console.log("Training", arg);
     });
     //Exit Action
     ipcMain.on("close-program", (event, arg) => {
