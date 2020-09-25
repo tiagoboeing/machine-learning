@@ -9,6 +9,11 @@ export const ContentWrapper = styled.div`
 
 export const ColumnContent = styled.div`
     display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:center;
+    vertical-align:middle;
+
     min-height:85vmin;
     max-height:85vmin;
     width:50%;
@@ -21,4 +26,25 @@ export const LeftContent = styled(ColumnContent)`
 
 export const RightContent = styled(ColumnContent)`
     
+`;
+
+export const Btn = styled.div`
+    display:block;
+    height:40px;
+    line-height:25px;
+    border-radius:4px;
+    text-transform:uppercase;
+    font-weight:700;
+    text-align:center;
+    width:40%;
+    padding:8px 12px;
+    color:#333;
+    background-color:#61dafb;
+    transition:all 0.2s ease-in-out;
+    cursor:pointer;
+
+    &:active{      
+      color:#61dafb;
+      background-color:#333;
+    }
 `;
