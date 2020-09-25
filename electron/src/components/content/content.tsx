@@ -1,10 +1,9 @@
 import * as React from 'react';
+import Feature from '../feature';
 import ImageSelector from '../image-selector/image-selector';
-import { ContentWrapper, LeftContent, RightContent, Btn} from './style';
+import { ContentWrapper, LeftContent, RightContent, Btn } from './style';
 
-
-export interface IContentProps {
-}
+export interface IContentProps { }
 
 export default class Content extends React.Component<IContentProps> {
 
@@ -15,7 +14,9 @@ export default class Content extends React.Component<IContentProps> {
                     <ImageSelector />
                     <Btn>Classificar</Btn>
                 </LeftContent>
-                <RightContent></RightContent>
+                <RightContent>
+                    <Feature />
+                </RightContent>
             </ContentWrapper>
         );
     }
