@@ -1,5 +1,5 @@
-import * as React from "react";
-import { HeaderWrapper, NavButton } from "./style";
+import * as React from 'react';
+import { HeaderWrapper, NavButton } from './style';
 
 export interface IHeaderProps {}
 
@@ -16,7 +16,7 @@ export default class Header extends React.Component<
     this.state = {};
   }
 
-    componentDidMount() {
+  componentDidMount() {
     if (!this.ipcRenderer) {
       this.initializeIpcRenderer();
     }
@@ -26,21 +26,23 @@ export default class Header extends React.Component<
     if (!window || !window.process || !window.require) {
       throw new Error(`Unable to require renderer process`);
     }
-    this.ipcRenderer = window.require("electron").ipcRenderer;
+    this.ipcRenderer = window.require('electron').ipcRenderer;
   };
 
   openTrainingMode = () => {
-    this.ipcRenderer.send("open-training", "ping");
+    this.ipcRenderer.send('open-training', 'ping');
   };
 
   exitApp = () => {
-    this.ipcRenderer.send("close-program", "ping");
+    this.ipcRenderer.send('close-program', 'ping');
   };
 
   public render() {
     return (
       <HeaderWrapper>
-        <NavButton onClick={() => this.openTrainingMode()}>Treinamento</NavButton>
+        <NavButton onClick={() => this.openTrainingMode()}>
+          Treinamento
+        </NavButton>
         <NavButton onClick={() => this.exitApp()}>Sair</NavButton>
       </HeaderWrapper>
     );

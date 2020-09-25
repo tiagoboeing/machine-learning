@@ -1,6 +1,4 @@
 import numpy as np
-import pandas as pd
-import seaborn as sn
 import matplotlib.pyplot as plt
 
 from time import time
@@ -38,11 +36,21 @@ class Classifier:
 
   # TODO: paramos aqui 
   def NaiveBayes(self):
-    preprocessing
-    Logger.log('')
+    X_train, y_train, X_test, y_test = self.prepare()    
 
-  def confusion_matrix(self, y_true, y_pred):    
-    metrics.confusion_matrix(y_true, y_pred)
+    model = naive_bayes.GaussianNB()
+    model.fit(X_train, y_train)
+
+    self.confustion_matrix(model, X_test, y_test)    
+
+  # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
+  def confusion_matrix(self, model, X_test, y_test):           
+    title = "Matriz Confusão"
+    
+    disp = metrics.plot_confusion_matrix(model, X_test, y_test)
+
+    disp.ax_.set_title(title)        
+    plt.show()
     
 
 
