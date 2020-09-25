@@ -46,7 +46,7 @@ export const ThumbsContainer = styled.div`
     height: 100%;
     width:100%;
     max-height:400px;
-    object-fit:fill;
+    object-fit:contain;
     margin:0px auto;
     text-align:center;
     border: 1px solid #61dafb;

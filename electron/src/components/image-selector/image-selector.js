@@ -7,6 +7,7 @@ export default function ImageSelector(props) {
   const {getRootProps, getInputProps} = useDropzone({
     accept: 'image/*',
     onDrop: acceptedFiles => {
+      acceptedFiles[0] && props.changeImage(acceptedFiles[0]);
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
@@ -25,15 +26,14 @@ export default function ImageSelector(props) {
 
   useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
-    files.forEach(file => URL.revokeObjectURL(file.preview));
+    files.forEach(file =>URL.revokeObjectURL(file.preview));    
   }, [files]);
 
   return (
     <ImageWrapper>
       <div {...getRootProps({className: 'dropzone'})}>
         <input {...getInputProps()} />
-        <p>Arraste ou Selecione sua Imagem</p>
-       
+        <p>Arraste ou Selecione sua Imagem</p>       
       </div>
       <ThumbsContainer>
         {thumbs}

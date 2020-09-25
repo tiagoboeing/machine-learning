@@ -31,6 +31,12 @@ class Main {
       console.log('CLOSE', event);
       app.quit();
     });
+
+    // Classificar imagem selecionada
+    ipcMain.on('classify-image', (event, arg) => {
+      console.log('Classify', arg);
+      
+    });
   }
 
   onWindowAllClosed() {

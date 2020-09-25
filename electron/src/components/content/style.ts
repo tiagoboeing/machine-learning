@@ -38,13 +38,30 @@ export const Btn = styled.div`
     text-align:center;
     width:40%;
     padding:8px 12px;
+    /* margin-top:15px; */
     color:#333;
     background-color:#61dafb;
     transition:all 0.2s ease-in-out;
     cursor:pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none; 
+     -khtml-user-select: none; 
+       -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none;
 
     &:active{      
       color:#61dafb;
       background-color:#333;
+    }
+`;
+
+export const DisableBtn = styled(Btn)`
+    background-color:#666;
+    cursor:default;
+
+    &:active{
+        background-color:#666;
+        color:#333;
     }
 `;
