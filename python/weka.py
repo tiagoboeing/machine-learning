@@ -28,7 +28,7 @@ class Weka():
             f'\n{len(onlyfiles)} images found in {self.images_directory} directory!', True)
 
         # Range with 5 images for testing
-        return onlyfiles[0:40]
+        return onlyfiles[625:650]
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'

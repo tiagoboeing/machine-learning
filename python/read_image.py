@@ -19,7 +19,7 @@ class ReadImage():
         self.__mergeHair = 0
         self.__mergeDress = 0
 
-    def read(self, img, cloneImage=False):
+    def read(self, img, cloneImage=True):
         Logger.log(f'Image received {img}')
         image = cv2.imread(img)
 
