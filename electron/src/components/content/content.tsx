@@ -42,25 +42,18 @@ export default class Content extends React.Component<
 
   handleImage = (image: object) => {
     console.log("SELECTED-IMAGE", image);
-    this.setState({ image: image });
-  };
-
-  sendToPython = () => {
-    const { ipcRenderer } = this.state;
-
-    ipcRenderer.send("open-training");
+    this.setState({ image });
   };
 
   classifyAction = () => {
-    // const { ipcRenderer, image } = this.state;
-    // if (typeof image == "object") {
-    //   ipcRenderer.send(
-    //     "classify-image",
-    //     JSON.stringify({ path: image.path, preview: image.preview })
-    //   );
-    // }
+    const { ipcRenderer, image } = this.state;
 
-    this.sendToPython();
+    if (typeof image == "object") {
+      ipcRenderer.send("classify-image", { data: image.path });
+      ipcRenderer.on("python-events", (event: any, args: any) => {
+        console.log("args ", args);
+      });
+    }
   };
 
   public render() {
@@ -69,7 +62,7 @@ export default class Content extends React.Component<
       <ContentWrapper>
         <LeftContent>
           <ImageSelector changeImage={this.handleImage} />
-          {!image ? (
+          {image ? (
             <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
           ) : (
             <DisableBtn>Classificar</DisableBtn>

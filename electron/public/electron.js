@@ -15,11 +15,20 @@ class Main {
 
   listenerActions() {
     //Training Action
-    ipcMain.on("open-training", (event, args) => {
-      let pyshell = new PythonShell(path.join(__dirname, "../test.py"));
+    ipcMain.on("classify-image", (event, args) => {
+      const { data } = args;
+
+      console.log("selected ", data);
+
+      let pyshell = new PythonShell("main.py", {
+        mode: "text",
+        pythonPath: "python",
+        args: [data],
+        scriptPath: path.join(__dirname, "../../python"),
+      });
 
       pyshell.on("message", function (results) {
-        console.log(results);
+        event.reply("python-events", results);
       });
     });
 
@@ -27,11 +36,6 @@ class Main {
     ipcMain.on("close-program", (event, arg) => {
       console.log("CLOSE", event);
       app.quit();
-    });
-
-    // Classificar imagem selecionada
-    ipcMain.on("classify-image", (event, arg) => {
-      console.log("Classify", arg);
     });
   }
 

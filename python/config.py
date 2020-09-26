@@ -1,1 +1,1 @@
-IS_DEBUG = True # Change to log or not in terminal
+IS_DEBUG = False  # Change to log or not in terminal
