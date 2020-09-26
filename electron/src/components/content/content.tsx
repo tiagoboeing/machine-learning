@@ -8,6 +8,8 @@ import {
   RightContent,
   Btn,
   DisableBtn,
+  MessageInfo,
+  Image,
 } from "./style";
 
 export interface IContentProps {}
@@ -15,6 +17,8 @@ export interface IContentProps {}
 export interface IContentState {
   ipcRenderer: any;
   image?: { path?: string; preview?: any };
+  confusionMatrix?: string;
+  loading: boolean;
 }
 
 export default class Content extends React.Component<
@@ -25,6 +29,7 @@ export default class Content extends React.Component<
     super(props);
     this.state = {
       ipcRenderer: null,
+      loading: false,
     };
   }
   componentDidMount() {
@@ -37,7 +42,10 @@ export default class Content extends React.Component<
     if (!window || !window.process || !window.require) {
       throw new Error(`Unable to require renderer process`);
     }
-    this.setState({ ipcRenderer: window.require("electron").ipcRenderer });
+    this.setState({
+      ipcRenderer: window.require("electron").ipcRenderer,
+      loading: false,
+    });
   };
 
   handleImage = (image: object) => {
@@ -49,15 +57,22 @@ export default class Content extends React.Component<
     const { ipcRenderer, image } = this.state;
 
     if (typeof image == "object") {
-      ipcRenderer.send("classify-image", { data: image.path });
-      ipcRenderer.on("python-events", (event: any, args: any) => {
-        console.log("args ", args);
+      const _this = this;
+      this.setState({ loading: true }, () => {
+        ipcRenderer.send("classify-image", { data: image.path });
+        ipcRenderer.on("python-events", (event: any, args: any) => {
+          console.log("args - return ", args);
+
+          if (args.indexOf("data:image")) {
+            _this.setState({ loading: false, confusionMatrix: args });
+          }
+        });
       });
     }
   };
 
   public render() {
-    const { image } = this.state;
+    const { image, loading, confusionMatrix } = this.state;
     return (
       <ContentWrapper>
         <LeftContent>
@@ -66,6 +81,12 @@ export default class Content extends React.Component<
             <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
           ) : (
             <DisableBtn>Classificar</DisableBtn>
+          )}
+
+          {loading && !confusionMatrix ? (
+            <MessageInfo>Processando imagem...</MessageInfo>
+          ) : (
+            <Image src={confusionMatrix} />
           )}
         </LeftContent>
         <RightContent>

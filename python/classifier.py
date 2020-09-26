@@ -1,6 +1,9 @@
 import os
+import io
 import numpy as np
 import matplotlib.pyplot as plt
+import urllib
+import base64
 
 from time import time
 from sklearn import model_selection, linear_model, preprocessing, metrics, naive_bayes
@@ -53,6 +56,15 @@ class Classifier:
 
         disp.ax_.set_title(title)
 
-        my_path = os.path.dirname(__file__)
-        plt.savefig(my_path + '/MatrizDeConfusão.png')
-        print(True)
+        my_path = os.getcwd()
+        filename = 'MatrizDeConfusao.png'
+        file_path = my_path + '/public/' + filename
+
+        fig = plt.gcf()
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png')
+        buf.seek(0)
+        string = base64.b64encode(buf.read())
+
+        uri = 'data:image/png;base64,' + urllib.parse.quote(string)
+        print(uri)

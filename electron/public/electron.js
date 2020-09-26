@@ -18,8 +18,6 @@ class Main {
     ipcMain.on("classify-image", (event, args) => {
       const { data } = args;
 
-      console.log("selected ", data);
-
       let pyshell = new PythonShell("main.py", {
         mode: "text",
         pythonPath: "python",
@@ -63,6 +61,8 @@ class Main {
       backgroundColor: "#282c34",
       webPreferences: {
         nodeIntegration: true,
+        webSecurity: false,
+        allowRunningInsecureContent: true,
       },
     });
 
