@@ -16,6 +16,7 @@
     "custom-electron-titlebar": "^3.2.4",
     "electron": "^10.1.2",
     "electron-is-dev": "^1.2.0",
+    "python-shell": "^2.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
