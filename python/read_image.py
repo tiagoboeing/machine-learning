@@ -113,11 +113,11 @@ class ReadImage():
         self.__mergeHair = self.calcNormalize(self.__mergeHair)
         self.__mergeDress = self.calcNormalize(self.__mergeDress)
 
-        apuOrMerge = 0.0  # Bart
+        apuOrMerge = 0.0  # Apu
         filename = os.path.basename(img)[0]
 
-        if filename == 'h':
-            apuOrMerge = 1.0  # Homer
+        if filename == 'm':
+            apuOrMerge = 1.0  # Merge
 
         features = [
             self.__apuBody,
