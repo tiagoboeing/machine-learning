@@ -7,15 +7,16 @@ from logger import Logger
 class Weka():
     def __init__(self, images_directory):
         self.images_directory = images_directory
-        self.header = '''@relation caracteristicas\n
-                         @attribute laranja_camisa_bart real
-                         @attribute azul_calcao_bart real
-                         @attribute azul_sapato_bart real
-                         @attribute marrom_boca_homer real
-                         @attribute azul_calca_homer real
-                         @attribute cinza_sapato_homer real
-                         @attribute classe {Bart, Homer}\n
-                         @data\n
+        self.header = '''
+                        @relation caracteristicas\n
+                        @attribute apu_body real
+                        @attribute apu_pants real
+                        @attribute apu_shirt real
+                        @attribute merge_body real
+                        @attribute merge_hair real
+                        @attribute merge_dress real
+                        @attribute classe {Apu, Merge}\n
+                        @data\n
                       '''
         self.body = ''
 
