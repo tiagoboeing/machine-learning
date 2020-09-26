@@ -1,37 +1,36 @@
 class Range():
 
-  def isBartOrangeShirt(self, red, green, blue):
-    if blue >= 7 and blue <= 90 and green >= 70 and green <= 105 and red >= 200 and red <= 255:
-      return True
-    return False
+    def isBartOrangeShirt(self, red, green, blue):
+        if 7 <= blue <= 90 and 70 <= green <= 105 and 200 <= red <= 255:
+            return True
+        return False
 
-  
-  def isBartBlueShorts(self, red, green, blue):
-    if blue >= 125 and blue <= 170 and green >= 5 and green <= 125 and red >= 0 and red <= 20:
-      return True
+    def isBartBlueShorts(self, red, green, blue):
+        if 170 >= blue >= 125 >= green >= 5 and 0 <= red <= 20:
+            return True
 
-    return False
+        return False
 
-  def isBartShoe(self, red, green, blue):
-    if blue >= 125 and blue <= 140 and green >= 3 and green <= 12 and red >= 5 and red <= 20:
-      return True
+    def isBartShoe(self, red, green, blue):
+        if 125 <= blue <= 140 and 3 <= green <= 12 and 5 <= red <= 20:
+            return True
 
-    return False
+        return False
 
-  def isHomerBluePants(self, red, green, blue):
-    if blue >= 150 and blue <= 180 and green >= 98 and green <= 120 and red >= 0 and red <= 90:
-      return True
-      
-    return False
+    def isHomerBluePants(self, red, green, blue):
+        if blue >= 150 and blue <= 180 and green >= 98 and green <= 120 and red >= 0 and red <= 90:
+            return True
 
-  def isHomerMouth(self, red, green, blue):
-    if blue >= 95 and blue <= 140 and green >= 160 and green <= 185 and red >= 175 and red <= 200:
-      return True
-      
-    return False
+        return False
 
-  def isHomerShoe(self, red, green, blue):
-    if blue >= 25 and blue <= 45 and green >= 25 and green <= 45 and red >= 25 and red <= 45:
-      return True
-      
-    return False
+    def isHomerMouth(self, red, green, blue):
+        if 140 >= blue >= 95 <= green <= 185 and 175 <= red <= 200:
+            return True
+
+        return False
+
+    def isHomerShoe(self, red, green, blue):
+        if 45 >= blue >= 25 <= green <= 45 and 25 <= red <= 45:
+            return True
+
+        return False
