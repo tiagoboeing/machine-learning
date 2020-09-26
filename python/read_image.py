@@ -1,7 +1,8 @@
 import os
 import cv2
-from logger import Logger
+
 from range_color import Range
+from logger import Logger
 
 
 class ReadImage():

@@ -1,5 +1,6 @@
 import os
 import io
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 import urllib
@@ -66,5 +67,9 @@ class Classifier:
         buf.seek(0)
         string = base64.b64encode(buf.read())
 
-        uri = 'data:image/png;base64,' + urllib.parse.quote(string)
-        print(uri)
+        confusion_matrix = {}
+
+        confusion_matrix['uri'] = 'data:image/png;base64,' + \
+            urllib.parse.quote(string)
+
+        print(json.dumps(confusion_matrix))

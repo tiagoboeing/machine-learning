@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 from weka import Weka
 from classifier import Classifier
@@ -9,12 +10,12 @@ if __name__ == "__main__":
 
     image = sys.argv[1]
 
-    # print(ReadImage().read(img=image))
+    # Get uploaded image from args and read features
+    features = {}
+    features['features'] = ReadImage().read(img=image)
+    print(json.dumps(features))
 
     features = Weka(os.path.dirname(__file__) +
                     '/images').extractTo(fileName='caracteristicas')
-
-    # retorno para o electron da extração das fetuares de todas as imagens da pasta images
-    print(features)
 
     Classifier(data=features).NaiveBayes()

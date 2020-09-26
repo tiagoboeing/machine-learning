@@ -60,15 +60,34 @@ export default class Content extends React.Component<
       const _this = this;
       this.setState({ loading: true }, () => {
         ipcRenderer.send("classify-image", { data: image.path });
-        ipcRenderer.on("python-events", (event: any, args: any) => {
-          console.log("args - return ", args);
 
-          if (args.indexOf("data:image")) {
-            _this.setState({ loading: false, confusionMatrix: args });
+        ipcRenderer.on("python-events", (event: any, args: any) => {
+          if (this.isJson(args)) {
+            let json = JSON.parse(args);
+
+            if (Object.keys(json)[0] === "uri") {
+              _this.setState({ confusionMatrix: json.uri });
+            }
+
+            if (Object.keys(json)[0] === "features") {
+              console.log("mostra as features ao lado -->", json.features);
+            }
           }
+
+          _this.setState({ loading: false });
         });
       });
     }
+  };
+
+  isJson = (str: string) => {
+    try {
+      JSON.parse(str);
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   public render() {
