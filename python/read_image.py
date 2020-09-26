@@ -102,7 +102,7 @@ class ReadImage():
         self.__renderedImage[index_height][index_width] = [0, 255, 128]
 
     def calcNormalize(self, value):
-        if(value != 0.0):
+        if (value != 0.0):
             return (value / (self.__width * self.__height)) * 100
 
         return 0.0
