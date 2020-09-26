@@ -39,9 +39,9 @@ class Classifier:
     X_train, y_train, X_test, y_test = self.prepare()    
 
     model = naive_bayes.GaussianNB()
-    model.fit(X_train, y_train)
+    model.fit(X_train, y_train) # TODO: model.predict para testar uma única imagem
 
-    self.confustion_matrix(model, X_test, y_test)    
+    self.confusion_matrix(model, X_test, y_test)    
 
   # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
   def confusion_matrix(self, model, X_test, y_test):           

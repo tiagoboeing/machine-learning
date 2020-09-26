@@ -1,37 +1,35 @@
 class Range():
 
-  def isBartOrangeShirt(self, red, green, blue):
-    if blue >= 7 and blue <= 90 and green >= 70 and green <= 105 and red >= 200 and red <= 255:
-      return True
-    return False
+    """
+    Extract characteristics from Apu Nahasapeemapetilon character
+    """
 
-  
-  def isBartBlueShorts(self, red, green, blue):
-    if blue >= 125 and blue <= 170 and green >= 5 and green <= 125 and red >= 0 and red <= 20:
-      return True
+    def apu_is_body(self, red, green, blue):
+        if red >= 135 and red <= 157 and green >= 60 and green <= 70 and blue >= 0 and blue <= 35:
+            return True
+        return False
 
-    return False
+    def apu_is_pants(self, red, green, blue):
+        if red >= 189 and red <= 220 and green >= 175 and green <= 206 and blue >= 119 and blue <= 151:
+            return True
+        return False
 
-  def isBartShoe(self, red, green, blue):
-    if blue >= 125 and blue <= 140 and green >= 3 and green <= 12 and red >= 5 and red <= 20:
-      return True
+    def apu_is_shirt(self, red, green, blue):
+        if red >= 32 and red <= 40 and green >= 101 and green <= 110 and blue >= 0 and blue <= 30:
+            return True
+        return False
 
-    return False
+    def merge_is_body(self, red, green, blue):
+        if red >= 202 and red <= 235 and green >= 158 and green <= 181 and blue >= 8 and blue <= 14:
+            return True
+        return False
 
-  def isHomerBluePants(self, red, green, blue):
-    if blue >= 150 and blue <= 180 and green >= 98 and green <= 120 and red >= 0 and red <= 90:
-      return True
-      
-    return False
+    def merge_is_hair(self, red, green, blue):
+        if red >= 58 and red <= 71 and green >= 79 and green <= 102 and blue >= 152 and blue <= 255:
+            return True
+        return False
 
-  def isHomerMouth(self, red, green, blue):
-    if blue >= 95 and blue <= 140 and green >= 160 and green <= 185 and red >= 175 and red <= 200:
-      return True
-      
-    return False
-
-  def isHomerShoe(self, red, green, blue):
-    if blue >= 25 and blue <= 45 and green >= 25 and green <= 45 and red >= 25 and red <= 45:
-      return True
-      
-    return False
+    def merge_is_dress(self, red, green, blue):
+        if red >= 116 and red <= 166 and green >= 146 and green <= 191 and blue >= 76 and blue <= 123:
+            return True
+        return False

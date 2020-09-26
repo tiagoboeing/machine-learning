@@ -8,15 +8,16 @@ class ReadImage():
     def __init__(self):
         self.__width = 0
         self.__height = 0
-        self.__bartOrangeShirt = 0
-        self.__bartBlueShorts = 0
-        self.__bartBlueShoe = 0
-        self.__homerBluePants = 0
-        self.__homerBrownMouth = 0
-        self.__homerGreyShoe = 0
         self.__renderedImage = None
         self.__features = []
         self.__cloneImage = False
+
+        self.__apuBody = 0
+        self.__apuPants = 0
+        self.__apuShirt = 0
+        self.__mergeBody = 0
+        self.__mergeHair = 0
+        self.__mergeDress = 0
 
     def read(self, img, cloneImage=False):
         Logger.log(f'Image received {img}')
@@ -52,45 +53,37 @@ class ReadImage():
         range = Range()
         b, g, r = pixel
 
-        if range.isBartOrangeShirt(r, g, b):
-            self.__bartOrangeShirt += 1
-
+        # check for Apu characteristics
+        if range.apu_is_body(r, g, b):
+            self.__apuBody += 1
             if self.__cloneImage == True:
-                self.set_color(self.__bartOrangeShirt,
-                               index_width, index_height)
+                self.set_color(self.__apuBody, index_width, index_height)
 
-        if index_width > (self.__height / 2) and range.isBartBlueShorts(r, g, b):
-            self.__bartBlueShorts += 1
-
+        if range.apu_is_pants(r, g, b):
+            self.__apuPants += 1
             if self.__cloneImage == True:
-                self.set_color(self.__bartBlueShorts,
-                               index_width, index_height)
+                self.set_color(self.__apuPants, index_width, index_height)
 
-        if index_width > (self.__height / 2 + self.__height / 3) and range.isBartShoe(r, g, b):
-            self.__bartBlueShoe += 1
-
+        if range.apu_is_shirt(r, g, b):
+            self.__apuShirt += 1
             if self.__cloneImage == True:
-                self.set_color(self.__bartBlueShoe, index_width, index_height)
+                self.set_color(self.__apuShirt, index_width, index_height)
 
-        if range.isHomerBluePants(r, g, b):
-            self.__homerBluePants += 1
-
+        # check for Merge
+        if range.merge_is_body(r, g, b):
+            self.__mergeBody += 1
             if self.__cloneImage == True:
-                self.set_color(self.__homerBluePants,
-                               index_width, index_height)
+                self.set_color(self.__mergeBody, index_width, index_height)
 
-        if index_width < (self.__height / 2 + self.__height / 3) and range.isHomerMouth(r, g, b):
-            self.__homerBrownMouth += 1
-
+        if range.merge_is_hair(r, g, b):
+            self.__mergeHair += 1
             if self.__cloneImage == True:
-                self.set_color(self.__homerBrownMouth,
-                               index_width, index_height)
+                self.set_color(self.__mergeHair, index_width, index_height)
 
-        if index_width > (self.__height / 2 + self.__height / 3) and range.isHomerShoe(r, g, b):
-            self.__homerGreyShoe += 1
-
+        if range.merge_is_dress(r, g, b):
+            self.__mergeDress += 1
             if self.__cloneImage == True:
-                self.set_color(self.__homerGreyShoe, index_width, index_height)
+                self.set_color(self.__mergeDress, index_width, index_height)
 
     """
       TODO: estudar como associar uma variável recebida com o self
@@ -113,27 +106,27 @@ class ReadImage():
     def normalizeFeatures(self, img):
         Logger.log('Normalize Features')
 
-        self.__bartOrangeShirt = self.calcNormalize(self.__bartOrangeShirt)
-        self.__bartBlueShorts = self.calcNormalize(self.__bartBlueShorts)
-        self.__bartBlueShoe = self.calcNormalize(self.__bartBlueShoe)
-        self.__homerBluePants = self.calcNormalize(self.__homerBluePants)
-        self.__homerBrownMouth = self.calcNormalize(self.__homerBrownMouth)
-        self.__homerGreyShoe = self.calcNormalize(self.__homerGreyShoe)
+        self.__apuBody = self.calcNormalize(self.__apuBody)
+        self.__apuPants = self.calcNormalize(self.__apuPants)
+        self.__apuShirt = self.calcNormalize(self.__apuShirt)
+        self.__mergeBody = self.calcNormalize(self.__mergeBody)
+        self.__mergeHair = self.calcNormalize(self.__mergeHair)
+        self.__mergeDress = self.calcNormalize(self.__mergeDress)
 
-        bartOrHome = 0.0  # Bart
+        apuOrMerge = 0.0  # Bart
         filename = os.path.basename(img)[0]
 
         if filename == 'h':
-            bartOrHome = 1.0  # Homer
+            apuOrMerge = 1.0  # Homer
 
         features = [
-            self.__bartOrangeShirt,
-            self.__bartBlueShorts,
-            self.__bartBlueShoe,
-            self.__homerBluePants,
-            self.__homerBrownMouth,
-            self.__homerGreyShoe,
-            bartOrHome
+            self.__apuBody,
+            self.__apuPants,
+            self.__apuShirt,
+            self.__mergeBody,
+            self.__mergeHair,
+            self.__mergeDress,
+            apuOrMerge
         ]
 
         Logger.log(features)

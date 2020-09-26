@@ -3,6 +3,7 @@ from os.path import isfile, join
 from read_image import ReadImage
 from logger import Logger
 
+
 class Weka():
     def __init__(self, images_directory):
         self.images_directory = images_directory
@@ -24,9 +25,9 @@ class Weka():
             join(self.images_directory, f))]
         Logger.log(
             f'\n{len(onlyfiles)} images found in {self.images_directory} directory!', True)
-        
+
         # Range with 5 images for testing
-        return onlyfiles[160:165]
+        return onlyfiles[0:40]
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'
@@ -34,19 +35,19 @@ class Weka():
 
         for index, image in enumerate(list(self.list_directory_files())):
             Logger.log(f'Extracting characteristics from {image}')
-            
+
             features = ReadImage().read(f'{self.images_directory}/{image}')
             features[6] = "Bart" if features[6] == 0.0 else "Homer"
             imagesData.append(features)
 
             Logger.log(f'Data added to index {index}')
             Logger.log('Extracted Features:')
-            Logger.log(f'Bart Orange T-Shirt = {features[0]}')
-            Logger.log(f'Bart Blue Shorts = {features[1]}')
-            Logger.log(f'Bart Shoes = {features[2]}')
-            Logger.log(f'Homer Blue Pants = {features[3]}')
-            Logger.log(f'Homer Mouth = {features[4]}')
-            Logger.log(f'Homer Shoes = {features[5]}')
+            Logger.log(f'Apu body = {features[0]}')
+            Logger.log(f'Apu pants = {features[1]}')
+            Logger.log(f'Apu shirt = {features[2]}')
+            Logger.log(f'Merge body = {features[3]}')
+            Logger.log(f'Merge hair = {features[4]}')
+            Logger.log(f'Merge dress = {features[5]}')
             Logger.log(f'Class = {features[6]}', True)
 
             self.body += ','.join(map(str, features)) + "\n"
