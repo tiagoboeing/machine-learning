@@ -15,10 +15,23 @@ class Main {
 
   listenerActions() {
     //Training Action
+    ipcMain.on("open-training", (event, args) => {
+      let pyshell = new PythonShell("open_training.py", {
+        mode: "text",
+        pythonPath: "python",
+        scriptPath: path.join(__dirname, "../../python"),
+      });
+
+      pyshell.on("message", function (results) {
+        console.log(results);
+        event.reply("python-events", results);
+      });
+    });
+
     ipcMain.on("classify-image", (event, args) => {
       const { data } = args;
 
-      let pyshell = new PythonShell("main.py", {
+      let pyshell = new PythonShell("classify_image.py", {
         mode: "text",
         pythonPath: "python",
         args: [data],

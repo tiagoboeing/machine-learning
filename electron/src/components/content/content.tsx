@@ -65,10 +65,6 @@ export default class Content extends React.Component<
           if (this.isJson(args)) {
             let json = JSON.parse(args);
 
-            if (Object.keys(json)[0] === "uri") {
-              _this.setState({ confusionMatrix: json.uri });
-            }
-
             if (Object.keys(json)[0] === "features") {
               console.log("mostra as features ao lado -->", json.features);
             }
