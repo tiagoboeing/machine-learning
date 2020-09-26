@@ -27,8 +27,8 @@ class Weka():
         Logger.log(
             f'\n{len(onlyfiles)} images found in {self.images_directory} directory!', True)
 
-        # Range with 5 images for testing
-        return onlyfiles[625:650]
+        # TODO: remover isso - Range with 5 images for testing
+        return onlyfiles[585:700]
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'
@@ -38,7 +38,7 @@ class Weka():
             Logger.log(f'Extracting characteristics from {image}')
 
             features = ReadImage().read(f'{self.images_directory}/{image}')
-            features[6] = "Bart" if features[6] == 0.0 else "Homer"
+            features[6] = "Apu" if features[6] == 0.0 else "Merge"
             imagesData.append(features)
 
             Logger.log(f'Data added to index {index}')
