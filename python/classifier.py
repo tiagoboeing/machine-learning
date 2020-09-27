@@ -134,79 +134,39 @@ class Classifier:
         final_features, final_labels = self.load_dataset()
 
         X_train, X_test, y_train, y_test = model_selection.train_test_split(
-            final_features, final_labels, test_size=0.35, train_size=0.65
+            final_features, final_labels, test_size=0.30, train_size=0.70
         )
 
         featuresFromImg = ReadImage().read(img=img)
 
-        gnb = naive_bayes.GaussianNB()
-        y_pred = gnb.fit(X_train, y_train).predict(X_test)
-        # print("Number of mislabeled points out of a total %d points : %d" %
-        #       (X_test.shape[0], (y_test != y_pred).sum()))
-
-        # print(X_test)
+        model = naive_bayes.GaussianNB()
+        model.fit(X_train, y_train)
 
         scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
         rescaled_feature = scaler.fit_transform(
             np.array(featuresFromImg[0:5]).reshape(-1, 1))
-        print(rescaled_feature)
 
-        # clf = naive_bayes.GaussianNB()
-        # clf.fit(X_train, y_train)
-        # print(clf.predict(
-        #     [[0.0, 0.0, 0.0, 15.566543747904793, 0.13744552463962453, 0.0, 1.0]]))
+        predict = model.predict(X_test)
+        prediction = model.predict(rescaled_feature.reshape(1, -1))[0]
 
-        # le = preprocessing.LabelEncoder()
+        accuracy = metrics.accuracy_score(
+            y_test, predict) * 100
 
-        # le.fit(final_labels)
-        # features_train = le.transform(final_labels)
-        # # features_train.reshape(1, -1)
+        label = 'Bart'
+        if prediction:
+            label = 'Homer'
 
-        # print(le)
-
-        # Extrai caracteristicas e label da imagem
-        #
-        # features = featuresFromImg[0:5]
-
-        # le = preprocessing.LabelEncoder()
-        # le.fit(features)
-        # features_train = le.transform(features)
-        # features_train.reshape(1, -1)
-
-        # print(features_train)
-
-        # Inicializa modelo
-        # model = naive_bayes.GaussianNB()
-        # model.fit(X_train, y_train)
-        # predict = model.predict(X_test)
-
-        # print(predict)
-
-        # accuracy = metrics.accuracy_score(y_test, predict) * 100
-        # prediction = model.predict(rescaled_feature.reshape(1, -1))
-
-        # print(prediction)
-
-        # scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
-        # rescaled_feature = scaler.fit_transform(np.array(features))
-
-        # prediction = model.predict(rescaled_feature.reshape(1, -1))[0]
-
-        # label = 'Bart'
-        # if final_labels[prediction]:
-        #     label = 'Homer'
-
-        # print(json.dumps({
-        #     'features': {
-        #         'Bart Orange T-Shirt': featuresFromImg[0],
-        #         'Bart Blue Shorts': featuresFromImg[1],
-        #         'Bart Shoes': featuresFromImg[2],
-        #         'Homer Blue Pants': featuresFromImg[3],
-        #         'Homer Mouth': featuresFromImg[4],
-        #         'Homer Shoes': featuresFromImg[5]
-        #     },
-        #     'prediction': {
-        #         'accuracy': accuracy,
-        #         'label': label
-        #     }
-        # }))
+        print(json.dumps({
+            'features': {
+                'Bart Orange T-Shirt': featuresFromImg[0],
+                'Bart Blue Shorts': featuresFromImg[1],
+                'Bart Shoes': featuresFromImg[2],
+                'Homer Blue Pants': featuresFromImg[3],
+                'Homer Mouth': featuresFromImg[4],
+                'Homer Shoes': featuresFromImg[5]
+            },
+            'prediction': {
+                'accuracy': accuracy,
+                'label': label
+            }
+        }))
