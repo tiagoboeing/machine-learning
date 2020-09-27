@@ -67,7 +67,7 @@ class Classifier:
 
     # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
     def confusion_matrix(self, model, x_test, y_test):
-        title = "Matriz Confusão"
+        title = "Matriz de confusão"
 
         disp = metrics.plot_confusion_matrix(model, x_test, y_test)
 
