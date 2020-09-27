@@ -1,5 +1,5 @@
 import * as React from "react";
-import Feature from "../Feature/index";
+import Feature from "../Feature";
 import ImageSelector from "../image-selector/image-selector";
 import {
   Btn,
@@ -44,7 +44,7 @@ export default class Content extends React.Component<
     if (!window || !window.process || !window.require) {
       throw new Error(`Unable to require renderer process`);
     }
-    const _this = this;
+
     this.setState(
       {
         ipcRenderer: window.require("electron").ipcRenderer,
@@ -72,16 +72,14 @@ export default class Content extends React.Component<
         this.state.ipcRenderer.on("python-events", (event: any, args: any) => {
           if (this.isJson(args)) {
             let json = JSON.parse(args);
-            console.log("FEATURES", args);
-            if (Object.keys(json)[0] === "features") {
-              console.log("mostra as features ao lado -->", json.features);
-              _this.setState({
-                loadingClassify: false,
-                features: json.features,
-              });
-            }
+            console.log("Obtained features", json);
+
+            this.setState({
+              loadingClassify: false,
+              features: json,
+            });
           } else {
-            _this.setState({ loadingClassify: false });
+            this.setState({ loadingClassify: false });
           }
         });
       }
@@ -97,7 +95,6 @@ export default class Content extends React.Component<
     const { ipcRenderer, image } = this.state;
 
     if (typeof image == "object") {
-      const _this = this;
       this.setState({ loadingClassify: true }, () => {
         ipcRenderer.send("classify-image", { data: image.path });
       });
