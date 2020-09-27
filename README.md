@@ -31,7 +31,19 @@ A comunicação entre Python e Electron ocorre via eventos, como se fosse uma br
 
 Analisando cores e aplicando faixa de tolerância (range) para cada um dos personagens e característica desejada:
 
-|![](https://i.imgur.com/QHVoClY.png)|![](https://i.imgur.com/mYEPBS0.png)|![](https://i.imgur.com/CvMuTWF.png)|
+<table width="100%">
+  <tr>
+    <td>
+      <img src="https://i.imgur.com/QHVoClY.png"/>
+    </td>
+    <td>
+      <img src="https://i.imgur.com/mYEPBS0.png"/>
+    </td>
+    <td>
+      <img src="https://i.imgur.com/CvMuTWF.png"/>
+    </td>
+  </tr>
+</table>
 
 
 
