@@ -1,7 +1,8 @@
 import os
 import cv2
-from logger import Logger
+
 from range_color import Range
+from logger import Logger
 
 
 class ReadImage():
@@ -10,7 +11,7 @@ class ReadImage():
         self.__height = 0
         self.__renderedImage = None
         self.__features = []
-        self.__cloneImage = False
+        self.__displayImage = False
 
         self.__apuBody = 0
         self.__apuPants = 0
@@ -23,11 +24,11 @@ class ReadImage():
         Logger.log(f'Image received {img}')
         image = cv2.imread(img)
 
-        self.__cloneImage = cloneImage
+        self.__displayImage = displayImage
 
         self.__height, self.__width, channels = image.shape
 
-        if self.__cloneImage == True:
+        if self.__displayImage == True:
             Logger.log('Cloned image')
             self.__renderedImage = image.copy()
 
@@ -37,7 +38,7 @@ class ReadImage():
                 pixel = image[height, width]
                 self.handleRangeColors(pixel, width, height)
 
-        if self.__cloneImage == True:
+        if self.__displayImage == True:
             cv2.imshow('image', self.__renderedImage)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
@@ -94,7 +95,7 @@ class ReadImage():
         self.__renderedImage[index_height][index_width] = [0, 255, 128]
 
     def calcNormalize(self, value):
-        if(value != 0.0):
+        if (value != 0.0):
             return (value / (self.__width * self.__height)) * 100
 
         return 0.0
