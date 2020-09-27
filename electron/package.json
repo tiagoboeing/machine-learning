@@ -6,14 +6,14 @@
   "homepage": "./",
   "scripts": {
     "start": "concurrently \"set BROWSER=NONE && npm run react-start\" \" electron . \" ",
-    "build": "npm run clean && npm run react-build && npm run electron-build",
+    "build": "npm run clean && npm run react-build && npm run electron-build && npm run copy",
+    "copy": "cp -R ../python ./build/win-unpacked/resources/",
     "clean": "rimraf build && rimraf dist",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
     "react-build": "react-scripts build",
     "react-test": "react-scripts test",
-    "react-eject": "react-scripts eject",
-    "postinstall": "install-app-deps"
+    "react-eject": "react-scripts eject"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -75,8 +75,7 @@
         {
           "target": "dir",
           "arch": [
-            "x64",
-            "ia32"
+            "x64"
           ]
         }
       ]
