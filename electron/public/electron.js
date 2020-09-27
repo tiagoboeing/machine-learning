@@ -64,6 +64,11 @@ class Main {
       });
     });
 
+    //Done training
+    ipcMain.on("done-training", (event, arg) => {
+      event.reply("reply-done-training", 'done');
+    });
+
     //Exit Action
     ipcMain.on("close-program", (event, arg) => {
       console.log("CLOSE", event);
@@ -87,7 +92,7 @@ class Main {
     // Cria uma janela de navegação.
     const win = new BrowserWindow({
       width: 1200,
-      height: 800,
+      height: 900,
       frame: true,
       show: true,
       // titleBarStyle: "hidden ",

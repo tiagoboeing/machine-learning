@@ -21,7 +21,7 @@ const Feature: React.FC<Props> = ({ data }) => {
             <S.List>
               {data &&
                 data.length > 0 &&
-                data.map((item, index) => (
+                data.slice(0, 3).map((item, index) => (
                   <S.ListItem key={index}>{item}</S.ListItem>
                 ))}
             </S.List>
@@ -29,9 +29,11 @@ const Feature: React.FC<Props> = ({ data }) => {
           <div>
             <S.Subtitle>Homer</S.Subtitle>
             <S.List>
-              <S.ListItem>De</S.ListItem>
-              <S.ListItem>Li</S.ListItem>
-              <S.ListItem>Cia</S.ListItem>
+              {data &&
+                data.length > 0 &&
+                data.slice(3, 6).map((item, index) => (
+                  <S.ListItem key={index}>{item}</S.ListItem>
+                ))}
             </S.List>
           </div>
         </S.Wrapper>

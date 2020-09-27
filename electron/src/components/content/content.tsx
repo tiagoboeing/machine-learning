@@ -10,6 +10,7 @@ import {
     DisableBtn,
     MessageInfo,
     Image,
+    ImageMatrix
 } from "./style";
 
 export interface IContentProps { }
@@ -20,6 +21,7 @@ export interface IContentState {
     confusionMatrix?: string;
     features?: [];
     loading: boolean;
+    loadingClassify: boolean;
 }
 
 export default class Content extends React.Component<
@@ -31,6 +33,7 @@ export default class Content extends React.Component<
         this.state = {
             ipcRenderer: null,
             loading: false,
+            loadingClassify: false,
         };
     }
     componentDidMount() {
@@ -55,7 +58,7 @@ export default class Content extends React.Component<
 
                         if (Object.keys(jsonData)[0] === "uri") {
                             console.log("matrix de confusão " + jsonData.uri);
-                            this.setState({ confusionMatrix: jsonData.uri });
+                            this.setState({ loading: false, confusionMatrix: jsonData.uri });
                         }
                     }
                 });
@@ -74,20 +77,21 @@ export default class Content extends React.Component<
         if (typeof image == "object") {
             const _this = this;
             this.setState(
-                { loading: true, confusionMatrix: "", features: [] },
+                { loadingClassify: true },
                 () => {
                     ipcRenderer.send("classify-image", { data: image.path });
 
                     ipcRenderer.on("python-events", (event: any, args: any) => {
+                        ipcRenderer.send("done-training", true);
                         if (this.isJson(args)) {
                             let json = JSON.parse(args);
 
                             if (Object.keys(json)[0] === "features") {
                                 console.log("mostra as features ao lado -->", json.features);
-                                _this.setState({ loading: false, features: json.features });
+                                _this.setState({ loadingClassify: false, features: json.features });
                             }
                         } else {
-                            _this.setState({ loading: false });
+                            _this.setState({ loadingClassify: false });
                         }
                     });
                 }
@@ -106,26 +110,34 @@ export default class Content extends React.Component<
     };
 
     public render() {
-        const { image, loading, confusionMatrix, features } = this.state;
+        const { image, loading, loadingClassify, confusionMatrix, features } = this.state;
         return (
             <ContentWrapper>
                 <LeftContent>
                     <ImageSelector changeImage={this.handleImage} />
-                    {image ? (
-                        <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
-                    ) : (
-                            <DisableBtn>Classificar</DisableBtn>
-                        )}
+                    {image ?
+                        !loadingClassify ? (
+                            <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
+                        ) : (
+                                <DisableBtn>Processando Imagem...</DisableBtn>
+                            )
+                        : <DisableBtn>Selecione uma imagem</DisableBtn>}
                 </LeftContent>
                 <RightContent>
                     <Feature data={features} />
-                    {loading && !confusionMatrix ? (
-                        <MessageInfo>Processando imagem...</MessageInfo>
-                    ) : (
-                            <Image src={confusionMatrix} />
-                        )}
+                    {confusionMatrix ?
+                        (
+                            <ImageMatrix src={confusionMatrix} />
+                        ) :
+                        loading ?
+                            (
+                                <MessageInfo>Realizando treinamento...</MessageInfo>
+                            ) :
+                            <MessageInfo>Aguardando Treinamento</MessageInfo>
+                    }
                 </RightContent>
             </ContentWrapper>
         );
     }
 }
+
