@@ -60,9 +60,9 @@ class Classifier:
         model = naive_bayes.GaussianNB()
         model.fit(X_train, y_train)
 
-        if sys.platform.startswith('linux'): 
+        if sys.platform.startswith('linux'):
             self.confusion_matrix2(model, X_train, y_train)
-        else: 
+        else:
             self.confusion_matrix(model, X_test, y_test)
 
     # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
@@ -90,10 +90,10 @@ class Classifier:
 
         print(json.dumps(confusion_matrix))
 
-    def confusion_matrix2(self, model, x_train, y_train):        
+    def confusion_matrix2(self, model, x_train, y_train):
         # TODO: VERIFICAR PARAMETROS
         y_pred = model.predict(x_train)
-        cf_matrix = metrics.confusion_matrix(y_train, y_pred)                
+        cf_matrix = metrics.confusion_matrix(y_train, y_pred)
 
         sns.heatmap(cf_matrix, annot=True)
 
@@ -143,12 +143,13 @@ class Classifier:
         # Extrai caracteristicas e label da imagem
         featuresFromImg = ReadImage().read(img=img)
         print(json.dumps({
-            'Bart Orange T-Shirt': featuresFromImg[0],
-            'Bart Blue Shorts': featuresFromImg[1],
-            'Bart Shoes': featuresFromImg[2],
-            'Homer Blue Pants': featuresFromImg[3],
-            'Homer Mouth': featuresFromImg[4],
-            'Homer Shoes': featuresFromImg[5]
+            'features': {
+                'Bart Orange T-Shirt': featuresFromImg[0],
+                'Bart Blue Shorts': featuresFromImg[1],
+                'Bart Shoes': featuresFromImg[2],
+                'Homer Blue Pants': featuresFromImg[3],
+                'Homer Mouth': featuresFromImg[4],
+                'Homer Shoes': featuresFromImg[5]}
         }))
 
         print(model)

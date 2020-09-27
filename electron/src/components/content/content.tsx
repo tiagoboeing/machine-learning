@@ -74,10 +74,11 @@ export default class Content extends React.Component<
             let json = JSON.parse(args);
             console.log("Obtained features", json);
 
-            this.setState({
-              loadingClassify: false,
-              features: json,
-            });
+            if (json.features)
+              this.setState({
+                loadingClassify: false,
+                features: json.features,
+              });
           } else {
             this.setState({ loadingClassify: false });
           }
