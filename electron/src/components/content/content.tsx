@@ -76,75 +76,72 @@ export default class Content extends React.Component<
                         _this.setState({ loadingClassify: false });
                     }
                 });
-            }
-          }
-});
-      }
-    );
-  };
+            });
+    };
 
-handleImage = (image: object) => {
-    console.log("SELECTED-IMAGE", image);
-    this.setState({ image });
-};
 
-classifyAction = () => {
-    const { ipcRenderer, image } = this.state;
+    handleImage = (image: object) => {
+        console.log("SELECTED-IMAGE", image);
+        this.setState({ image });
+    };
 
-    if (typeof image == "object") {
-        const _this = this;
-        this.setState(
-            { loadingClassify: true },
-            () => {
-                ipcRenderer.send("classify-image", { data: image.path });
-            }
+    classifyAction = () => {
+        const { ipcRenderer, image } = this.state;
+
+        if (typeof image == "object") {
+            const _this = this;
+            this.setState(
+                { loadingClassify: true },
+                () => {
+                    ipcRenderer.send("classify-image", { data: image.path });
+                }
+            );
+        }
+    };
+
+    isJson = (str: string) => {
+        try {
+            JSON.parse(str);
+        } catch (error) {
+            return false;
+        }
+
+        return true;
+    };
+
+    public render() {
+        const {
+            image,
+            loading,
+            loadingClassify,
+            confusionMatrix,
+            features,
+        } = this.state;
+        return (
+            <ContentWrapper>
+                <LeftContent>
+                    <ImageSelector changeImage={this.handleImage} />
+                    {image ? (
+                        !loadingClassify ? (
+                            <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
+                        ) : (
+                                <DisableBtn>Processando Imagem...</DisableBtn>
+                            )
+                    ) : (
+                            <DisableBtn>Selecione uma imagem</DisableBtn>
+                        )}
+                </LeftContent>
+                <RightContent>
+                    <Feature data={features} />
+                    {confusionMatrix ? (
+                        <ImageMatrix src={confusionMatrix} />
+                    ) : loading ? (
+                        <MessageInfo>Realizando treinamento...</MessageInfo>
+                    ) : (
+                                <MessageInfo>Aguardando Treinamento</MessageInfo>
+                            )}
+                </RightContent>
+            </ContentWrapper>
         );
     }
-};
-
-isJson = (str: string) => {
-    try {
-        JSON.parse(str);
-    } catch (error) {
-        return false;
-    }
-
-    return true;
-};
-
-  public render() {
-    const {
-        image,
-        loading,
-        loadingClassify,
-        confusionMatrix,
-        features,
-    } = this.state;
-    return (
-        <ContentWrapper>
-            <LeftContent>
-                <ImageSelector changeImage={this.handleImage} />
-                {image ? (
-                    !loadingClassify ? (
-                        <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
-                    ) : (
-                            <DisableBtn>Processando Imagem...</DisableBtn>
-                        )
-                ) : (
-                        <DisableBtn>Selecione uma imagem</DisableBtn>
-                    )}
-            </LeftContent>
-            <RightContent>
-                <Feature data={features} />
-                {confusionMatrix ? (
-                    <ImageMatrix src={confusionMatrix} />
-                ) : loading ? (
-                    <MessageInfo>Realizando treinamento...</MessageInfo>
-                ) : (
-                            <MessageInfo>Aguardando Treinamento</MessageInfo>
-                        )}
-            </RightContent>
-        </ContentWrapper>
-    );
-}
 }
