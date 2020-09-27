@@ -1,10 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const fs = require("fs");
 const isDev = require("electron-is-dev");
-const _dirname = "";
 const { PythonShell } = require("python-shell");
-
+let _dirname = path.resolve(path.dirname(''));
 // import installExtension, { REDUX_DEVTOOLS } from "electron-devtools-installer";
 // Or if you can not use ES6 imports
 const {
