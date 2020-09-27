@@ -1,8 +1,19 @@
 {
-  "name": "Aprendizado_Maquinas",
+  "name": "machine-learning",
   "main": "public/electron.js",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "concurrently \"set BROWSER=NONE && npm run react-start\" \" electron . \" ",
+    "build": "npm run clean && concurrently \"npm run react-build\" \" npm run electron-build\" ",
+    "clean": "rimraf build && rimraf dist",
+    "electron-build": "electron-builder",
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "react-eject": "react-scripts eject",
+    "postinstall": "install-app-deps"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -14,8 +25,8 @@
     "@types/styled-components": "^5.1.3",
     "concurrently": "^5.3.0",
     "custom-electron-titlebar": "^3.2.4",
-    "electron-devtools-installer": "^3.1.1",
     "electron-is-dev": "^1.2.0",
+    "electron-devtools-installer": "^3.1.1",
     "python-shell": "^2.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -26,14 +37,10 @@
     "wait-on": "^5.2.0",
     "yarn": "^1.22.5"
   },
-  "scripts": {
-    "start": "concurrently \"set BROWSER=NONE && npm run react-start\" \" electron . \" ",
-    "build": "concurrently \"npm run react-build\" \" npm run electron-build\" ",
-    "electron-build": "electron-builder",
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test",
-    "react-eject": "react-scripts eject"
+  "devDependencies": {
+    "electron": "^10.1.2",
+    "electron-builder": "^22.8.1",
+    "rimraf": "^3.0.2"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,8 +57,23 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "electron": "^10.1.2",
-    "electron-builder": "^22.8.1"
+  "build": {
+    "appId": "machine-learning",
+    "linux": {
+      "target": [
+        "dir"
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    }
   }
 }
