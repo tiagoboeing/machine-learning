@@ -33,9 +33,12 @@ Analisando cores e aplicando faixa de tolerância (range) para cada um dos perso
 
 |![](https://i.imgur.com/QHVoClY.png)|![](https://i.imgur.com/mYEPBS0.png)|![](https://i.imgur.com/CvMuTWF.png)|
 
-Apu Nahasapeemapetilon
+
 
 <table width="100%">
+  <thead>
+    <th colspan="12">Apu Nahasapeemapetilon</th>
+  </thead>
   <tr>
     <th colspan="4">Cor da pele</th>
     <th></th>
@@ -96,14 +99,15 @@ Apu Nahasapeemapetilon
     <td>Alvo</td>
     <td colspan="2" align="center">Range</td>
   </tr>
-</table>
 
--------
-
-Merge Simpson
-
-<table width="100%">
   <tr>
+  <td colspan="12"></td>
+  </tr>
+
+  <thead>
+    <th colspan="12">Merge Simpson</th>
+  </thead>
+   <tr>
     <th colspan="4">Cor da pele</th>
     <th></th>
     <th colspan="3">Cor do cabelo</th>
@@ -164,6 +168,8 @@ Merge Simpson
     <td colspan="2" align="center">Range</td>
   </tr>
 </table>
+
+
 
 
 ## Utilização
