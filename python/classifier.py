@@ -141,9 +141,15 @@ class Classifier:
         model.fit(X_train, y_train)
 
         # Extrai caracteristicas e label da imagem
-        featuresFromImg = {}
-        featuresFromImg['features'] = ReadImage().read(img=img)
-        print(json.dumps(featuresFromImg))
+        featuresFromImg = ReadImage().read(img=img)
+        print(json.dumps({
+            'Bart Orange T-Shirt': featuresFromImg[0],
+            'Bart Blue Shorts': featuresFromImg[1],
+            'Bart Shoes': featuresFromImg[2],
+            'Homer Blue Pants': featuresFromImg[3],
+            'Homer Mouth': featuresFromImg[4],
+            'Homer Shoes': featuresFromImg[5]
+        }))
 
         print(model)
 
