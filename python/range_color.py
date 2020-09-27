@@ -33,6 +33,6 @@ class Range():
         return False
 
     def merge_is_dress(self, red, green, blue):
-        if 166 >= red >= 116 <= green <= 215 and 50 <= blue <= 123:
+        if 105 <= red <= 166 and 135 <= green <= 215 and 0 <= blue <= 123:
             return True
         return False
