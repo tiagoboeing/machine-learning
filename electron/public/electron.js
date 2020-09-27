@@ -107,7 +107,7 @@ class Main {
     win.loadURL(
       isDev
         ? "http://localhost:3000"
-        : `file://${path.join(_dirname, "../index.html")}`
+        : `file://${path.join(_dirname, "/index.html")}`
     );
 
     win.once("ready-to-show", () => {

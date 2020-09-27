@@ -6,8 +6,9 @@
   "homepage": "./",
   "scripts": {
     "start": "concurrently \"set BROWSER=NONE && npm run react-start\" \" electron . \" ",
-    "build": "npm run clean && npm run react-build && npm run electron-build && npm run copy",
-    "copy": "cp -R ../python/{*.py,images/,output/,*.arff} ./build/win-unpacked/resources/",
+    "build": "npm run clean && npm run react-build && npm run electron-build && npm run copy && npm run copy-react && rimraf build",
+    "copy": "cp -R ../python/{*.py,images/,output/,*.arff} ./dist/win-unpacked/resources/",
+    "copy-react": "cp -R ./build/* ./dist/win-unpacked/",
     "clean": "rimraf build && rimraf dist",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
@@ -63,7 +64,7 @@
   "build": {
     "appId": "machine-learning",
     "directories": {
-      "output": "build"
+      "output": "dist"
     },
     "linux": {
       "target": [
