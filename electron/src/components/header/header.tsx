@@ -2,7 +2,7 @@ import * as React from "react";
 import IconSvg from "../icons-svg/icons";
 import { HeaderWrapper, GroupButtons, NavButton } from "./style";
 
-export interface IHeaderProps {}
+export interface IHeaderProps { }
 
 export interface IHeaderState {
   ipcRenderer?: any;
@@ -12,7 +12,7 @@ export interface IHeaderState {
 export default class Header extends React.Component<
   IHeaderProps,
   IHeaderState
-> {
+  > {
   private ipcRenderer?: any;
 
   constructor(props: IHeaderProps) {
@@ -36,6 +36,11 @@ export default class Header extends React.Component<
     }
     this.setState({
       ipcRenderer: window.require("electron").ipcRenderer,
+    }, () => {
+      this.state.ipcRenderer.on("reply-done-training", (event: any, args: any) => {
+        console.log("HEADER", args);
+        this.setState({ loading: false });
+      });
     });
   };
 
@@ -58,6 +63,7 @@ export default class Header extends React.Component<
           <NavButton
             onClick={this.openTrainingMode}
             disabled={this.state.loading}
+            useMinWidth={true}
           >
             {!this.state.loading ? "Executar Treinamento" : "Em treinamento..."}
           </NavButton>

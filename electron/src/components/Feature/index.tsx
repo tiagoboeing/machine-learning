@@ -1,37 +1,58 @@
-import React, { useEffect } from 'react';
-
-import * as S from './styles';
+import React, { useEffect, useState } from "react";
+import * as S from "./styles";
 
 interface Props {
-  data?: [];
+  data?: any;
+}
+
+interface Characteristics {
+  name: string;
+  value: number;
 }
 
 const Feature: React.FC<Props> = ({ data }) => {
+  const [characteristics, setCharacteristics] = useState([]);
+
   useEffect(() => {
-    console.log('data ');
+    console.log("data", data);
+    if (data) {
+      const parsed: any = Object.keys(data).map((el: any) => ({
+        name: el,
+        value: data[el],
+      }));
+      if (parsed.length) setCharacteristics(parsed);
+    }
   }, [data]);
 
   return (
     <S.Container>
       <S.Content>
-        <header>Caracteristicas</header>
+        <header>Características</header>
         <S.Wrapper>
           <div>
             <S.Subtitle>Bart</S.Subtitle>
             <S.List>
-              {data &&
-                data.length > 0 &&
-                data.map((item, index) => (
-                  <S.ListItem key={index}>{item}</S.ListItem>
-                ))}
+              {characteristics.length > 0 &&
+                characteristics
+                  .slice(0, 3)
+                  .map((item: Characteristics, index) => (
+                    <S.ListItem key={index}>
+                      {item.name} = {item.value.toPrecision(4)}
+                    </S.ListItem>
+                  ))}
             </S.List>
           </div>
           <div>
             <S.Subtitle>Homer</S.Subtitle>
             <S.List>
-              <S.ListItem>De</S.ListItem>
-              <S.ListItem>Li</S.ListItem>
-              <S.ListItem>Cia</S.ListItem>
+              {characteristics.length > 0 &&
+                characteristics
+                  .slice(3, 6)
+                  .map((item: Characteristics, index) => (
+                    <S.ListItem key={index}>
+                      {item.name} = {item.value.toPrecision(4)}
+                    </S.ListItem>
+                  ))}
             </S.List>
           </div>
         </S.Wrapper>

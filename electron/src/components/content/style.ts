@@ -66,13 +66,20 @@ export const DisableBtn = styled(Btn)`
 export const MessageInfo = styled.p`
   display: block;
   width: 90%;
+  height:40px;
   padding: 10px;
   color: #61dafb;
   border: 1px solid #333;
   background-color: #333;
-  text-align: left;
+  text-align: center;
 `;
 
 export const Image = styled.img`
   max-width: 100%;
+`;
+
+
+export const ImageMatrix = styled.img`
+  max-width: 90%;
+  margin-top:12px;
 `;
