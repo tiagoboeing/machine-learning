@@ -45,7 +45,7 @@ class Main {
 
       pyshell.on("message", function (results) {
         console.log(results);
-        event.reply("python-events", results);
+        event.reply("python-training", results);
       });
     });
 

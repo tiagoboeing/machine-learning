@@ -1,5 +1,5 @@
 import * as React from "react";
-import Feature from "../Feature";
+import Feature from "../Feature/index";
 import ImageSelector from "../image-selector/image-selector";
 import {
   Btn,
@@ -44,20 +44,44 @@ export default class Content extends React.Component<
     if (!window || !window.process || !window.require) {
       throw new Error(`Unable to require renderer process`);
     }
+    const _this = this;
     this.setState(
       {
         ipcRenderer: window.require("electron").ipcRenderer,
         loading: false,
       },
       () => {
+        this.state.ipcRenderer.on(
+          "python-training",
+          (event: any, args: any) => {
+            this.state.ipcRenderer.send("done-training", true);
+            if (this.isJson(args)) {
+              let jsonData = JSON.parse(args);
+
+              if (Object.keys(jsonData)[0] === "uri") {
+                console.log("matrix de confusão " + jsonData.uri);
+                this.setState({
+                  loading: false,
+                  confusionMatrix: jsonData.uri,
+                });
+              }
+            }
+          }
+        );
+
         this.state.ipcRenderer.on("python-events", (event: any, args: any) => {
           if (this.isJson(args)) {
-            let jsonData = JSON.parse(args);
-
-            if (Object.keys(jsonData)[0] === "uri") {
-              console.log("matrix de confusão " + jsonData.uri);
-              this.setState({ loading: false, confusionMatrix: jsonData.uri });
+            let json = JSON.parse(args);
+            console.log("FEATURES", args);
+            if (Object.keys(json)[0] === "features") {
+              console.log("mostra as features ao lado -->", json.features);
+              _this.setState({
+                loadingClassify: false,
+                features: json.features,
+              });
             }
+          } else {
+            _this.setState({ loadingClassify: false });
           }
         });
       }
@@ -76,21 +100,6 @@ export default class Content extends React.Component<
       const _this = this;
       this.setState({ loadingClassify: true }, () => {
         ipcRenderer.send("classify-image", { data: image.path });
-
-        ipcRenderer.on("python-events", (event: any, args: any) => {
-          ipcRenderer.send("done-training", true);
-          if (this.isJson(args)) {
-            let json = JSON.parse(args);
-
-            console.log("Obtained features -->", json);
-            _this.setState({
-              loadingClassify: false,
-              features: json,
-            });
-          } else {
-            _this.setState({ loadingClassify: false });
-          }
-        });
       });
     }
   };
