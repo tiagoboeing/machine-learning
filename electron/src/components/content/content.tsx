@@ -9,7 +9,7 @@ import {
   Btn,
   DisableBtn,
   MessageInfo,
-  Image,
+  Image
 } from './style';
 
 export interface IContentProps {}
@@ -29,7 +29,7 @@ export default class Content extends React.Component<
     super(props);
     this.state = {
       ipcRenderer: null,
-      loading: false,
+      loading: false
     };
   }
   componentDidMount() {
@@ -44,7 +44,7 @@ export default class Content extends React.Component<
     }
     this.setState({
       ipcRenderer: window.require('electron').ipcRenderer,
-      loading: false,
+      loading: false
     });
   };
 
@@ -57,7 +57,6 @@ export default class Content extends React.Component<
     const { ipcRenderer, image } = this.state;
 
     if (typeof image == 'object') {
-      const _this = this;
       this.setState({ loading: true }, () => {
         ipcRenderer.send('classify-image', { data: image.path });
 
@@ -70,7 +69,7 @@ export default class Content extends React.Component<
             }
           }
 
-          _this.setState({ loading: false });
+          this.setState({ loading: false });
         });
       });
     }

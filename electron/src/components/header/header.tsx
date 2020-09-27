@@ -20,7 +20,7 @@ export default class Header extends React.Component<
 
     this.state = {
       ipcRenderer: null,
-      loading: false,
+      loading: false
     };
   }
 
@@ -35,19 +35,18 @@ export default class Header extends React.Component<
       throw new Error(`Unable to require renderer process`);
     }
     this.setState({
-      ipcRenderer: window.require('electron').ipcRenderer,
+      ipcRenderer: window.require('electron').ipcRenderer
     });
   };
 
   openTrainingMode = () => {
     const { ipcRenderer } = this.state;
-    const _this = this;
 
     this.setState({ loading: true }, () => {
       ipcRenderer.send('open-training');
 
-      ipcRenderer.on('python-events', (event: any, args: any) => {
-        if (_this.isJson(args)) {
+      ipcRenderer.on('python-events', (_event: any, args: any) => {
+        if (this.isJson(args)) {
           let json = JSON.parse(args);
 
           if (Object.keys(json)[0] === 'uri') {
@@ -55,7 +54,7 @@ export default class Header extends React.Component<
           }
         }
 
-        _this.setState({ loading: false });
+        this.setState({ loading: false });
       });
     });
   };
