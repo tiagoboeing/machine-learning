@@ -57,33 +57,33 @@ class ReadImage():
         # check for Apu characteristics
         if range.apu_is_body(r, g, b):
             self.__apuBody += 1
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__apuBody, index_width, index_height)
 
         if range.apu_is_pants(r, g, b):
             self.__apuPants += 1
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__apuPants, index_width, index_height)
 
         if range.apu_is_shirt(r, g, b):
             self.__apuShirt += 1
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__apuShirt, index_width, index_height)
 
         # check for Merge
         if range.merge_is_body(r, g, b):
             self.__mergeBody += 1
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__mergeBody, index_width, index_height)
 
         if range.merge_is_hair(r, g, b):
             self.__mergeHair += 1
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__mergeHair, index_width, index_height)
 
         if range.merge_is_dress(r, g, b):
             self.__mergeDress += 1
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__mergeDress, index_width, index_height)
 
     """
