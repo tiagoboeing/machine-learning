@@ -1,16 +1,14 @@
 import * as React from "react";
-import Feature from '../feature/index';
+import Feature from "../feature";
 import ImageSelector from "../image-selector/image-selector";
-
 import {
-    ContentWrapper,
-    LeftContent,
-    RightContent,
     Btn,
+    ContentWrapper,
     DisableBtn,
+    ImageMatrix,
+    LeftContent,
     MessageInfo,
-    Image,
-    ImageMatrix
+    RightContent,
 } from "./style";
 
 export interface IContentProps { }
@@ -79,67 +77,74 @@ export default class Content extends React.Component<
                     }
                 });
             }
-        );
-    };
+          }
+});
+      }
+    );
+  };
 
-    handleImage = (image: object) => {
-        console.log("SELECTED-IMAGE", image);
-        this.setState({ image });
-    };
+handleImage = (image: object) => {
+    console.log("SELECTED-IMAGE", image);
+    this.setState({ image });
+};
 
-    classifyAction = () => {
-        const { ipcRenderer, image } = this.state;
+classifyAction = () => {
+    const { ipcRenderer, image } = this.state;
 
-        if (typeof image == "object") {
-            const _this = this;
-            this.setState(
-                { loadingClassify: true },
-                () => {
-                    ipcRenderer.send("classify-image", { data: image.path });
-                }
-            );
-        }
-    };
-
-    isJson = (str: string) => {
-        try {
-            JSON.parse(str);
-        } catch (error) {
-            return false;
-        }
-
-        return true;
-    };
-
-    public render() {
-        const { image, loading, loadingClassify, confusionMatrix, features } = this.state;
-        return (
-            <ContentWrapper>
-                <LeftContent>
-                    <ImageSelector changeImage={this.handleImage} />
-                    {image ?
-                        !loadingClassify ? (
-                            <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
-                        ) : (
-                                <DisableBtn>Processando Imagem...</DisableBtn>
-                            )
-                        : <DisableBtn>Selecione uma imagem</DisableBtn>}
-                </LeftContent>
-                <RightContent>
-                    <Feature data={features} />
-                    {confusionMatrix ?
-                        (
-                            <ImageMatrix src={confusionMatrix} />
-                        ) :
-                        loading ?
-                            (
-                                <MessageInfo>Realizando treinamento...</MessageInfo>
-                            ) :
-                            <MessageInfo>Aguardando Treinamento</MessageInfo>
-                    }
-                </RightContent>
-            </ContentWrapper>
+    if (typeof image == "object") {
+        const _this = this;
+        this.setState(
+            { loadingClassify: true },
+            () => {
+                ipcRenderer.send("classify-image", { data: image.path });
+            }
         );
     }
-}
+};
 
+isJson = (str: string) => {
+    try {
+        JSON.parse(str);
+    } catch (error) {
+        return false;
+    }
+
+    return true;
+};
+
+  public render() {
+    const {
+        image,
+        loading,
+        loadingClassify,
+        confusionMatrix,
+        features,
+    } = this.state;
+    return (
+        <ContentWrapper>
+            <LeftContent>
+                <ImageSelector changeImage={this.handleImage} />
+                {image ? (
+                    !loadingClassify ? (
+                        <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
+                    ) : (
+                            <DisableBtn>Processando Imagem...</DisableBtn>
+                        )
+                ) : (
+                        <DisableBtn>Selecione uma imagem</DisableBtn>
+                    )}
+            </LeftContent>
+            <RightContent>
+                <Feature data={features} />
+                {confusionMatrix ? (
+                    <ImageMatrix src={confusionMatrix} />
+                ) : loading ? (
+                    <MessageInfo>Realizando treinamento...</MessageInfo>
+                ) : (
+                            <MessageInfo>Aguardando Treinamento</MessageInfo>
+                        )}
+            </RightContent>
+        </ContentWrapper>
+    );
+}
+}

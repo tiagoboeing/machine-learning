@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { withProps } from "styled-components";
 
 const primary = "#61dafb";
 
@@ -38,7 +38,7 @@ export const NavButton = styled.button`
   border-radius: 4px 4px 0px 0px;
   text-transform: uppercase;
   background: none;
-  min-width: 200px;
+  min-width: ${(props: NavButtonProps) => props.useMinWidth && "200px"};
 
   &:disabled {
     color: #000000;
@@ -56,3 +56,7 @@ export const NavButton = styled.button`
     }
   }
 `;
+
+export interface NavButtonProps {
+  useMinWidth?: boolean;
+}

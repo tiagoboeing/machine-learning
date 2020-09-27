@@ -63,6 +63,7 @@ export default class Header extends React.Component<
           <NavButton
             onClick={this.openTrainingMode}
             disabled={this.state.loading}
+            useMinWidth={true}
           >
             {!this.state.loading ? "Executar Treinamento" : "Em treinamento..."}
           </NavButton>
