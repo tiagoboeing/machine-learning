@@ -124,6 +124,7 @@ export default class Content extends React.Component<
       <ContentWrapper>
         <LeftContent>
           <ImageSelector changeImage={this.handleImage} />
+
           {image ? (
             !loadingClassify ? (
               <Btn onClick={() => this.classifyAction()}>Classificar</Btn>

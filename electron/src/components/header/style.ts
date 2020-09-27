@@ -4,10 +4,10 @@ const primary = "#61dafb";
 
 export const HeaderWrapper = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-content: top;
-  height: 40px;
-  padding: 4px 6px 0px 6px;
+  padding: 15px 6px 0px 6px;
   width: 100%;
   color: ${primary};
   background-color: #282c34;

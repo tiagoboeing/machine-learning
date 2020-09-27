@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   height: 40vh;
   width: 100%;
-  background: #fafafa;
+  color: #fff;
 `;
 
 export const Content = styled.div`
