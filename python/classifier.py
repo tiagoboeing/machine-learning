@@ -134,7 +134,7 @@ class Classifier:
         final_features, final_labels = self.load_dataset()
 
         X_train, X_test, y_train, y_test = model_selection.train_test_split(
-            final_features, final_labels, test_size=0.30, train_size=0.70
+            final_features, final_labels, test_size=0.35, train_size=0.65
         )
 
         featuresFromImg = ReadImage().read(img=img)
