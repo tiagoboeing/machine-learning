@@ -156,12 +156,12 @@ class Classifier:
 
         print(json.dumps({
             'features': {
-                'Bart Orange T-Shirt': featuresFromImg[0],
-                'Bart Blue Shorts': featuresFromImg[1],
-                'Bart Shoes': featuresFromImg[2],
-                'Homer Blue Pants': featuresFromImg[3],
-                'Homer Mouth': featuresFromImg[4],
-                'Homer Shoes': featuresFromImg[5]
+                'Apu body': featuresFromImg[0],
+                'Apu pants': featuresFromImg[1],
+                'Apu shirt': featuresFromImg[2],
+                'Merge body': featuresFromImg[3],
+                'Merge hair': featuresFromImg[4],
+                'Merge dress': featuresFromImg[5]
             },
             'prediction': {
                 'accuracy': accuracy,
