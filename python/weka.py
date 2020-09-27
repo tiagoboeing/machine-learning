@@ -29,7 +29,7 @@ class Weka():
 
         # TODO: remover isso - Range with 5 images for testing
         # return onlyfiles[585:700]
-        return onlyfiles[585:700]
+        return onlyfiles
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'
