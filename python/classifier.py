@@ -1,19 +1,17 @@
-import os
+import base64
 import io
 import json
-import numpy as np
-import matplotlib.pyplot as plt
-import urllib
-import base64
-import h5py
-import seaborn as sns
+import os
 import sys
+import urllib
 
-from time import time
-from sklearn import model_selection, linear_model, preprocessing, metrics, naive_bayes
-from logger import Logger
+import h5py
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from sklearn import model_selection, preprocessing, metrics, naive_bayes
+
 from read_image import ReadImage
-from skmultilearn.problem_transform import BinaryRelevance
 
 
 class Classifier:
@@ -111,7 +109,7 @@ class Classifier:
         confusion_matrix = {}
 
         confusion_matrix['uri'] = 'data:image/png;base64,' + \
-            urllib.parse.quote(string)
+                                  urllib.parse.quote(string)
 
         print(json.dumps(confusion_matrix))
 

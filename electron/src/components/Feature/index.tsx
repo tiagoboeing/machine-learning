@@ -12,15 +12,24 @@ interface Characteristics {
 
 const Feature: React.FC<Props> = ({ data }) => {
   const [characteristics, setCharacteristics] = useState([]);
+  const [predictionResult, setPredictionResult] = useState({
+    accuracy: 0,
+    label: "",
+  });
 
   useEffect(() => {
     console.log("data", data);
     if (data) {
-      const parsed: any = Object.keys(data).map((el: any) => ({
-        name: el,
-        value: data[el],
-      }));
-      if (parsed.length) setCharacteristics(parsed);
+      const parsedCharacteristics: any = Object.keys(data.features).map(
+        (el: any) => ({
+          name: el,
+          value: data.features[el],
+        })
+      );
+      if (parsedCharacteristics.length)
+        setCharacteristics(parsedCharacteristics);
+
+      setPredictionResult(data.prediction);
     }
   }, [data]);
 
@@ -53,6 +62,21 @@ const Feature: React.FC<Props> = ({ data }) => {
                       {item.name} = {item.value.toPrecision(4)}
                     </S.ListItem>
                   ))}
+            </S.List>
+          </div>
+        </S.Wrapper>
+
+        <S.Wrapper style={{ marginTop: "15px" }}>
+          <div>
+            <S.Subtitle>Predição</S.Subtitle>
+            <S.List>
+              <S.ListItem>{predictionResult.accuracy}</S.ListItem>
+            </S.List>
+          </div>
+          <div>
+            <S.Subtitle>Personagem</S.Subtitle>
+            <S.List>
+              <S.ListItem>{predictionResult.label}</S.ListItem>
             </S.List>
           </div>
         </S.Wrapper>
