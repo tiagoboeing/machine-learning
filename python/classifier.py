@@ -150,9 +150,9 @@ class Classifier:
         accuracy = metrics.accuracy_score(
             y_test, predict) * 100
 
-        label = 'Bart'
+        label = 'Apu'  # 0.0
         if prediction:
-            label = 'Homer'
+            label = 'Merge'  # 1.0
 
         print(json.dumps({
             'features': {
