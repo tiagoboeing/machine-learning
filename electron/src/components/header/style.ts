@@ -38,6 +38,13 @@ export const NavButton = styled.button`
   border-radius: 4px 4px 0px 0px;
   text-transform: uppercase;
   background: none;
+  min-width: 200px;
+
+  &:disabled {
+    color: #000000;
+    background: #999999;
+    cursor: not-allowed;
+  }
 
   &:hover {
     background-color: ${primary};

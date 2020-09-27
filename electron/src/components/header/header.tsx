@@ -56,10 +56,10 @@ export default class Header extends React.Component<
       <HeaderWrapper>
         <GroupButtons>
           <NavButton
-            onClick={() => this.openTrainingMode()}
-            disabled={!this.state.loading}
+            onClick={this.openTrainingMode}
+            disabled={this.state.loading}
           >
-            Executar Treinamento
+            {!this.state.loading ? "Executar Treinamento" : "Em treinamento..."}
           </NavButton>
         </GroupButtons>
         <NavButton onClick={() => this.exitApp()}>
