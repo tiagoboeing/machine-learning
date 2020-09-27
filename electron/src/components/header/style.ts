@@ -1,4 +1,4 @@
-import styled, { withProps } from "styled-components";
+import styled from "styled-components";
 
 const primary = "#61dafb";
 
