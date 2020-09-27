@@ -9,7 +9,7 @@ class Logger:
     @staticmethod
     def log(message, separator=False):
         if IS_DEBUG:
-            if (message):
+            if message:
                 print(message)
             if separator:
                 print('-' * 80)

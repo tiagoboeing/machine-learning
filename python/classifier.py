@@ -86,7 +86,7 @@ class Classifier:
         confusion_matrix = {}
 
         confusion_matrix['uri'] = 'data:image/png;base64,' + \
-            urllib.parse.quote(string)
+                                  urllib.parse.quote(string)
 
         print(json.dumps(confusion_matrix))
 
@@ -138,13 +138,14 @@ class Classifier:
 
         # Inicializa modelo
         model = naive_bayes.GaussianNB()
-
-        # TODO: Treinar Modelo
+        model.fit(X_train, y_train)
 
         # Extrai caracteristicas e label da imagem
         featuresFromImg = {}
         featuresFromImg['features'] = ReadImage().read(img=img)
         print(json.dumps(featuresFromImg))
+
+        print(model)
 
         # TODO: extrair apenas as features da variavel features para realizar o predict
         # TODO: Fazer predict e retornar o label correspondente a imagem. Ex: 0 - Bart; 1 - Homer

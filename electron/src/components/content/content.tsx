@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Feature from '../Feature';
-import ImageSelector from '../image-selector/image-selector';
+import * as React from "react";
+import Feature from "../Feature";
+import ImageSelector from "../image-selector/image-selector";
 
 import {
   ContentWrapper,
@@ -10,7 +10,7 @@ import {
   DisableBtn,
   MessageInfo,
   Image,
-} from './style';
+} from "./style";
 
 export interface IContentProps {}
 
@@ -45,16 +45,16 @@ export default class Content extends React.Component<
     }
     this.setState(
       {
-        ipcRenderer: window.require('electron').ipcRenderer,
+        ipcRenderer: window.require("electron").ipcRenderer,
         loading: false,
       },
       () => {
-        this.state.ipcRenderer.on('python-events', (event: any, args: any) => {
+        this.state.ipcRenderer.on("python-events", (event: any, args: any) => {
           if (this.isJson(args)) {
             let jsonData = JSON.parse(args);
 
-            if (Object.keys(jsonData)[0] === 'uri') {
-              console.log('matrix de confusão ' + jsonData.uri);
+            if (Object.keys(jsonData)[0] === "uri") {
+              console.log("matrix de confusão " + jsonData.uri);
               this.setState({ confusionMatrix: jsonData.uri });
             }
           }
@@ -64,26 +64,26 @@ export default class Content extends React.Component<
   };
 
   handleImage = (image: object) => {
-    console.log('SELECTED-IMAGE', image);
+    console.log("SELECTED-IMAGE", image);
     this.setState({ image });
   };
 
   classifyAction = () => {
     const { ipcRenderer, image } = this.state;
 
-    if (typeof image == 'object') {
+    if (typeof image == "object") {
       const _this = this;
       this.setState(
-        { loading: true, confusionMatrix: '', features: [] },
+        { loading: true, confusionMatrix: "", features: [] },
         () => {
-          ipcRenderer.send('classify-image', { data: image.path });
+          ipcRenderer.send("classify-image", { data: image.path });
 
-          ipcRenderer.on('python-events', (event: any, args: any) => {
+          ipcRenderer.on("python-events", (event: any, args: any) => {
             if (this.isJson(args)) {
               let json = JSON.parse(args);
 
-              if (Object.keys(json)[0] === 'features') {
-                console.log('mostra as features ao lado -->', json.features);
+              if (Object.keys(json)[0] === "features") {
+                console.log("mostra as features ao lado -->", json.features);
                 _this.setState({ loading: false, features: json.features });
               }
             } else {

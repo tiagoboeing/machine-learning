@@ -1,6 +1,6 @@
-import * as React from 'react';
-import IconSvg from '../icons-svg/icons';
-import { HeaderWrapper, GroupButtons, NavButton } from './style';
+import * as React from "react";
+import IconSvg from "../icons-svg/icons";
+import { HeaderWrapper, GroupButtons, NavButton } from "./style";
 
 export interface IHeaderProps {}
 
@@ -35,33 +35,35 @@ export default class Header extends React.Component<
       throw new Error(`Unable to require renderer process`);
     }
     this.setState({
-      ipcRenderer: window.require('electron').ipcRenderer,
+      ipcRenderer: window.require("electron").ipcRenderer,
     });
   };
 
   openTrainingMode = () => {
     const { ipcRenderer } = this.state;
-    const _this = this;
 
     this.setState({ loading: true }, () => {
-      ipcRenderer.send('open-training');
+      ipcRenderer.send("open-training");
     });
   };
 
   exitApp = () => {
-    this.ipcRenderer.send('close-program', 'ping');
+    this.ipcRenderer.send("close-program", "ping");
   };
 
   public render() {
     return (
       <HeaderWrapper>
         <GroupButtons>
-          <NavButton onClick={() => this.openTrainingMode()}>
+          <NavButton
+            onClick={() => this.openTrainingMode()}
+            disabled={!this.state.loading}
+          >
             Executar Treinamento
           </NavButton>
         </GroupButtons>
         <NavButton onClick={() => this.exitApp()}>
-          Sair <IconSvg icon="exit" color="#61dafb" />{' '}
+          Sair <IconSvg icon="exit" color="#fff" />{" "}
         </NavButton>
       </HeaderWrapper>
     );
