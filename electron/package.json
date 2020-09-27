@@ -7,7 +7,7 @@
   "scripts": {
     "start": "concurrently \"set BROWSER=NONE && npm run react-start\" \" electron . \" ",
     "build": "npm run clean && npm run react-build && npm run electron-build && npm run copy",
-    "copy": "cp -R ../python ./build/win-unpacked/resources/",
+    "copy": "cp -R ../python/{*.py,images/,output/,*.arff} ./build/win-unpacked/resources/",
     "clean": "rimraf build && rimraf dist",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
