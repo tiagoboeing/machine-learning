@@ -1,1 +1,2 @@
 .vscode
+electron/dist/win-unpacked/vulkan-1.dll

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Feature from "../Feature";
+import Feature from "../feature";
 import ImageSelector from "../image-selector/image-selector";
 import {
   Btn,
@@ -124,7 +124,6 @@ export default class Content extends React.Component<
       <ContentWrapper>
         <LeftContent>
           <ImageSelector changeImage={this.handleImage} />
-
           {image ? (
             !loadingClassify ? (
               <Btn onClick={() => this.classifyAction()}>Classificar</Btn>

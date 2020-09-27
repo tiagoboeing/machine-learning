@@ -59,7 +59,8 @@ export default class Header extends React.Component<
   };
 
   exitApp = () => {
-    this.ipcRenderer.send("close-program", "ping");
+    const { ipcRenderer } = this.state;
+    ipcRenderer.send("close-program", "ping");
   };
 
   public render() {
