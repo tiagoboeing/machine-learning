@@ -1,6 +1,6 @@
-import * as React from 'react';
-import IconSvg from '../icons-svg/icons';
-import { HeaderWrapper, GroupButtons, NavButton } from './style';
+import * as React from "react";
+import IconSvg from "../icons-svg/icons";
+import { HeaderWrapper, GroupButtons, NavButton } from "./style";
 
 export interface IHeaderProps {}
 
@@ -20,7 +20,7 @@ export default class Header extends React.Component<
 
     this.state = {
       ipcRenderer: null,
-      loading: false
+      loading: false,
     };
   }
 
@@ -35,7 +35,7 @@ export default class Header extends React.Component<
       throw new Error(`Unable to require renderer process`);
     }
     this.setState({
-      ipcRenderer: window.require('electron').ipcRenderer
+      ipcRenderer: window.require("electron").ipcRenderer,
     });
   };
 
@@ -43,14 +43,14 @@ export default class Header extends React.Component<
     const { ipcRenderer } = this.state;
 
     this.setState({ loading: true }, () => {
-      ipcRenderer.send('open-training');
+      ipcRenderer.send("open-training");
 
-      ipcRenderer.on('python-events', (_event: any, args: any) => {
+      ipcRenderer.on("python-events", (_event: any, args: any) => {
         if (this.isJson(args)) {
           let json = JSON.parse(args);
 
-          if (Object.keys(json)[0] === 'uri') {
-            console.log('matrix de confusão ' + json.uri);
+          if (Object.keys(json)[0] === "uri") {
+            console.log("matrix de confusão " + json.uri);
           }
         }
 
@@ -70,19 +70,22 @@ export default class Header extends React.Component<
   };
 
   exitApp = () => {
-    this.ipcRenderer.send('close-program', 'ping');
+    this.ipcRenderer.send("close-program", "ping");
   };
 
   public render() {
     return (
       <HeaderWrapper>
         <GroupButtons>
-          <NavButton onClick={() => this.openTrainingMode()}>
+          <NavButton
+            onClick={() => this.openTrainingMode()}
+            disabled={!this.state.loading}
+          >
             Executar Treinamento
           </NavButton>
         </GroupButtons>
         <NavButton onClick={() => this.exitApp()}>
-          Sair <IconSvg icon="exit" color="#61dafb" />{' '}
+          Sair <IconSvg icon="exit" color="#fff" />{" "}
         </NavButton>
       </HeaderWrapper>
     );

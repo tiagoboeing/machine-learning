@@ -25,7 +25,7 @@ export const LeftContent = styled(ColumnContent)`
 
 export const RightContent = styled(ColumnContent)``;
 
-export const Btn = styled.div`
+export const Btn = styled.button`
   display: block;
   height: 40px;
   line-height: 25px;
