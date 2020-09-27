@@ -13,6 +13,7 @@ from time import time
 from sklearn import model_selection, linear_model, preprocessing, metrics, naive_bayes
 from logger import Logger
 from read_image import ReadImage
+from skmultilearn.problem_transform import BinaryRelevance
 
 
 class Classifier:
@@ -60,9 +61,9 @@ class Classifier:
         model = naive_bayes.GaussianNB()
         model.fit(X_train, y_train)
 
-        if sys.platform.startswith('linux'): 
+        if sys.platform.startswith('linux'):
             self.confusion_matrix2(model, X_train, y_train)
-        else: 
+        else:
             self.confusion_matrix(model, X_test, y_test)
 
     # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
@@ -90,10 +91,10 @@ class Classifier:
 
         print(json.dumps(confusion_matrix))
 
-    def confusion_matrix2(self, model, x_train, y_train):        
+    def confusion_matrix2(self, model, x_train, y_train):
         # TODO: VERIFICAR PARAMETROS
         y_pred = model.predict(x_train)
-        cf_matrix = metrics.confusion_matrix(y_train, y_pred)                
+        cf_matrix = metrics.confusion_matrix(y_train, y_pred)
 
         sns.heatmap(cf_matrix, annot=True)
 
@@ -133,25 +134,79 @@ class Classifier:
         final_features, final_labels = self.load_dataset()
 
         X_train, X_test, y_train, y_test = model_selection.train_test_split(
-            np.array(final_features), np.array(final_labels), test_size=0.35, train_size=0.65
+            final_features, final_labels, test_size=0.35, train_size=0.65
         )
 
-        # Inicializa modelo
-        model = naive_bayes.GaussianNB()
-        model.fit(X_train, y_train)
+        featuresFromImg = ReadImage().read(img=img)
+
+        gnb = naive_bayes.GaussianNB()
+        y_pred = gnb.fit(X_train, y_train).predict(X_test)
+        # print("Number of mislabeled points out of a total %d points : %d" %
+        #       (X_test.shape[0], (y_test != y_pred).sum()))
+
+        # print(X_test)
+
+        scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
+        rescaled_feature = scaler.fit_transform(
+            np.array(featuresFromImg[0:5]).reshape(-1, 1))
+        print(rescaled_feature)
+
+        # clf = naive_bayes.GaussianNB()
+        # clf.fit(X_train, y_train)
+        # print(clf.predict(
+        #     [[0.0, 0.0, 0.0, 15.566543747904793, 0.13744552463962453, 0.0, 1.0]]))
+
+        # le = preprocessing.LabelEncoder()
+
+        # le.fit(final_labels)
+        # features_train = le.transform(final_labels)
+        # # features_train.reshape(1, -1)
+
+        # print(le)
 
         # Extrai caracteristicas e label da imagem
-        featuresFromImg = ReadImage().read(img=img)
-        print(json.dumps({
-            'Bart Orange T-Shirt': featuresFromImg[0],
-            'Bart Blue Shorts': featuresFromImg[1],
-            'Bart Shoes': featuresFromImg[2],
-            'Homer Blue Pants': featuresFromImg[3],
-            'Homer Mouth': featuresFromImg[4],
-            'Homer Shoes': featuresFromImg[5]
-        }))
+        #
+        # features = featuresFromImg[0:5]
 
-        print(model)
+        # le = preprocessing.LabelEncoder()
+        # le.fit(features)
+        # features_train = le.transform(features)
+        # features_train.reshape(1, -1)
 
-        # TODO: extrair apenas as features da variavel features para realizar o predict
-        # TODO: Fazer predict e retornar o label correspondente a imagem. Ex: 0 - Bart; 1 - Homer
+        # print(features_train)
+
+        # Inicializa modelo
+        # model = naive_bayes.GaussianNB()
+        # model.fit(X_train, y_train)
+        # predict = model.predict(X_test)
+
+        # print(predict)
+
+        # accuracy = metrics.accuracy_score(y_test, predict) * 100
+        # prediction = model.predict(rescaled_feature.reshape(1, -1))
+
+        # print(prediction)
+
+        # scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
+        # rescaled_feature = scaler.fit_transform(np.array(features))
+
+        # prediction = model.predict(rescaled_feature.reshape(1, -1))[0]
+
+        # label = 'Bart'
+        # if final_labels[prediction]:
+        #     label = 'Homer'
+
+        # print(json.dumps({
+        #     'features': {
+        #         'Bart Orange T-Shirt': featuresFromImg[0],
+        #         'Bart Blue Shorts': featuresFromImg[1],
+        #         'Bart Shoes': featuresFromImg[2],
+        #         'Homer Blue Pants': featuresFromImg[3],
+        #         'Homer Mouth': featuresFromImg[4],
+        #         'Homer Shoes': featuresFromImg[5]
+        #     },
+        #     'prediction': {
+        #         'accuracy': accuracy,
+        #         'label': label
+        #     }
+        # }))

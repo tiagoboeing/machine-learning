@@ -17,17 +17,17 @@ class ReadImage():
         self.__homerGreyShoe = 0
         self.__renderedImage = None
         self.__features = []
-        self.__cloneImage = False
+        self.__displayImage = False
 
-    def read(self, img, cloneImage=False):
+    def read(self, img, displayImage=False):
         Logger.log(f'Image received {img}')
         image = cv2.imread(img)
 
-        self.__cloneImage = cloneImage
+        self.__displayImage = displayImage
 
         self.__height, self.__width, channels = image.shape
 
-        if self.__cloneImage == True:
+        if self.__displayImage == True:
             Logger.log('Cloned image')
             self.__renderedImage = image.copy()
 
@@ -37,7 +37,7 @@ class ReadImage():
                 pixel = image[height, width]
                 self.handleRangeColors(pixel, width, height)
 
-        if self.__cloneImage == True:
+        if self.__displayImage == True:
             cv2.imshow('image', self.__renderedImage)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
@@ -56,41 +56,41 @@ class ReadImage():
         if range.isBartOrangeShirt(r, g, b):
             self.__bartOrangeShirt += 1
 
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__bartOrangeShirt,
                                index_width, index_height)
 
         if index_width > (self.__height / 2) and range.isBartBlueShorts(r, g, b):
             self.__bartBlueShorts += 1
 
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__bartBlueShorts,
                                index_width, index_height)
 
         if index_width > (self.__height / 2 + self.__height / 3) and range.isBartShoe(r, g, b):
             self.__bartBlueShoe += 1
 
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__bartBlueShoe, index_width, index_height)
 
         if range.isHomerBluePants(r, g, b):
             self.__homerBluePants += 1
 
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__homerBluePants,
                                index_width, index_height)
 
         if index_width < (self.__height / 2 + self.__height / 3) and range.isHomerMouth(r, g, b):
             self.__homerBrownMouth += 1
 
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__homerBrownMouth,
                                index_width, index_height)
 
         if index_width > (self.__height / 2 + self.__height / 3) and range.isHomerShoe(r, g, b):
             self.__homerGreyShoe += 1
 
-            if self.__cloneImage == True:
+            if self.__displayImage == True:
                 self.set_color(self.__homerGreyShoe, index_width, index_height)
 
     """
