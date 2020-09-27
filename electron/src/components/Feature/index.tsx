@@ -39,7 +39,7 @@ const Feature: React.FC<Props> = ({ data }) => {
         <header>Características</header>
         <S.Wrapper>
           <div>
-            <S.Subtitle>Bart</S.Subtitle>
+            <S.Subtitle>Apu</S.Subtitle>
             <S.List>
               {characteristics.length > 0 &&
                 characteristics
@@ -52,7 +52,7 @@ const Feature: React.FC<Props> = ({ data }) => {
             </S.List>
           </div>
           <div>
-            <S.Subtitle>Homer</S.Subtitle>
+            <S.Subtitle>Merge</S.Subtitle>
             <S.List>
               {characteristics.length > 0 &&
                 characteristics
