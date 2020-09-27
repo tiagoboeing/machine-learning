@@ -6,7 +6,7 @@
   "homepage": "./",
   "scripts": {
     "start": "concurrently \"set BROWSER=NONE && npm run react-start\" \" electron . \" ",
-    "build": "npm run clean && concurrently \"npm run react-build\" \" npm run electron-build\" ",
+    "build": "npm run clean && npm run react-build && npm run electron-build",
     "clean": "rimraf build && rimraf dist",
     "electron-build": "electron-builder",
     "react-start": "react-scripts start",
@@ -61,7 +61,10 @@
     ]
   },
   "build": {
-    "appId": "machine-learning",    
+    "appId": "machine-learning",
+    "directories": {
+      "output": "build"
+    },
     "linux": {
       "target": [
         "dir"
