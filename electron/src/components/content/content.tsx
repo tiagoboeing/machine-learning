@@ -135,7 +135,7 @@ export default class Content extends React.Component<
                         )}
                 </LeftContent>
                 <RightContent>
-                    <Feature data={features} />
+                    <Feature loading={loadingClassify} data={features} />
                     {confusionMatrix ? (
                         <ImageMatrix src={confusionMatrix} />
                     ) : loading ? (
