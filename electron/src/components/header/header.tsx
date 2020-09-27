@@ -45,29 +45,7 @@ export default class Header extends React.Component<
 
     this.setState({ loading: true }, () => {
       ipcRenderer.send('open-training');
-
-      ipcRenderer.on('python-events', (event: any, args: any) => {
-        if (_this.isJson(args)) {
-          let json = JSON.parse(args);
-
-          if (Object.keys(json)[0] === 'uri') {
-            console.log('matrix de confusão ' + json.uri);
-          }
-        }
-
-        _this.setState({ loading: false });
-      });
     });
-  };
-
-  isJson = (str: string) => {
-    try {
-      JSON.parse(str);
-    } catch (error) {
-      return false;
-    }
-
-    return true;
   };
 
   exitApp = () => {

@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import * as S from './styles';
 
-const Feature: React.FC = () => {
+interface Props {
+  data?: [];
+}
+
+const Feature: React.FC<Props> = ({ data }) => {
+  useEffect(() => {
+    console.log('data ');
+  }, [data]);
+
   return (
     <S.Container>
       <S.Content>
@@ -11,9 +19,11 @@ const Feature: React.FC = () => {
           <div>
             <S.Subtitle>Bart</S.Subtitle>
             <S.List>
-              <S.ListItem>Cu</S.ListItem>
-              <S.ListItem>Zao</S.ListItem>
-              <S.ListItem>Né?</S.ListItem>
+              {data &&
+                data.length > 0 &&
+                data.map((item, index) => (
+                  <S.ListItem key={index}>{item}</S.ListItem>
+                ))}
             </S.List>
           </div>
           <div>

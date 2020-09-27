@@ -18,6 +18,7 @@ export interface IContentState {
   ipcRenderer: any;
   image?: { path?: string; preview?: any };
   confusionMatrix?: string;
+  features?: [];
   loading: boolean;
 }
 
@@ -42,10 +43,24 @@ export default class Content extends React.Component<
     if (!window || !window.process || !window.require) {
       throw new Error(`Unable to require renderer process`);
     }
-    this.setState({
-      ipcRenderer: window.require('electron').ipcRenderer,
-      loading: false,
-    });
+    this.setState(
+      {
+        ipcRenderer: window.require('electron').ipcRenderer,
+        loading: false,
+      },
+      () => {
+        this.state.ipcRenderer.on('python-events', (event: any, args: any) => {
+          if (this.isJson(args)) {
+            let jsonData = JSON.parse(args);
+
+            if (Object.keys(jsonData)[0] === 'uri') {
+              console.log('matrix de confusão ' + jsonData.uri);
+              this.setState({ confusionMatrix: jsonData.uri });
+            }
+          }
+        });
+      }
+    );
   };
 
   handleImage = (image: object) => {
@@ -58,21 +73,25 @@ export default class Content extends React.Component<
 
     if (typeof image == 'object') {
       const _this = this;
-      this.setState({ loading: true }, () => {
-        ipcRenderer.send('classify-image', { data: image.path });
+      this.setState(
+        { loading: true, confusionMatrix: '', features: [] },
+        () => {
+          ipcRenderer.send('classify-image', { data: image.path });
 
-        ipcRenderer.on('python-events', (event: any, args: any) => {
-          if (this.isJson(args)) {
-            let json = JSON.parse(args);
+          ipcRenderer.on('python-events', (event: any, args: any) => {
+            if (this.isJson(args)) {
+              let json = JSON.parse(args);
 
-            if (Object.keys(json)[0] === 'features') {
-              console.log('mostra as features ao lado -->', json.features);
+              if (Object.keys(json)[0] === 'features') {
+                console.log('mostra as features ao lado -->', json.features);
+                _this.setState({ loading: false, features: json.features });
+              }
+            } else {
+              _this.setState({ loading: false });
             }
-          }
-
-          _this.setState({ loading: false });
-        });
-      });
+          });
+        }
+      );
     }
   };
 
@@ -87,7 +106,7 @@ export default class Content extends React.Component<
   };
 
   public render() {
-    const { image, loading, confusionMatrix } = this.state;
+    const { image, loading, confusionMatrix, features } = this.state;
     return (
       <ContentWrapper>
         <LeftContent>
@@ -97,15 +116,14 @@ export default class Content extends React.Component<
           ) : (
             <DisableBtn>Classificar</DisableBtn>
           )}
-
+        </LeftContent>
+        <RightContent>
+          <Feature data={features} />
           {loading && !confusionMatrix ? (
             <MessageInfo>Processando imagem...</MessageInfo>
           ) : (
             <Image src={confusionMatrix} />
           )}
-        </LeftContent>
-        <RightContent>
-          <Feature />
         </RightContent>
       </ContentWrapper>
     );
