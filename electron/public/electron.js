@@ -11,6 +11,7 @@ const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
+  REACT_PERF,
 } = require("electron-devtools-installer");
 
 class Main {
@@ -66,7 +67,7 @@ class Main {
 
     //Done training
     ipcMain.on("done-training", (event, arg) => {
-      event.reply("reply-done-training", 'done');
+      event.reply("reply-done-training", "done");
     });
 
     //Exit Action
