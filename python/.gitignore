@@ -4,3 +4,5 @@ __pycache__/
 .vscode
 
 *.arff
+output/data.h5
+output/labels.h5

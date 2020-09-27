@@ -3,6 +3,7 @@ from os.path import isfile, join
 from read_image import ReadImage
 from logger import Logger
 
+
 class Weka():
     def __init__(self, images_directory):
         self.images_directory = images_directory
@@ -24,9 +25,9 @@ class Weka():
             join(self.images_directory, f))]
         Logger.log(
             f'\n{len(onlyfiles)} images found in {self.images_directory} directory!', True)
-        
+
         # Range with 5 images for testing
-        return onlyfiles[160:165]
+        return onlyfiles
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'
@@ -34,7 +35,7 @@ class Weka():
 
         for index, image in enumerate(list(self.list_directory_files())):
             Logger.log(f'Extracting characteristics from {image}')
-            
+
             features = ReadImage().read(f'{self.images_directory}/{image}')
             features[6] = "Bart" if features[6] == 0.0 else "Homer"
             imagesData.append(features)
