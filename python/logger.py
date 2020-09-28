@@ -1,4 +1,3 @@
-from os.path import isfile, join
 from config import IS_DEBUG
 
 if not IS_DEBUG:
