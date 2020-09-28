@@ -120,30 +120,30 @@ A análise é baseada em cores com a aplicação de uma tolerância para cada um
     <td>
     </td>
     <td>
-      <img src="./docs/colors/marge_body_1.png"/>
+      <img src="./docs/colors/apu_body_1.png"/>
     </td>
     <td align="center">
-      <img src="./docs/colors/marge_body_2.png"/>
+      <img src="./docs/colors/apu_body_2.png"/>
     </td>
-    <td><img src="./docs/colors/marge_body_3.png"/></td>
+    <td><img src="./docs/colors/apu_body_3.png"/></td>
     <td>
     </td>
     <td>
-      <img src="./docs/colors/marge_hair_1.png"/>
+      <img src="./docs/colors/apu_pants_1.png"/>
     </td>
     <td align="center">
-      <img src="./docs/colors/marge_hair_2.png"/>
+      <img src="./docs/colors/apu_pants_2.png"/>
     </td>
-    <td><img src="./docs/colors/marge_hair_3.png"/></td>
+    <td><img src="./docs/colors/apu_pants_3.png"/></td>
     <td>
     </td>
     <td>
-      <img src="./docs/colors/marge_dress_1.png"/>
+      <img src="./docs/colors/apu_shirt_1.png"/>
     </td>
     <td align="center">
-      <img src="./docs/colors/marge_dress_2.png"/>
+      <img src="./docs/colors/apu_shirt_2.png"/>
     </td>
-    <td><img src="./docs/colors/marge_dress_3.png"/></td>
+    <td><img src="./docs/colors/apu_shirt_3.png"/></td>
   </tr>
   <tr>
     <td></td>
@@ -217,30 +217,30 @@ A análise é baseada em cores com a aplicação de uma tolerância para cada um
     <td>
     </td>
     <td>
-      <img src="./docs/colors/apu_body_1.png"/>
+      <img src="./docs/colors/marge_body_1.png"/>
     </td>
     <td align="center">
-      <img src="./docs/colors/apu_body_2.png"/>
+      <img src="./docs/colors/marge_body_2.png"/>
     </td>
-    <td><img src="./docs/colors/apu_body_3.png"/></td>
+    <td><img src="./docs/colors/marge_body_3.png"/></td>
     <td>
     </td>
     <td>
-      <img src="./docs/colors/apu_pants_1.png"/>
+      <img src="./docs/colors/marge_hair_1.png"/>
     </td>
     <td align="center">
-      <img src="./docs/colors/apu_pants_2.png"/>
+      <img src="./docs/colors/marge_hair_2.png"/>
     </td>
-    <td><img src="./docs/colors/apu_pants_3.png"/></td>
+    <td><img src="./docs/colors/marge_hair_3.png"/></td>
     <td>
     </td>
     <td>
-      <img src="./docs/colors/apu_shirt_1.png"/>
+      <img src="./docs/colors/marge_dress_1.png"/>
     </td>
     <td align="center">
-      <img src="./docs/colors/apu_shirt_2.png"/>
+      <img src="./docs/colors/marge_dress_2.png"/>
     </td>
-    <td><img src="./docs/colors/apu_shirt_3.png"/></td>
+    <td><img src="./docs/colors/marge_dress_3.png"/></td>
   </tr>
   <tr>
     <td></td>
