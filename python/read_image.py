@@ -16,9 +16,9 @@ class ReadImage():
         self.__apuBody = 0
         self.__apuPants = 0
         self.__apuShirt = 0
-        self.__mergeBody = 0
-        self.__mergeHair = 0
-        self.__mergeDress = 0
+        self.__margeBody = 0
+        self.__margeHair = 0
+        self.__margeDress = 0
 
     def read(self, img, displayImage=False):
         Logger.log(f'Image received {img}')
@@ -70,27 +70,28 @@ class ReadImage():
             if self.__displayImage == True:
                 self.set_color(self.__apuShirt, index_width, index_height)
 
-        # check for Merge
-        if range.merge_is_body(r, g, b):
-            self.__mergeBody += 1
+        # check for marge
+        if range.marge_is_body(r, g, b):
+            self.__margeBody += 1
             if self.__displayImage == True:
-                self.set_color(self.__mergeBody, index_width, index_height)
+                self.set_color(self.__margeBody, index_width, index_height)
 
-        if range.merge_is_hair(r, g, b):
-            self.__mergeHair += 1
+        if range.marge_is_hair(r, g, b):
+            self.__margeHair += 1
             if self.__displayImage == True:
-                self.set_color(self.__mergeHair, index_width, index_height)
+                self.set_color(self.__margeHair, index_width, index_height)
 
-        if range.merge_is_dress(r, g, b):
-            self.__mergeDress += 1
+        if range.marge_is_dress(r, g, b):
+            self.__margeDress += 1
             if self.__displayImage == True:
-                self.set_color(self.__mergeDress, index_width, index_height)
+                self.set_color(self.__margeDress, index_width, index_height)
 
     """
       TODO: estudar como associar uma variável recebida com o self
       Ex.: receber `variable` e associar self.variable += 1
     """
 
+    @classmethod
     def set_color(self, variable, index_width, index_height):
         self.__renderedImage[index_height][index_width] = [0, 255, 128]
 
@@ -110,24 +111,24 @@ class ReadImage():
         self.__apuBody = self.calcNormalize(self.__apuBody)
         self.__apuPants = self.calcNormalize(self.__apuPants)
         self.__apuShirt = self.calcNormalize(self.__apuShirt)
-        self.__mergeBody = self.calcNormalize(self.__mergeBody)
-        self.__mergeHair = self.calcNormalize(self.__mergeHair)
-        self.__mergeDress = self.calcNormalize(self.__mergeDress)
+        self.__margeBody = self.calcNormalize(self.__margeBody)
+        self.__margeHair = self.calcNormalize(self.__margeHair)
+        self.__margeDress = self.calcNormalize(self.__margeDress)
 
-        apuOrMerge = 0.0  # Apu
+        apuOrmarge = 0.0  # Apu
         filename = os.path.basename(img)[0]
 
         if filename == 'm':
-            apuOrMerge = 1.0  # Merge
+            apuOrmarge = 1.0  # marge
 
         features = [
             self.__apuBody,
             self.__apuPants,
             self.__apuShirt,
-            self.__mergeBody,
-            self.__mergeHair,
-            self.__mergeDress,
-            apuOrMerge
+            self.__margeBody,
+            self.__margeHair,
+            self.__margeDress,
+            apuOrmarge
         ]
 
         Logger.log(features)

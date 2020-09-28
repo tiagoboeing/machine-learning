@@ -66,6 +66,7 @@ export default class Header extends React.Component<
   public render() {
     return (
       <HeaderWrapper>
+        <h1>Aprendizado de máquina</h1>
         <GroupButtons>
           <NavButton
             onClick={this.openTrainingMode}

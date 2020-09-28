@@ -6,10 +6,16 @@ A comunicação entre Python e Electron ocorre via eventos, como se fosse uma br
 
 ## Informações
 
+### Utilização
+
+**Já existe um arquivo de classificação onde o treinamento foi realizado com todas as imagens de ambos os personagens.** Basta testar com uma imagem externa e classificar.
+
+> Ao rodar o programa será possível realizar o treinamento com todo o dataset (**este processo pode levar horas**).
+
 ### Personagens escolhidos
 
 - Apu Nahasapeemapetilon
-- Merge Simpson
+- Marge Simpson
 
 ### Características analisadas
 
@@ -19,7 +25,7 @@ A comunicação entre Python e Electron ocorre via eventos, como se fosse uma br
 - Cor da jaqueta/camiseta
 - Cor da calça
 
-#### Merge Simpson
+#### Marge Simpson
 
 - Cor da pele
 - Cor do cabelo
@@ -27,9 +33,7 @@ A comunicação entre Python e Electron ocorre via eventos, como se fosse uma br
 
 ### Extraindo características
 
-#### Range de cores
-
-Analisando cores e aplicando faixa de tolerância (range) para cada um dos personagens e característica desejada:
+A análise é baseada em cores com a aplicação de uma tolerância para cada um dos personagens e característica desejada:
 
 <table width="100%">
   <tr>
@@ -45,7 +49,7 @@ Analisando cores e aplicando faixa de tolerância (range) para cada um dos perso
   </tr>
 </table>
 
-
+#### Range de cores
 
 <table width="100%">
   <thead>
@@ -146,7 +150,7 @@ Analisando cores e aplicando faixa de tolerância (range) para cada um dos perso
   </tr>
 
   <thead>
-    <th colspan="12">Merge Simpson</th>
+    <th colspan="12">marge Simpson</th>
   </thead>
    <tr>
     <th colspan="4">Cor da pele</th>
@@ -239,12 +243,4 @@ Analisando cores e aplicando faixa de tolerância (range) para cada um dos perso
   </tr>
 </table>
 
-
-
-
-## Utilização
-
-Já existe um arquivo de classificação onde o treinamento foi realizado com todas as imagens de ambos os personagens. Basta testar com uma imagem externa e classificar.
-
-> Ao rodar o programa será possível realizar o treinamento com todo o dataset (**este processo pode levar horas**).
 

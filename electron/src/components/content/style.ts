@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
   display: flex;
-  padding-top: 30px;
+  padding-top: 20px;
   padding-bottom: 30px;
   justify-content: center;
+  margin-top: 50px;
 `;
 
 export const ColumnContent = styled.div`
@@ -66,7 +67,7 @@ export const DisableBtn = styled(Btn)`
 export const MessageInfo = styled.p`
   display: block;
   width: 90%;
-  height:40px;
+  height: 40px;
   padding: 10px;
   color: #61dafb;
   border: 1px solid #333;
@@ -78,8 +79,7 @@ export const Image = styled.img`
   max-width: 100%;
 `;
 
-
 export const ImageMatrix = styled.img`
   max-width: 90%;
-  margin-top:12px;
+  margin-top: 12px;
 `;

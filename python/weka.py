@@ -12,10 +12,10 @@ class Weka():
                         @attribute apu_body real
                         @attribute apu_pants real
                         @attribute apu_shirt real
-                        @attribute merge_body real
-                        @attribute merge_hair real
-                        @attribute merge_dress real
-                        @attribute classe {Apu, Merge}\n
+                        @attribute marge_body real
+                        @attribute marge_hair real
+                        @attribute marge_dress real
+                        @attribute classe {Apu, Marge}\n
                         @data\n
                       '''
         self.body = ''
@@ -28,8 +28,8 @@ class Weka():
             f'\n{len(onlyfiles)} images found in {self.images_directory} directory!', True)
 
         # TODO: remover isso - Range with 5 images for testing
-        # return onlyfiles[585:700]
-        return onlyfiles
+        # return onlyfiles[610:625]
+        return onlyfiles[610:645]
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'
@@ -39,7 +39,7 @@ class Weka():
             Logger.log(f'Extracting characteristics from {image}')
 
             features = ReadImage().read(f'{self.images_directory}/{image}')
-            features[6] = "Apu" if features[6] == 0.0 else "Merge"
+            features[6] = "Apu" if features[6] == 0.0 else "Marge"
             imagesData.append(features)
 
             Logger.log(f'Data added to index {index}')
@@ -47,9 +47,9 @@ class Weka():
             Logger.log(f'Apu body = {features[0]}')
             Logger.log(f'Apu pants = {features[1]}')
             Logger.log(f'Apu shirt = {features[2]}')
-            Logger.log(f'Merge body = {features[3]}')
-            Logger.log(f'Merge hair = {features[4]}')
-            Logger.log(f'Merge dress = {features[5]}')
+            Logger.log(f'Marge body = {features[3]}')
+            Logger.log(f'Marge hair = {features[4]}')
+            Logger.log(f'Marge dress = {features[5]}')
             Logger.log(f'Class = {features[6]}', True)
 
             self.body += ','.join(map(str, features)) + "\n"

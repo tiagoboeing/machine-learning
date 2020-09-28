@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  height: 40vh;
+  height: 100%;
   width: 100%;
   color: #fff;
 `;
@@ -37,7 +37,10 @@ export const Subtitle = styled.h4`
   margin-bottom: 0.825rem;
 `;
 
-export const List = styled.div``;
+export const List = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const ListItem = styled.div`
   padding: 0.1rem;
