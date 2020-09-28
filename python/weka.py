@@ -22,25 +22,24 @@ class Weka():
 
     def list_directory_files(self):
         Logger.log('Reading all folder files')
-        onlyfiles = [f for f in listdir(self.images_directory) if isfile(
+        only_files = [f for f in listdir(self.images_directory) if isfile(
             join(self.images_directory, f))]
         Logger.log(
-            f'\n{len(onlyfiles)} images found in {self.images_directory} directory!', True)
+            f'\n{len(only_files)} images found in {self.images_directory} directory!', True)
 
-        # TODO: remover isso - Range with 5 images for testing
-        # return onlyfiles[610:645]
-        return onlyfiles
+        return only_files[610:630]
+        # return only_files
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'
-        imagesData = []
+        images_data = []
 
         for index, image in enumerate(list(self.list_directory_files())):
             Logger.log(f'Extracting characteristics from {image}')
 
             features = ReadImage().read(f'{self.images_directory}/{image}')
             features[6] = "Apu" if features[6] == 0.0 else "Marge"
-            imagesData.append(features)
+            images_data.append(features)
 
             Logger.log(f'Data added to index {index}')
             Logger.log('Extracted Features:')
@@ -60,4 +59,4 @@ class Weka():
             fp.write(self.body)
 
         Logger.log('All Done!')
-        return imagesData
+        return images_data

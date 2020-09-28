@@ -4,6 +4,7 @@ import json
 import os
 import sys
 import urllib
+from itertools import chain
 
 import h5py
 import matplotlib.pyplot as plt
@@ -68,7 +69,8 @@ class Classifier:
     def confusion_matrix(self, model, x_test, y_test):
         title = "Matriz de confusão"
 
-        disp = metrics.plot_confusion_matrix(model, x_test, y_test, cmap=plt.cm.Blues)
+        disp = metrics.plot_confusion_matrix(
+            model, x_test, y_test, cmap=plt.cm.Blues)
 
         disp.ax_.set_title(title)
 
@@ -128,21 +130,16 @@ class Classifier:
 
         return final_features, final_labels
 
-    def classify(self, img):
-        final_features, final_labels = self.load_dataset()
-
-        X_train, X_test, y_train, y_test = model_selection.train_test_split(
-            final_features, final_labels, test_size=0.35, train_size=0.65
-        )
-
-        featuresFromImg = ReadImage().read(img=img)
+    @staticmethod
+    def predict(img, X_train, X_test, y_train, y_test):
+        features_from_img = ReadImage().read(img=img)
 
         model = naive_bayes.GaussianNB()
         model.fit(X_train, y_train)
 
         scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
         rescaled_feature = scaler.fit_transform(
-            np.array(featuresFromImg[0:5]).reshape(-1, 1))
+            np.array(features_from_img[0:5]).reshape(-1, 1))
 
         predict = model.predict(X_test)
         prediction = model.predict(rescaled_feature.reshape(1, -1))[0]
@@ -150,18 +147,30 @@ class Classifier:
         accuracy = metrics.accuracy_score(
             y_test, predict) * 100
 
+        return list(chain.from_iterable((prediction, features_from_img, accuracy)))
+
+    def classify(self, img):
+        final_features, final_labels = self.load_dataset()
+
+        X_train, X_test, y_train, y_test = model_selection.train_test_split(
+            final_features, final_labels, test_size=0.35, train_size=0.65
+        )  # use 65% for training and 35% for tests
+
+        prediction, features_from_img, accuracy = self.predict(X_train, X_test, y_train, y_test)
+
         label = 'Apu'  # 0.0
         if prediction:
             label = 'Marge'  # 1.0
 
+        # API send
         print(json.dumps({
             'features': {
-                'Apu body': featuresFromImg[0],
-                'Apu pants': featuresFromImg[1],
-                'Apu shirt': featuresFromImg[2],
-                'Marge body': featuresFromImg[3],
-                'Marge hair': featuresFromImg[4],
-                'Marge dress': featuresFromImg[5]
+                'Apu body': features_from_img[0],
+                'Apu pants': features_from_img[1],
+                'Apu shirt': features_from_img[2],
+                'Marge body': features_from_img[3],
+                'Marge hair': features_from_img[4],
+                'Marge dress': features_from_img[5]
             },
             'prediction': {
                 'accuracy': accuracy,
