@@ -4,13 +4,17 @@ Esta aplicação utiliza Python para o processamento dos treinamentos, Electron 
 
 A comunicação entre Python e Electron ocorre via eventos, como se fosse uma bridge (`IpcMain` e `IpcRenderer`)
 
+![](docs/screenshots/electron_Jvu1J6Guuy.png)
+
 ## Informações
 
 ### Utilização
 
+Caso desejar apenas classificar as imagens não clique em **executar treinamento** ao abrir o programa, consta no cache da aplicação o último treinamento, realizado com todas as imagens. Apenas treine novamente se realmente desejar.
+
 **Já existe um arquivo de classificação onde o treinamento foi realizado com todas as imagens de ambos os personagens.** Basta testar com uma imagem externa e classificar.
 
-> Ao rodar o programa será possível realizar o treinamento com todo o dataset (**este processo pode levar horas**).
+> Ao executar o programa será possível realizar o treinamento com todo o dataset (**este processo pode levar horas**) ~ 2 horas. Ao finalizar o treinamento será exibida a matriz de confusão.
 
 ### Personagens escolhidos
 
@@ -33,7 +37,7 @@ A comunicação entre Python e Electron ocorre via eventos, como se fosse uma br
 
 ### Extraindo características
 
-A análise é baseada em cores com a aplicação de uma tolerância para cada um dos personagens e característica desejada:
+A análise é baseada em cores com a aplicação de uma tolerância para cada um dos personagens e característica desejada. Na tabela abaixo o processo de extração de características para da Marge onde a cada etapa o range de cores estava sendo calibrado.
 
 <table width="100%">
   <tr>
@@ -243,4 +247,24 @@ A análise é baseada em cores com a aplicação de uma tolerância para cada um
   </tr>
 </table>
 
+## Análise dos resultados
 
+O processo de treinamento utilizando um dataset com 1914 imagens de Apu e Marge levou aproximadamente 1h 20min em um i7 8700K 4.7GHz + 48GB RAM.
+
+### Matriz de confusão
+
+![](docs/results/confusion_matriz.jpg)
+
+A seguinte matriz de confusão foi obtida após o treinamento utilizando todo o dataset. Os dados identificam a quantidade falsos positivos, por exemplo.
+
+|       | Apu        | Marge      |
+| ----- | ---------- | ---------- |
+| Apu   | 143 `(TP)` | 70 (`FP`)  |
+| Marge | 34 `(FN)`  | 423 `(TN)` |
+
+> Apu = 0.0 ; Marge = 1.0
+
+Análise dos dados:
+
+- 143 imagens do personagem Apu foram encontradas onde o esperado era Apu (verdadeiro positivo) e 423 imagens da Marge foram encontradas corretamente (verdadeiro negativo);
+- 70 imagens foram encontradas como Marge, porém deveriam ser Apu (falso positivo) e 34 imagens de Apu foram encontradas, porém deveriam ser Marge (falso negativo).
