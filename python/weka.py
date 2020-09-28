@@ -7,15 +7,16 @@ from logger import Logger
 class Weka():
     def __init__(self, images_directory):
         self.images_directory = images_directory
-        self.header = '''@relation caracteristicas\n
-                         @attribute laranja_camisa_bart real
-                         @attribute azul_calcao_bart real
-                         @attribute azul_sapato_bart real
-                         @attribute marrom_boca_homer real
-                         @attribute azul_calca_homer real
-                         @attribute cinza_sapato_homer real
-                         @attribute classe {Bart, Homer}\n
-                         @data\n
+        self.header = '''
+                        @relation caracteristicas\n
+                        @attribute apu_body real
+                        @attribute apu_pants real
+                        @attribute apu_shirt real
+                        @attribute marge_body real
+                        @attribute marge_hair real
+                        @attribute marge_dress real
+                        @attribute classe {Apu, Marge}\n
+                        @data\n
                       '''
         self.body = ''
 
@@ -26,8 +27,9 @@ class Weka():
         Logger.log(
             f'\n{len(onlyfiles)} images found in {self.images_directory} directory!', True)
 
-        # Range with 5 images for testing
-        return onlyfiles
+        # TODO: remover isso - Range with 5 images for testing
+        # return onlyfiles[610:625]
+        return onlyfiles[610:645]
 
     def extractTo(self, fileName):
         output_filename = fileName + '.arff'
@@ -37,17 +39,17 @@ class Weka():
             Logger.log(f'Extracting characteristics from {image}')
 
             features = ReadImage().read(f'{self.images_directory}/{image}')
-            features[6] = "Bart" if features[6] == 0.0 else "Homer"
+            features[6] = "Apu" if features[6] == 0.0 else "Marge"
             imagesData.append(features)
 
             Logger.log(f'Data added to index {index}')
             Logger.log('Extracted Features:')
-            Logger.log(f'Bart Orange T-Shirt = {features[0]}')
-            Logger.log(f'Bart Blue Shorts = {features[1]}')
-            Logger.log(f'Bart Shoes = {features[2]}')
-            Logger.log(f'Homer Blue Pants = {features[3]}')
-            Logger.log(f'Homer Mouth = {features[4]}')
-            Logger.log(f'Homer Shoes = {features[5]}')
+            Logger.log(f'Apu body = {features[0]}')
+            Logger.log(f'Apu pants = {features[1]}')
+            Logger.log(f'Apu shirt = {features[2]}')
+            Logger.log(f'Marge body = {features[3]}')
+            Logger.log(f'Marge hair = {features[4]}')
+            Logger.log(f'Marge dress = {features[5]}')
             Logger.log(f'Class = {features[6]}', True)
 
             self.body += ','.join(map(str, features)) + "\n"

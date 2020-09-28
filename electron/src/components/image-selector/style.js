@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const ImageWrapper = styled.aside`
   display: block;
@@ -13,7 +13,8 @@ export const ImageWrapper = styled.aside`
   .dropzone {
     width: 100%;
     padding: 20px;
-    border: 1px dashed #61dafb;
+    border: 1px solid #61dafb;
+    cursor: pointer;
   }
 `;
 
@@ -49,5 +50,6 @@ export const ImgStyle = styled.img`
   margin: 0px auto;
   text-align: center;
   border: 1px solid #61dafb;
+  background: #ffffff;
   transition: all 0.2s ease-in-out;
 `;

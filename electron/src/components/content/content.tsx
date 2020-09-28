@@ -59,7 +59,7 @@ export default class Content extends React.Component<
               let jsonData = JSON.parse(args);
 
               if (Object.keys(jsonData)[0] === "uri") {
-                console.log("matrix de confusão " + jsonData.uri);
+                console.log("matriz de confusão " + jsonData.uri);
                 this.setState({
                   loading: false,
                   confusionMatrix: jsonData.uri,
@@ -124,25 +124,20 @@ export default class Content extends React.Component<
       <ContentWrapper>
         <LeftContent>
           <ImageSelector changeImage={this.handleImage} />
-          {image ? (
-            !loadingClassify ? (
+          {image &&
+            (!loadingClassify ? (
               <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
             ) : (
               <DisableBtn>Processando Imagem...</DisableBtn>
-            )
-          ) : (
-            <DisableBtn>Selecione uma imagem</DisableBtn>
-          )}
+            ))}
         </LeftContent>
         <RightContent>
-          <Feature loadingData={loadingClassify} data={features} />
           {confusionMatrix ? (
             <ImageMatrix src={confusionMatrix} />
           ) : loading ? (
             <MessageInfo>Realizando treinamento...</MessageInfo>
-          ) : (
-            <MessageInfo>Aguardando Treinamento</MessageInfo>
-          )}
+          ) : null}
+          <Feature loadingData={loadingClassify} data={features} />
         </RightContent>
       </ContentWrapper>
     );

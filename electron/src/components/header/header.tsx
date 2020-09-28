@@ -2,7 +2,7 @@ import * as React from "react";
 import IconSvg from "../icons-svg/icons";
 import { HeaderWrapper, GroupButtons, NavButton } from "./style";
 
-export interface IHeaderProps { }
+export interface IHeaderProps {}
 
 export interface IHeaderState {
   ipcRenderer?: any;
@@ -12,7 +12,7 @@ export interface IHeaderState {
 export default class Header extends React.Component<
   IHeaderProps,
   IHeaderState
-  > {
+> {
   private ipcRenderer?: any;
 
   constructor(props: IHeaderProps) {
@@ -34,14 +34,20 @@ export default class Header extends React.Component<
     if (!window || !window.process || !window.require) {
       throw new Error(`Unable to require renderer process`);
     }
-    this.setState({
-      ipcRenderer: window.require("electron").ipcRenderer,
-    }, () => {
-      this.state.ipcRenderer.on("reply-done-training", (event: any, args: any) => {
-        console.log("HEADER", args);
-        this.setState({ loading: false });
-      });
-    });
+    this.setState(
+      {
+        ipcRenderer: window.require("electron").ipcRenderer,
+      },
+      () => {
+        this.state.ipcRenderer.on(
+          "reply-done-training",
+          (event: any, args: any) => {
+            console.log("HEADER", args);
+            this.setState({ loading: false });
+          }
+        );
+      }
+    );
   };
 
   openTrainingMode = () => {
@@ -60,6 +66,7 @@ export default class Header extends React.Component<
   public render() {
     return (
       <HeaderWrapper>
+        <h1>Aprendizado de máquina</h1>
         <GroupButtons>
           <NavButton
             onClick={this.openTrainingMode}
@@ -69,9 +76,6 @@ export default class Header extends React.Component<
             {!this.state.loading ? "Executar Treinamento" : "Em treinamento..."}
           </NavButton>
         </GroupButtons>
-        <NavButton onClick={() => this.exitApp()}>
-          Sair <IconSvg icon="exit" color="#fff" />{" "}
-        </NavButton>
       </HeaderWrapper>
     );
   }

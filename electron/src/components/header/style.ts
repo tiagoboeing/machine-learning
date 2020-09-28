@@ -6,8 +6,7 @@ export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-content: top;
-  height: 40px;
-  padding: 4px 6px 0px 6px;
+  padding: 15px 20px 0px 20px;
   width: 100%;
   color: ${primary};
   background-color: #282c34;
@@ -18,6 +17,12 @@ export const HeaderWrapper = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position: fixed;
+  top: 0;
+
+  h1 {
+    font-size: 1rem;
+  }
 `;
 
 export const GroupButtons = styled.div`

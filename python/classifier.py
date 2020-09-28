@@ -68,7 +68,7 @@ class Classifier:
     def confusion_matrix(self, model, x_test, y_test):
         title = "Matriz de confusão"
 
-        disp = metrics.plot_confusion_matrix(model, x_test, y_test)
+        disp = metrics.plot_confusion_matrix(model, x_test, y_test, cmap=plt.cm.Blues)
 
         disp.ax_.set_title(title)
 
@@ -150,18 +150,18 @@ class Classifier:
         accuracy = metrics.accuracy_score(
             y_test, predict) * 100
 
-        label = 'Bart'
+        label = 'Apu'  # 0.0
         if prediction:
-            label = 'Homer'
+            label = 'Marge'  # 1.0
 
         print(json.dumps({
             'features': {
-                'Bart Orange T-Shirt': featuresFromImg[0],
-                'Bart Blue Shorts': featuresFromImg[1],
-                'Bart Shoes': featuresFromImg[2],
-                'Homer Blue Pants': featuresFromImg[3],
-                'Homer Mouth': featuresFromImg[4],
-                'Homer Shoes': featuresFromImg[5]
+                'Apu body': featuresFromImg[0],
+                'Apu pants': featuresFromImg[1],
+                'Apu shirt': featuresFromImg[2],
+                'Marge body': featuresFromImg[3],
+                'Marge hair': featuresFromImg[4],
+                'Marge dress': featuresFromImg[5]
             },
             'prediction': {
                 'accuracy': accuracy,
