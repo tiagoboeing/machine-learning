@@ -25,6 +25,10 @@ export const HeaderWrapper = styled.div`
   }
 `;
 
+export const DragWindow = styled.div`
+  -webkit-app-region: drag;
+`;
+
 export const GroupButtons = styled.div`
   display: flex;
   justify-content: space-between;

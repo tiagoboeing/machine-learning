@@ -1,6 +1,6 @@
 import * as React from "react";
 import IconSvg from "../icons-svg/icons";
-import { HeaderWrapper, GroupButtons, NavButton } from "./style";
+import { HeaderWrapper, GroupButtons, NavButton, DragWindow } from "./style";
 
 export interface IHeaderProps {}
 
@@ -67,9 +67,9 @@ export default class Header extends React.Component<
     return (
       <HeaderWrapper>
         <GroupButtons>
-          <h1 style={{ "-webkit-app-region": "drag" }}>
-            Aprendizado de máquina
-          </h1>
+          <DragWindow>
+            <h1>Aprendizado de máquina</h1>
+          </DragWindow>
           <NavButton
             onClick={this.openTrainingMode}
             disabled={this.state.loading}
