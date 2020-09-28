@@ -92,7 +92,6 @@ class Classifier:
         print(json.dumps(confusion_matrix))
 
     def confusion_matrix2(self, model, x_train, y_train):
-        # TODO: VERIFICAR PARAMETROS
         y_pred = model.predict(x_train)
         cf_matrix = metrics.confusion_matrix(y_train, y_pred)
 
