@@ -150,7 +150,7 @@ A análise é baseada em cores com a aplicação de uma tolerância para cada um
   </tr>
 
   <thead>
-    <th colspan="12">marge Simpson</th>
+    <th colspan="12">Marge Simpson</th>
   </thead>
    <tr>
     <th colspan="4">Cor da pele</th>
