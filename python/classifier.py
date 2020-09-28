@@ -147,7 +147,7 @@ class Classifier:
         accuracy = metrics.accuracy_score(
             y_test, predict) * 100
 
-        return list(chain.from_iterable((prediction, features_from_img, accuracy)))
+        return prediction, features_from_img, accuracy
 
     def classify(self, img):
         final_features, final_labels = self.load_dataset()
@@ -156,7 +156,7 @@ class Classifier:
             final_features, final_labels, test_size=0.35, train_size=0.65
         )  # use 65% for training and 35% for tests
 
-        prediction, features_from_img, accuracy = self.predict(X_train, X_test, y_train, y_test)
+        prediction, features_from_img, accuracy = self.predict(img, X_train, X_test, y_train, y_test)
 
         label = 'Apu'  # 0.0
         if prediction:

@@ -27,8 +27,8 @@ export const HeaderWrapper = styled.div`
 
 export const GroupButtons = styled.div`
   display: flex;
-  width: 200px;
-  justify-content: space-around;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const NavButton = styled.button`

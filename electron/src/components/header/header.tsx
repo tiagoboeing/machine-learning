@@ -66,14 +66,22 @@ export default class Header extends React.Component<
   public render() {
     return (
       <HeaderWrapper>
-        <h1>Aprendizado de máquina</h1>
         <GroupButtons>
+          <h1 style={{ "-webkit-app-region": "drag" }}>
+            Aprendizado de máquina
+          </h1>
           <NavButton
             onClick={this.openTrainingMode}
             disabled={this.state.loading}
             useMinWidth={true}
           >
             {!this.state.loading ? "Executar Treinamento" : "Em treinamento..."}
+          </NavButton>
+          <NavButton
+            style={{ color: "orange", background: "none" }}
+            onClick={() => window.close()}
+          >
+            Sair da aplicação
           </NavButton>
         </GroupButtons>
       </HeaderWrapper>
