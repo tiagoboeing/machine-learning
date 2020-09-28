@@ -267,7 +267,7 @@ A seguinte matriz de confusão foi obtida após o treinamento utilizando todo o 
 
 |       | Apu        | Marge      |
 | ----- | ---------- | ---------- |
-| Apu   | 143 `(TP)` | 70 (`FP`)  |
+| Apu   | 143 `(TP)` | 70 `(FP)`  |
 | Marge | 34 `(FN)`  | 423 `(TN)` |
 
 > Apu = 0.0 ; Marge = 1.0
