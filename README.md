@@ -16,6 +16,14 @@ Caso desejar apenas classificar as imagens não clique em **executar treinamento
 
 > Ao executar o programa será possível realizar o treinamento com todo o dataset (**este processo pode levar horas**) ~ 2 horas. Ao finalizar o treinamento será exibida a matriz de confusão.
 
+### Utilizando arquivo de teste
+
+Caso tenha treinado acidentalmente e cancelado os dados para classificação serão sobrescritos. Na pasta [python/_backup_training](python/_backup_training) constam os arquivos para utilizar na aplicação caso necessário.
+
+Copie:
+
+- data.h5 e labels.h5 → `resources/python/output`
+
 ### Personagens escolhidos
 
 - Apu Nahasapeemapetilon
@@ -253,7 +261,7 @@ O processo de treinamento utilizando um dataset com 1914 imagens de Apu e Marge 
 
 ### Matriz de confusão
 
-![](docs/results/confusion_matriz.jpg)
+![](docs/results/confusion_matrix.jpg)
 
 A seguinte matriz de confusão foi obtida após o treinamento utilizando todo o dataset. Os dados identificam a quantidade falsos positivos, por exemplo.
 
