@@ -29,6 +29,17 @@ Copie:
 - Apu Nahasapeemapetilon
 - Marge Simpson
 
+<table width="100%">
+<tr>
+  <td><img src="docs/characters/apu.jpg"/></td>
+  <td><img src="docs/characters/marge.jpg"/></td>
+</tr>
+<tr>
+  <td>Apu Nahasapeemapetilon</td>
+  <td>Marge Simpson</td>
+</tr>
+</table>
+
 ### Características analisadas
 
 #### Apu Nahasapeemapetilon
