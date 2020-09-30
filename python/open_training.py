@@ -10,7 +10,9 @@ from classifier import Classifier
 if __name__ == "__main__":
     print("Started in", datetime.now().time())
 
-    model = sys.argv[1]
+    model = 'naive-bayes'
+    if len(sys.argv) > 1:
+        model = sys.argv[1]
 
     features = Weka(os.path.dirname(__file__) +
                     '/images').extractTo(fileName='caracteristicas')
