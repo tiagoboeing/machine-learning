@@ -10,7 +10,7 @@ import h5py
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from sklearn import model_selection, preprocessing, metrics, naive_bayes
+from sklearn import model_selection, preprocessing, metrics, naive_bayes, tree
 
 from read_image import ReadImage
 
@@ -64,6 +64,26 @@ class Classifier:
             self.confusion_matrix2(model, X_train, y_train)
         else:
             self.confusion_matrix(model, X_test, y_test)
+
+    def DecisionTree(self):
+        self.prepare()
+
+        final_features, final_labels = self.load_dataset()
+
+        X_train, X_test, y_train, y_test = model_selection.train_test_split(
+            np.array(final_features), np.array(final_labels), test_size=0.35, train_size=0.65
+        )
+
+        model = tree.DecisionTreeClassifier()
+        model.fit(X_train, y_train)
+
+        if sys.platform.startswith('linux'):
+            self.confusion_matrix2(model, X_train, y_train)
+        else:
+            self.confusion_matrix(model, X_test, y_test)
+
+        # Tree
+        print(tree.plot_tree(model))
 
     # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
     def confusion_matrix(self, model, x_test, y_test):
@@ -130,10 +150,14 @@ class Classifier:
         return final_features, final_labels
 
     @staticmethod
-    def predict(img, X_train, X_test, y_train, y_test):
+    def predict(model, img, X_train, X_test, y_train, y_test):
         features_from_img = ReadImage().read(img=img)
 
-        model = naive_bayes.GaussianNB()
+        if model == 'naive-bayes':
+            model = naive_bayes.GaussianNB()
+        elif model == 'decision-tree':
+            model = tree.DecisionTreeClassifier()
+
         model.fit(X_train, y_train)
 
         scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
@@ -148,14 +172,15 @@ class Classifier:
 
         return prediction, features_from_img, accuracy
 
-    def classify(self, img):
+    def classify(self, img, model):
         final_features, final_labels = self.load_dataset()
 
         X_train, X_test, y_train, y_test = model_selection.train_test_split(
             final_features, final_labels, test_size=0.35, train_size=0.65
         )  # use 65% for training and 35% for tests
 
-        prediction, features_from_img, accuracy = self.predict(img, X_train, X_test, y_train, y_test)
+        prediction, features_from_img, accuracy = self.predict(model,
+                                                               img, X_train, X_test, y_train, y_test)
 
         label = 'Apu'  # 0.0
         if prediction:
