@@ -272,7 +272,7 @@ O processo de treinamento utilizando um dataset com 1914 imagens de Apu e Marge 
 
 ### Matriz de confusão
 
-![](docs/results/confusion_matrix.jpg)
+![](docs/results/confusion_matrix.png)
 
 A seguinte matriz de confusão foi obtida após o treinamento utilizando todo o dataset. Os dados identificam a quantidade de falsos positivos, por exemplo.
 
