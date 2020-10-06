@@ -26,7 +26,7 @@ class Classifier:
         features, classes = [], []
 
         for image in self.__data:
-            features.append(image[0:5])
+            features.append(image[0:6])
             classes.append(image[6])
 
         self.__labels = np.unique(classes)
