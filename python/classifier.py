@@ -4,7 +4,6 @@ import json
 import os
 import sys
 import urllib
-from itertools import chain
 
 import h5py
 import matplotlib.pyplot as plt
