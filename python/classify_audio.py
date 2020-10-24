@@ -1,11 +1,13 @@
 # feature extractoring and preprocessing data
 import librosa
+import librosa.display
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 import pathlib
 import csv
+from weka import Weka
 
 # Preprocessing
 from sklearn import preprocessing, model_selection, metrics
@@ -134,6 +136,11 @@ class ClassifyAudio():
         predictions = model.predict(X)[0]
         print(self.__labels[predictions])
 
+# weka = Weka('./audios/dog')
+# print(weka.list_directory_files())
+# weka.create_audio_file('caracteristicas-audio')
 
-ClassifyAudio(learning_rate=0.3, training_time=200).run(
-    audioname="./audios/dog/dog_barking_70.wav")
+ClassifyAudio(learning_rate=0.3, training_time=1000).run(
+    audioname="./audios/test/dog/dog_barking_66.wav")
+
+
