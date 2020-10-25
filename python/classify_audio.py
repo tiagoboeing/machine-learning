@@ -8,6 +8,7 @@ import os
 import pathlib
 import csv
 from weka import Weka
+from logger import Logger
 
 # Preprocessing
 from sklearn import preprocessing, model_selection, metrics
@@ -21,29 +22,44 @@ warnings.filterwarnings('ignore')
 
 
 class ClassifyAudio():
-    def __init__(self, learning_rate, training_time):
+    def __init__(self, learning_rate, training_time, create_csv = True, create_images = False):
         self.__path = './audios'
         self.__learning_rate = learning_rate
         self.__training_time = training_time
         self.__labels = ['cat', 'dog']
 
+        if create_images:
+            self.__spectrogram_extraction()
+        
+        if create_csv:
+            self.__create_csv()
+
     def __spectrogram_extraction(self):
+        Logger.log('Executing spectrogram_extraction')
+
         cmap = plt.get_cmap('inferno')
 
         plt.figure(figsize=(10, 10))
         animals = 'cat dog'.split()
-        for a in animals:
+
+        for animal in animals:
+            Logger.log(f'Reading data for {animal} animal')
             pathlib.Path(
-                f'{self.__path}/spectograms/{a}').mkdir(parents=True, exist_ok=True)
-            for filename in os.listdir(f'{self.__path}/{a}'):
-                audioname = f'{self.__path}/{a}/{filename}'
+                f'{self.__path}/spectograms/{animal}').mkdir(parents=True, exist_ok=True)
+
+            for filename in os.listdir(f'{self.__path}/train/{animal}'):
+                Logger.log(f'Creating spectogram for {animal}: {filename}')
+
+                audioname = f'{self.__path}/train/{animal}/{filename}'
                 y, sr = librosa.load(audioname, mono=True, duration=5)
                 plt.specgram(y, NFFT=2048, Fs=2, Fc=0, noverlap=128,
                              cmap=cmap, sides='default', mode='default', scale='dB')
                 plt.axis('off')
                 plt.savefig(
-                    f'{self.__path}/spectograms/{a}/{filename[:-3].replace(".", "")}.png')
+                    f'{self.__path}/spectograms/{animal}/{filename[:-3].replace(".", "")}.png')
                 plt.clf()
+
+                Logger.log(f'Spectogram created {filename[:-3].replace(".", "")}.png', True)
 
     def __feature_extraction(self, audioname):
         y, sr = librosa.load(audioname, mono=True, duration=30)
@@ -58,20 +74,27 @@ class ClassifyAudio():
         return chroma_stft, rms, spec_cent, spec_bw, rolloff, zcr, mfcc
 
     def __create_csv(self):
+        Logger.log('Executing csv creation')
+
         header = 'filename chroma_stft rms spectral_centroid spectral_bandwidth rolloff zero_crossing_rate'
         for i in range(1, 21):
             header += f' mfcc{i}'
         header += ' label'
         header = header.split()
 
-        file = open('data.csv', 'w', newline='')
+        file = open(f'{self.__path}/data.csv', 'w', newline='')
         with file:
             writer = csv.writer(file)
             writer.writerow(header)
         animals = 'cat dog'.split()
-        for a in animals:
-            for filename in os.listdir(f'{self.__path}/{a}'):
-                audioname = f'{self.__path}/{a}/{filename}'
+
+        for animal in animals:
+            Logger.log(f'Reading data for {animal} animal')
+
+            for filename in os.listdir(f'{self.__path}/train/{animal}'):
+                Logger.log(f'Creating CSV data for {animal}: {filename}')
+
+                audioname = f'{self.__path}/train/{animal}/{filename}'
 
                 chroma_stft, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(
                     audioname)
@@ -79,14 +102,17 @@ class ClassifyAudio():
                 to_append = f'{filename} {np.mean(chroma_stft)} {np.mean(rms)} {np.mean(spec_cent)} {np.mean(spec_bw)} {np.mean(rolloff)} {np.mean(zcr)}'
                 for e in mfcc:
                     to_append += f' {np.mean(e)}'
-                to_append += f' {a}'
-                file = open('data.csv', 'a', newline='')
+                to_append += f' {animal}'
+
+                file = open(f'{self.__path}/data.csv', 'a', newline='')
                 with file:
                     writer = csv.writer(file)
                     writer.writerow(to_append.split())
 
+                Logger.log(f'Data added for CSV file', True)
+
     def __classify(self):
-        data = pd.read_csv('data.csv')
+        data = pd.read_csv(f'{self.__path}/data.csv')
         data = data.drop(['filename'], axis=1)
 
         animal_list = data.iloc[:, -1]
