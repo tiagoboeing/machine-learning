@@ -1,23 +1,23 @@
+# feature extractoring and preprocessing data
 import librosa
+import librosa.display
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from PIL import Image
 import pathlib
 import csv
+from weka import Weka
 from logger import Logger
 
 # Preprocessing
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn import preprocessing, model_selection, metrics
 
-#Keras
-import keras
-from keras import models
-from keras import layers
+# Classification
+from sklearn.neural_network import MLPClassifier
 
 import warnings
+
 warnings.filterwarnings('ignore')
 
 
@@ -34,14 +34,13 @@ class ClassifyAudio():
         if create_csv:
             self.__create_csv()
 
-
     def __spectrogram_extraction(self):
         Logger.log('Executing spectrogram_extraction')
 
         cmap = plt.get_cmap('inferno')
 
         plt.figure(figsize=(10, 10))
-        animals = self.__labels
+        animals = 'cat dog'.split()
 
         for animal in animals:
             Logger.log(f'Reading data for {animal} animal')
@@ -87,7 +86,7 @@ class ClassifyAudio():
         with file:
             writer = csv.writer(file)
             writer.writerow(header)
-        animals = self.__labels
+        animals = 'cat dog'.split()
 
         for animal in animals:
             Logger.log(f'Reading data for {animal} animal')
@@ -101,7 +100,6 @@ class ClassifyAudio():
                     audioname)
 
                 to_append = f'{filename} {np.mean(chroma_stft)} {np.mean(rms)} {np.mean(spec_cent)} {np.mean(spec_bw)} {np.mean(rolloff)} {np.mean(zcr)}'
-
                 for e in mfcc:
                     to_append += f' {np.mean(e)}'
                 to_append += f' {animal}'
@@ -113,74 +111,62 @@ class ClassifyAudio():
 
                 Logger.log(f'Data added for CSV file', True)
 
-    def __classify(self, test_file = 0):
+    def __classify(self):
         data = pd.read_csv(f'{self.__path}/data.csv')
         data = data.drop(['filename'], axis=1)
 
-        # encoding the labels
         animal_list = data.iloc[:, -1]
-        encoder = LabelEncoder()
+        encoder = preprocessing.LabelEncoder()
         y = encoder.fit_transform(animal_list)
 
-        scaler = StandardScaler()
-        X = scaler.fit_transform(np.array(data.iloc[:, :-1], dtype=float))
+        X = np.array(data.iloc[:, :-1], dtype=float)
 
-        # 20% for tests
-        X_train, X_test, y_train, y_test = train_test_split(
+        X_train, X_test, y_train, y_test = model_selection.train_test_split(
             X, y, test_size=0.2)
 
-        # length from 20%
-        items_for_tests = len(y_test)
+        scaler = preprocessing.StandardScaler()
+        scaler.fit(X_train)
 
-        x_val = X_train[:items_for_tests]
-        partial_x_train = X_train[items_for_tests:]
+        X_train = scaler.transform(X_train)
+        X_test = scaler.transform(X_test)
 
-        y_val = y_train[:items_for_tests]
-        partial_y_train = y_train[items_for_tests:]
+        mlp = MLPClassifier(
+            solver='adam', learning_rate_init=self.__learning_rate, max_iter=self.__training_time)
 
-        model = models.Sequential()
-        model.add(layers.Dense(512, activation='relu', input_shape=(X_train.shape[1],)))
-        model.add(layers.Dense(256, activation='relu'))
-        model.add(layers.Dense(128, activation='relu'))
-        model.add(layers.Dense(64, activation='relu'))
-        model.add(layers.Dense(10, activation='softmax'))
+        mlp.fit(X_train, y_train)
+        print("Training set score: %f" % mlp.score(X_test, y_test))
+        # print("Training set loss: %f" % mlp.loss_)
 
-        model.compile(optimizer='adam',
-                    loss='sparse_categorical_crossentropy',
-                    metrics=['accuracy'])
-
-        model.fit(partial_x_train,
-                partial_y_train,
-                epochs=30,
-                batch_size=512,
-                validation_data=(x_val, y_val)
-                )
-
-        test_loss, test_acc = model.evaluate(X_test,y_test)
-        Logger.log(f'Accuracy {test_acc} - Loss {test_loss}')
-
-        predictions = model.predict(X_test)
-
-        # get results
-        predictions_sum = np.sum(predictions[test_file])
-        result = np.argmax(predictions[test_file])
-
-        return test_loss, test_acc, predictions, predictions_sum, result
+        return mlp
 
     def run(self, audioname):
-        test_loss, test_acc, predictions, predictions_sum, result = self.__classify(2)
+        new_input = []
 
-        Logger.log(f'\nLoss: {test_loss}')
-        Logger.log(f'Accuracy: {test_acc}')
-        Logger.log(f'Predictions SUM: {predictions_sum}', True)
-        Logger.log(f'Result: {result}')
-        Logger.log(f'Final result: {self.__labels[result]}')
+        model = self.__classify()
+
+        chroma_stft, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(
+            audioname=audioname)
+
+        new_input.append(np.mean(chroma_stft))
+        new_input.append(np.mean(rms))
+        new_input.append(np.mean(spec_cent))
+        new_input.append(np.mean(spec_bw))
+        new_input.append(np.mean(rolloff))
+        new_input.append(np.mean(zcr))
+
+        for e in mfcc:
+            new_input.append(np.mean(e))
+
+        X = np.array(new_input, dtype=float).reshape(1, -1)
+
+        predictions = model.predict(X)[0]
+        print(self.__labels[predictions])
 
 # weka = Weka('./audios/dog')
 # print(weka.list_directory_files())
 # weka.create_audio_file('caracteristicas-audio')
 
-ClassifyAudio(learning_rate=0.3, training_time=1000, create_images=False, create_csv=False).run(
+ClassifyAudio(learning_rate=0.3, training_time=1000, create_images=True, create_csv=False).run(
     audioname="./audios/test/dog/dog_barking_66.wav")
 
 
