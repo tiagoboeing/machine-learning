@@ -166,7 +166,7 @@ class ClassifyAudio():
 # print(weka.list_directory_files())
 # weka.create_audio_file('caracteristicas-audio')
 
-ClassifyAudio(learning_rate=0.3, training_time=1000).run(
+ClassifyAudio(learning_rate=0.3, training_time=1000, create_images=True, create_csv=False).run(
     audioname="./audios/test/dog/dog_barking_66.wav")
 
 
