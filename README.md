@@ -2,9 +2,12 @@
 
 Esta aplicação utiliza Python para o processamento dos treinamentos, Electron + ReactJS para a aplicação desktop e frontend.
 
-A comunicação entre Python e Electron ocorre via eventos, como se fosse uma bridge (`IpcMain` e `IpcRenderer`)
+A comunicação entre Python e Electron ocorre via eventos através de uma bridge com a utilização de `IpcMain` e `IpcRenderer`.
 
 ![](docs/screenshots/electron_Jvu1J6Guuy.png)
+
+<details>
+<summary>Treinamento e classificação de imagens</summary>
 
 ## Informações
 
@@ -276,10 +279,10 @@ O processo de treinamento utilizando um dataset com 1914 imagens de Apu e Marge 
 
 A seguinte matriz de confusão foi obtida após o treinamento utilizando todo o dataset. Os dados identificam a quantidade de falsos positivos, por exemplo.
 
-|       | Apu        | Marge      |
-| ----- | ---------- | ---------- |
-| Apu   | 143 `(TP)` | 70 `(FP)`  |
-| Marge | 34 `(FN)`  | 423 `(TN)` |
+|       | Apu        | Marge       |
+| ----- | ---------- | ----------- |
+| Apu   | 484 `(TP)` | 139 `(FP)`  |
+| Marge | 101 `(FN)` | 1190 `(TN)` |
 
 > Apu = 0.0 ; Marge = 1.0
 
@@ -287,3 +290,6 @@ Análise dos dados:
 
 - 143 imagens do personagem Apu foram encontradas onde o esperado era Apu (verdadeiro positivo) e 423 imagens da Marge foram encontradas corretamente (verdadeiro negativo);
 - 70 imagens foram encontradas como Marge, porém deveriam ser Apu (falso positivo) e 34 imagens de Apu foram encontradas, porém deveriam ser Marge (falso negativo).
+
+</details>
+
