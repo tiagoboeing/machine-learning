@@ -12,17 +12,18 @@ from logger import Logger
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
-#Keras
+# Keras
 import keras
 from keras import models
 from keras import layers
 
 import warnings
+
 warnings.filterwarnings('ignore')
 
 
 class ClassifyAudio():
-    def __init__(self, learning_rate, training_time, create_csv = True, create_images = False):
+    def __init__(self, learning_rate, training_time, create_csv=True, create_images=False):
         self.__path = './audios'
         self.__learning_rate = learning_rate
         self.__training_time = training_time
@@ -30,10 +31,9 @@ class ClassifyAudio():
 
         if create_images:
             self.__spectrogram_extraction()
-        
+
         if create_csv:
             self.__create_csv()
-
 
     def __spectrogram_extraction(self):
         Logger.log('Executing spectrogram_extraction')
@@ -113,7 +113,7 @@ class ClassifyAudio():
 
                 Logger.log(f'Data added for CSV file', True)
 
-    def __classify(self, test_file = 0):
+    def __classify(self):
         data = pd.read_csv(f'{self.__path}/data.csv')
         data = data.drop(['filename'], axis=1)
 
@@ -146,41 +146,53 @@ class ClassifyAudio():
         model.add(layers.Dense(10, activation='softmax'))
 
         model.compile(optimizer='adam',
-                    loss='sparse_categorical_crossentropy',
-                    metrics=['accuracy'])
+                      loss='sparse_categorical_crossentropy',
+                      metrics=['accuracy'])
 
         model.fit(partial_x_train,
-                partial_y_train,
-                epochs=30,
-                batch_size=512,
-                validation_data=(x_val, y_val)
-                )
+                  partial_y_train,
+                  epochs=30,
+                  batch_size=512,
+                  validation_data=(x_val, y_val)
+                  )
 
-        test_loss, test_acc = model.evaluate(X_test,y_test)
+        test_loss, test_acc = model.evaluate(X_test, y_test)
         Logger.log(f'Accuracy {test_acc} - Loss {test_loss}')
 
         predictions = model.predict(X_test)
 
-        # get results
-        predictions_sum = np.sum(predictions[test_file])
-        result = np.argmax(predictions[test_file])
-
-        return test_loss, test_acc, predictions, predictions_sum, result
+        return model, test_loss, test_acc, predictions
 
     def run(self, audioname):
-        test_loss, test_acc, predictions, predictions_sum, result = self.__classify(2)
+        model, test_loss, test_acc, predictions = self.__classify()
+
+        # get results
+        predictions_sum = np.sum(predictions[2])
+        result = np.argmax(predictions[2])
 
         Logger.log(f'\nLoss: {test_loss}')
         Logger.log(f'Accuracy: {test_acc}')
         Logger.log(f'Predictions SUM: {predictions_sum}', True)
         Logger.log(f'Result: {result}')
-        Logger.log(f'Final result: {self.__labels[result]}')
+        Logger.log(f'Final result: {self.__labels[result]}', True)
+
+        # extract features from selected audio
+        chroma_stf, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(audioname)
+
+        new_input = [np.mean(chroma_stf), np.mean(rms), np.mean(spec_cent), np.mean(spec_bw), np.mean(rolloff),
+                     np.mean(zcr)]
+        for e in mfcc:
+            new_input.append(np.mean(e))
+
+        X = np.array(new_input, dtype=float).reshape(1, -1)
+
+        predict_result = int(model.predict(X)[0][0])
+        Logger.log(f'Result for {audioname} = {self.__labels[predict_result]}')
+
 
 # weka = Weka('./audios/dog')
 # print(weka.list_directory_files())
 # weka.create_audio_file('caracteristicas-audio')
 
 ClassifyAudio(learning_rate=0.3, training_time=1000, create_images=False, create_csv=False).run(
-    audioname="./audios/test/dog/dog_barking_66.wav")
-
-
+    audioname="./audios/test/dog/dog_barking_91.wav")
