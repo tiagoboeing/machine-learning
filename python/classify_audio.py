@@ -166,15 +166,16 @@ class ClassifyAudio():
     def run(self, audioname):
         model, test_loss, test_acc, predictions = self.__classify()
 
-        # get results
-        predictions_sum = np.sum(predictions[2])
-        result = np.argmax(predictions[2])
+        Logger.log(f'Loss: {test_loss}')
+        Logger.log(f'Accuracy: {test_acc}', True)
 
-        Logger.log(f'\nLoss: {test_loss}')
-        Logger.log(f'Accuracy: {test_acc}')
-        Logger.log(f'Predictions SUM: {predictions_sum}', True)
-        Logger.log(f'Result: {result}')
-        Logger.log(f'Final result: {self.__labels[result]}', True)
+        # with test data
+        predictions_sum = np.sum(predictions[0])
+        result = np.argmax(predictions[0])
+
+        Logger.log(f'Using test data')
+        Logger.log(f'Predictions SUM: {predictions_sum}')
+        Logger.log(f'Result: {result} = {self.__labels[result]}', True)
 
         # extract features from selected audio
         chroma_stf, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(audioname)
@@ -187,6 +188,7 @@ class ClassifyAudio():
         X = np.array(new_input, dtype=float).reshape(1, -1)
 
         predict_result = int(model.predict(X)[0][0])
+        Logger.log(f'Using passed audio')
         Logger.log(f'Result for {audioname} = {self.__labels[predict_result]}')
 
 
@@ -195,4 +197,4 @@ class ClassifyAudio():
 # weka.create_audio_file('caracteristicas-audio')
 
 ClassifyAudio(learning_rate=0.3, training_time=1000, create_images=False, create_csv=False).run(
-    audioname="./audios/test/dog/dog_barking_91.wav")
+    audioname="./audios/test/dog/dog_barking_24.wav")
