@@ -7,6 +7,7 @@ from PIL import Image
 import pathlib
 import csv
 from logger import Logger
+import json
 
 # Preprocessing
 from sklearn.model_selection import train_test_split
@@ -190,6 +191,16 @@ class ClassifyAudio():
         predict_result = int(model.predict(X)[0][0])
         Logger.log(f'Using passed audio')
         Logger.log(f'Result for {audioname} = {self.__labels[predict_result]}')
+
+        print(json.dumps({
+            'result': self.__labels[predict_result],
+            'labels': self.__labels,
+            'audioname': audioname,
+            'test': {
+                'accuracy': test_acc,
+                'loss': test_loss
+            }
+        }))
 
 
 # weka = Weka('./audios/dog')
