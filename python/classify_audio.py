@@ -7,6 +7,7 @@ from PIL import Image
 import pathlib
 import csv
 from logger import Logger
+from config import IS_DEBUG
 import json
 
 # Preprocessing
@@ -24,10 +25,11 @@ warnings.filterwarnings('ignore')
 
 
 class ClassifyAudio():
-    def __init__(self, learning_rate, training_time, create_csv=True, create_images=False):
+    def __init__(self, learning_rate, training_time, create_csv=True, create_images=False, arff=False):
         self.__path = './audios'
         self.__learning_rate = learning_rate
         self.__training_time = training_time
+        self.__arff = arff
         self.__labels = ['cat', 'dog']
 
         if create_images:
@@ -70,10 +72,35 @@ class ClassifyAudio():
         spec_cent = librosa.feature.spectral_centroid(y=y, sr=sr)
         spec_bw = librosa.feature.spectral_bandwidth(y=y, sr=sr)
         rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-        zcr = librosa.feature.zero_crossing_rate(y)
+        zcr = librosa.feature.zero_crossing_rate(y).mean()
         mfcc = librosa.feature.mfcc(y=y, sr=sr)
 
         return chroma_stft, rms, spec_cent, spec_bw, rolloff, zcr, mfcc
+
+    @staticmethod
+    def __create_arff(features):
+        Logger.log('Generating .ARFF')
+
+        weka_file = 'audio_features.arff'
+        weka_header = '''@relation caracteristicas\n
+    @attribute Chromagram
+    @attribute RMS
+    @attribute Spectral Centroid
+    @attribute Spectral Bandwidth
+    @attribute Roll-off Frequency
+    @attribute Zero-crossing rate
+    @attribute Mel-frequency cepstral coefficients
+    @attribute classe {Cat, Dog}\n
+    @data\n'''
+
+        weka_body = ''
+
+        for f in features:
+            weka_body += ','.join(map(str, f)) + "\n"
+
+        with open(weka_file, 'w') as fp:
+            fp.write(weka_header)
+            fp.write(weka_body)
 
     def __create_csv(self):
         Logger.log('Executing csv creation')
@@ -90,6 +117,8 @@ class ClassifyAudio():
             writer.writerow(header)
         animals = self.__labels
 
+        all_features = []
+
         for animal in animals:
             Logger.log(f'Reading data for {animal} animal')
 
@@ -101,18 +130,35 @@ class ClassifyAudio():
                 chroma_stft, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(
                     audioname)
 
+                features = [
+                    np.mean(chroma_stft),
+                    np.mean(rms),
+                    np.mean(spec_cent),
+                    np.mean(spec_bw),
+                    np.mean(rolloff),
+                    np.mean(zcr)
+                ]
+
                 to_append = f'{filename} {np.mean(chroma_stft)} {np.mean(rms)} {np.mean(spec_cent)} {np.mean(spec_bw)} {np.mean(rolloff)} {np.mean(zcr)}'
 
                 for e in mfcc:
                     to_append += f' {np.mean(e)}'
+                    features.append((np.mean(e)))
+
                 to_append += f' {animal}'
+                features.append(animal)
 
                 file = open(f'{self.__path}/data.csv', 'a', newline='')
                 with file:
                     writer = csv.writer(file)
                     writer.writerow(to_append.split())
 
+                all_features.append(features)
+
                 Logger.log(f'Data added for CSV file', True)
+
+        if self.__arff is True:
+            self.__create_arff(features=all_features)
 
     def __classify(self):
         data = pd.read_csv(f'{self.__path}/data.csv')
@@ -152,9 +198,10 @@ class ClassifyAudio():
 
         model.fit(partial_x_train,
                   partial_y_train,
-                  epochs=30,
-                  batch_size=512,
-                  validation_data=(x_val, y_val)
+                  epochs=self.__training_time,
+                  batch_size=2056,
+                  validation_data=(x_val, y_val),
+                  verbose=IS_DEBUG
                   )
 
         test_loss, test_acc = model.evaluate(X_test, y_test)
@@ -171,12 +218,11 @@ class ClassifyAudio():
         Logger.log(f'Accuracy: {test_acc}', True)
 
         # with test data
-        predictions_sum = np.sum(predictions[0])
-        result = np.argmax(predictions[0])
-
-        Logger.log(f'Using test data')
-        Logger.log(f'Predictions SUM: {predictions_sum}')
-        Logger.log(f'Result: {result} = {self.__labels[result]}', True)
+        # predictions_sum = np.sum(predictions[0])
+        # result = np.argmax(predictions[0])
+        # Logger.log(f'Using test data')
+        # Logger.log(f'Predictions SUM: {predictions_sum}')
+        # Logger.log(f'Result: {result} = {self.__labels[result]}', True)
 
         # extract features from selected audio
         chroma_stf, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(audioname)
@@ -207,5 +253,8 @@ class ClassifyAudio():
 # print(weka.list_directory_files())
 # weka.create_audio_file('caracteristicas-audio')
 
-ClassifyAudio(learning_rate=0.3, training_time=1000, create_images=False, create_csv=False).run(
-    audioname="./audios/test/dog/dog_barking_24.wav")
+"""
+When arff is True then create_csv should be True
+"""
+ClassifyAudio(learning_rate=0.3, training_time=500, create_images=False, create_csv=True, arff=True).run(
+    audioname="./audios/test/cat/cat_112.wav")
