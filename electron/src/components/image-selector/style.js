@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ImageWrapper = styled.aside`
   display: block;
   width: 92%;
-  margin: 50px auto 0px auto;
+  margin: 40px auto 0px auto;
   color: #61dafb;
   text-transform: uppercase;
   text-align: center;
@@ -13,7 +13,7 @@ export const ImageWrapper = styled.aside`
   .dropzone {
     width: 100%;
     padding: 20px;
-    border: 1px solid #61dafb;
+    border: 1px dashed #61dafb;
     cursor: pointer;
   }
 `;
@@ -31,23 +31,27 @@ export const Thumb = styled.div`
   max-width: 500px;
   max-width: 100%;
   height: 100%;
-  margin-top: 8px;
+  margin-top: 20px;
   text-align: center;
 `;
 
 export const ThumbInner = styled.div`
-  display: flex;
+  display: block;
   min-width: 100%;
   overflow: hidden;
+  p{
+    display:block;
+    clear:both;
+    width:100%;
+  }
 `;
 
-export const ImgStyle = styled.img`
+export const AudioStyle = styled.audio`
   display: block;
-  height: 100%;
+  height: 28px;
   width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  margin: 0px auto;
+  border-radius:4px;
+  margin: 10px auto;
   text-align: center;
   border: 1px solid #61dafb;
   background: #ffffff;

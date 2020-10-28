@@ -22,6 +22,27 @@ export const ColumnContent = styled.div`
 
 export const LeftContent = styled(ColumnContent)`
   border-right: 1px solid #7777;
+
+  .parameters {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 20px;
+    label {
+      color: #fff;
+      height: 20px;
+      margin: 0px;
+      input {
+        font-size: 14px;
+        margin-left: 8px;
+        background-color: #777;
+        color: #fff;
+        width: 70px;
+        padding: 8px 10px;
+        border-radius: 4px;
+      }
+    }
+  }
 `;
 
 export const RightContent = styled(ColumnContent)``;

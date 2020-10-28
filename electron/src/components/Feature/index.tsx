@@ -43,7 +43,7 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
           {characteristics.length > 0 && (
             <S.Wrapper style={{ marginBottom: "50px" }}>
               <div>
-                <S.Subtitle>Apu</S.Subtitle>
+                <S.Subtitle>Cão</S.Subtitle>
                 <S.List>
                   {characteristics
                     .slice(0, 3)
@@ -56,7 +56,7 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
               </div>
 
               <div>
-                <S.Subtitle>Marge</S.Subtitle>
+                <S.Subtitle>Gato</S.Subtitle>
                 <S.List>
                   {characteristics.length > 0 &&
                     characteristics
@@ -81,8 +81,8 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
                   ) : predictionResult.label.toLowerCase() === "marge" ? (
                     <img src="assets/img/marge.jpg" width="100%" />
                   ) : (
-                    "Não identificado"
-                  )}
+                        "Não identificado"
+                      )}
                 </S.List>
               </div>
 
@@ -110,18 +110,18 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
           )}
         </S.Content>
       ) : (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <p>Aguarde, classificando imagem...</p>
-        </div>
-      )}
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <p>Aguarde, classificando áudio...</p>
+          </div>
+        )}
     </S.Container>
   );
 };
