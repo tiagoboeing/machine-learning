@@ -37,10 +37,11 @@ class Main {
     //Training Action
     ipcMain.on("open-training", (event, args) => {
       const { data } = args;
+
       let pyshell = new PythonShell("classify_audio.py", {
         mode: "text",
         pythonPath: "python",
-        args: [data],
+        args: data,
         scriptPath: path.join(__dirname, "../../python"),
       });
 

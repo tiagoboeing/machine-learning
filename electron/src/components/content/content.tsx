@@ -99,13 +99,18 @@ export default class Content extends React.Component<
   };
 
   classifyAction = () => {
-    const { ipcRenderer, audio, learning_rate, trainning_time } = this.state;
+    const { ipcRenderer, audio} = this.state;
 
     if (typeof audio == "object") {
       this.setState(
         { classifType: "Áudio", loadingClassify: true },
         () => {
-          ipcRenderer.send("classify-audio", { data: audio.path, learning_rate, trainning_time });
+          let data = [
+            'classify',
+            audio.path            
+          ];
+          
+          ipcRenderer.send("classify-audio", { data: data });
         }
       );
     }
@@ -125,8 +130,7 @@ export default class Content extends React.Component<
     const {
       audio,
       loading,
-      loadingClassify,
-      confusionMatrix,
+      loadingClassify,      
       features,
       classifType,
       learning_rate,
@@ -159,12 +163,9 @@ export default class Content extends React.Component<
             loadingData={loadingClassify}
             data={features}
           />
-          {confusionMatrix ? (
-            <ImageMatrix src={confusionMatrix} />
-          ) : loading ? (
+          {loading ? (
             <MessageInfo>Realizando treinamento...</MessageInfo>
-          ) : null}
-          <Feature loadingData={loadingClassify} data={features} />
+          ) : null}          
         </RightContent>
       </ContentWrapper>
     );

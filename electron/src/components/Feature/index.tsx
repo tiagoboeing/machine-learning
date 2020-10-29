@@ -4,6 +4,7 @@ import * as S from "./styles";
 interface Props {
   data?: any;
   loadingData: boolean;
+  type: string;
 }
 
 interface Characteristics {
@@ -18,8 +19,7 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
     label: "",
   });
 
-  useEffect(() => {
-    console.log("data", data);
+  useEffect(() => {    
     if (data) {
       const parsedCharacteristics: any = Object.keys(data.features).map(
         (el: any) => ({

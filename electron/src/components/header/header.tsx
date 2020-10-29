@@ -7,6 +7,9 @@ export interface IHeaderProps { }
 export interface IHeaderState {
   ipcRenderer?: any;
   loading: boolean;
+  classifType: string;
+  learning_rate: number;
+  trainning_time: number;
 }
 
 export default class Header extends React.Component<
@@ -21,6 +24,9 @@ export default class Header extends React.Component<
     this.state = {
       ipcRenderer: null,
       loading: false,
+      classifType: "",
+      learning_rate: 0.01,
+      trainning_time: 1      
     };
   }
 
@@ -49,13 +55,22 @@ export default class Header extends React.Component<
       }
     );
   };
-
+  
   openTrainingMode = () => {
-    const { ipcRenderer } = this.state;
+    const { ipcRenderer, learning_rate, trainning_time } = this.state;    
+    
+    this.setState(
+      { classifType: "Áudio", loading: true },
+      () => {
+        let data = [
+          'training',
+          learning_rate,
+          trainning_time
+        ];
 
-    this.setState({ loading: true }, () => {
-      ipcRenderer.send("open-training");
-    });
+        ipcRenderer.send("open-training", { data: data });
+      }
+    );
   };
 
   exitApp = () => {
