@@ -9,6 +9,7 @@ import csv
 from logger import Logger
 from config import IS_DEBUG
 import json
+import joblib
 
 # Preprocessing
 from sklearn.model_selection import train_test_split
@@ -63,7 +64,8 @@ class ClassifyAudio():
                     f'{self.__path}/spectograms/{animal}/{filename[:-3].replace(".", "")}.png')
                 plt.clf()
 
-                Logger.log(f'Spectogram created {filename[:-3].replace(".", "")}.png', True)
+                Logger.log(
+                    f'Spectogram created {filename[:-3].replace(".", "")}.png', True)
 
     def __feature_extraction(self, audioname):
         y, sr = librosa.load(audioname, mono=True, duration=30)
@@ -72,7 +74,7 @@ class ClassifyAudio():
         spec_cent = librosa.feature.spectral_centroid(y=y, sr=sr)
         spec_bw = librosa.feature.spectral_bandwidth(y=y, sr=sr)
         rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-        zcr = librosa.feature.zero_crossing_rate(y).mean()
+        zcr = librosa.feature.zero_crossing_rate(y)
         mfcc = librosa.feature.mfcc(y=y, sr=sr)
 
         return chroma_stft, rms, spec_cent, spec_bw, rolloff, zcr, mfcc
@@ -172,6 +174,9 @@ class ClassifyAudio():
         scaler = StandardScaler()
         X = scaler.fit_transform(np.array(data.iloc[:, :-1], dtype=float))
 
+        # salva o scaler para ser utilizado no run()
+        joblib.dump(scaler, 'std_scaler.bin', compress=True)
+
         # 20% for tests
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2)
@@ -186,7 +191,8 @@ class ClassifyAudio():
         partial_y_train = y_train[items_for_tests:]
 
         model = models.Sequential()
-        model.add(layers.Dense(512, activation='relu', input_shape=(X_train.shape[1],)))
+        model.add(layers.Dense(512, activation='relu',
+                               input_shape=(X_train.shape[1],)))
         model.add(layers.Dense(256, activation='relu'))
         model.add(layers.Dense(128, activation='relu'))
         model.add(layers.Dense(64, activation='relu'))
@@ -204,28 +210,23 @@ class ClassifyAudio():
                   verbose=IS_DEBUG
                   )
 
+        model.save_weights('./output/model_weights.h5')
+        model.save('./output/model.h5')
+
         test_loss, test_acc = model.evaluate(X_test, y_test)
         Logger.log(f'Accuracy {test_acc} - Loss {test_loss}')
 
-        predictions = model.predict(X_test)
-
-        return model, test_loss, test_acc, predictions
+        return test_loss, test_acc
 
     def run(self, audioname):
-        model, test_loss, test_acc, predictions = self.__classify()
+        test_loss, test_acc = self.__classify()
 
         Logger.log(f'Loss: {test_loss}')
         Logger.log(f'Accuracy: {test_acc}', True)
 
-        # with test data
-        # predictions_sum = np.sum(predictions[0])
-        # result = np.argmax(predictions[0])
-        # Logger.log(f'Using test data')
-        # Logger.log(f'Predictions SUM: {predictions_sum}')
-        # Logger.log(f'Result: {result} = {self.__labels[result]}', True)
-
         # extract features from selected audio
-        chroma_stf, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(audioname)
+        chroma_stf, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(
+            audioname)
 
         new_input = [np.mean(chroma_stf), np.mean(rms), np.mean(spec_cent), np.mean(spec_bw), np.mean(rolloff),
                      np.mean(zcr)]
@@ -234,7 +235,16 @@ class ClassifyAudio():
 
         X = np.array(new_input, dtype=float).reshape(1, -1)
 
-        predict_result = int(model.predict(X)[0][0])
+        # carrega o scaler utilizado no __classify()
+        scaler = joblib.load('std_scaler.bin')
+        X_new = scaler.transform(X)
+
+        model = models.load_model('./output/model.h5')
+        model.load_weights('./output/model_weights.h5')
+
+        predictions = model.predict(X_new)
+        predict_result = np.argmax(predictions[0])
+
         Logger.log(f'Using passed audio')
         Logger.log(f'Result for {audioname} = {self.__labels[predict_result]}')
 
