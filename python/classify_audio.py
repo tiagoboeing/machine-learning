@@ -1,3 +1,4 @@
+import sys
 import librosa
 import pandas as pd
 import numpy as np
@@ -19,6 +20,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 import keras
 from keras import models
 from keras import layers
+from keras import optimizers
 
 import warnings
 
@@ -26,11 +28,9 @@ warnings.filterwarnings('ignore')
 
 
 class ClassifyAudio():
-    def __init__(self, learning_rate, training_time, create_csv=True, create_images=False, arff=False):
+    def __init__(self, create_csv=False, create_images=False, create_arff=False):
         self.__path = './audios'
-        self.__learning_rate = learning_rate
-        self.__training_time = training_time
-        self.__arff = arff
+        self.__arff = create_arff
         self.__labels = ['cat', 'dog']
 
         if create_images:
@@ -79,21 +79,23 @@ class ClassifyAudio():
 
         return chroma_stft, rms, spec_cent, spec_bw, rolloff, zcr, mfcc
 
-    @staticmethod
-    def __create_arff(features):
+    def __create_arff(self, features):
         Logger.log('Generating .ARFF')
 
         weka_file = 'audio_features.arff'
         weka_header = '''@relation caracteristicas\n
-    @attribute Chromagram
-    @attribute RMS
-    @attribute Spectral Centroid
-    @attribute Spectral Bandwidth
-    @attribute Roll-off Frequency
-    @attribute Zero-crossing rate
-    @attribute Mel-frequency cepstral coefficients
-    @attribute classe {Cat, Dog}\n
-    @data\n'''
+@attribute chromagram real
+@attribute rms real
+@attribute spectral_centroid real
+@attribute spectral_bandwidth real
+@attribute rolloff_frequency real
+@attribute zero_crossing_rate real
+'''
+        for i in range(1, 21):
+            weka_header += f'@attribute mel_frequency_cepstral_coefficients_{i} real\n'
+
+        weka_header += '''@attribute label {cat, dog}\n
+@data\n'''
 
         weka_body = ''
 
@@ -162,7 +164,7 @@ class ClassifyAudio():
         if self.__arff is True:
             self.__create_arff(features=all_features)
 
-    def __classify(self):
+    def classify(self, learning_rate, training_time):
         data = pd.read_csv(f'{self.__path}/data.csv')
         data = data.drop(['filename'], axis=1)
 
@@ -196,15 +198,18 @@ class ClassifyAudio():
         model.add(layers.Dense(256, activation='relu'))
         model.add(layers.Dense(128, activation='relu'))
         model.add(layers.Dense(64, activation='relu'))
-        model.add(layers.Dense(10, activation='softmax'))
+        model.add(layers.Dense(2, activation='softmax'))
 
-        model.compile(optimizer='adam',
+        adam = optimizers.Adam(
+            learning_rate=learning_rate)
+
+        model.compile(optimizer=adam,
                       loss='sparse_categorical_crossentropy',
                       metrics=['accuracy'])
 
         model.fit(partial_x_train,
                   partial_y_train,
-                  epochs=self.__training_time,
+                  epochs=training_time,
                   batch_size=2056,
                   validation_data=(x_val, y_val),
                   verbose=IS_DEBUG
@@ -216,14 +221,14 @@ class ClassifyAudio():
         test_loss, test_acc = model.evaluate(X_test, y_test)
         Logger.log(f'Accuracy {test_acc} - Loss {test_loss}')
 
-        return test_loss, test_acc
+        print(json.dumps({
+            'learning-rate': learning_rate,
+            'training-time': training_time,
+            'accuracy': test_acc,
+            'loss': test_loss
+        }))
 
     def run(self, audioname):
-        test_loss, test_acc = self.__classify()
-
-        Logger.log(f'Loss: {test_loss}')
-        Logger.log(f'Accuracy: {test_acc}', True)
-
         # extract features from selected audio
         chroma_stf, rms, spec_cent, spec_bw, rolloff, zcr, mfcc = self.__feature_extraction(
             audioname)
@@ -245,26 +250,49 @@ class ClassifyAudio():
         predictions = model.predict(X_new)
         predict_result = np.argmax(predictions[0])
 
+        features = {
+            'Chromagram': str(np.mean(chroma_stf)),
+            'RMS': str(np.mean(rms)),
+            'Spectral Centroid': str(np.mean(spec_cent)),
+            'Spectral Bandwidth': str(np.mean(spec_bw)),
+            'Roll-off Frequency': str(np.mean(rolloff)),
+            'Zero-crossing rate': str(np.mean(zcr))
+        }
+
+        for e in mfcc:
+            features.update(
+                {'Mel-frequency cepstral coefficients': str(np.mean(e))})
+
         Logger.log(f'Using passed audio')
         Logger.log(f'Result for {audioname} = {self.__labels[predict_result]}')
 
         print(json.dumps({
-            'result': self.__labels[predict_result],
-            'labels': self.__labels,
             'audioname': audioname,
-            'test': {
-                'accuracy': test_acc,
-                'loss': test_loss
-            }
+            'features': features,
+            'result': self.__labels[predict_result],
         }))
 
 
-# weka = Weka('./audios/dog')
-# print(weka.list_directory_files())
-# weka.create_audio_file('caracteristicas-audio')
+if __name__ == "__main__":
 
-"""
-When arff is True then create_csv should be True
-"""
-ClassifyAudio(learning_rate=0.3, training_time=500, create_images=False, create_csv=True, arff=True).run(
-    audioname="./audios/test/cat/cat_112.wav")
+    action = sys.argv[1]
+
+    if action == 'classify':
+        if len(sys.argv) < 4:
+            Logger.log(f'Missing parameters! Check again :)')
+        else:
+            learning_rate = float(sys.argv[2])
+            training_time = int(sys.argv[3])
+
+            """
+            When arff is True then create_csv should be True
+            """
+            ClassifyAudio().classify(
+                learning_rate=learning_rate, training_time=training_time)
+    elif action == 'predict':
+        if len(sys.argv) < 3:
+            Logger.log(f'Missing the audio path!')
+        else:
+            file = sys.argv[2]
+
+            ClassifyAudio().run(audioname=file)
