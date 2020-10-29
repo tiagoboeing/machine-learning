@@ -1,9 +1,12 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import tensorflow as tf
 import sys
 import librosa
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import os
+
 from PIL import Image
 import pathlib
 import csv
@@ -22,9 +25,11 @@ from keras import models
 from keras import layers
 from keras import optimizers
 
+# Logging
 import warnings
-
 warnings.filterwarnings('ignore')
+
+
 
 
 class ClassifyAudio():
@@ -212,13 +217,13 @@ class ClassifyAudio():
                   epochs=training_time,
                   batch_size=2056,
                   validation_data=(x_val, y_val),
-                  verbose=IS_DEBUG
+                  verbose=0
                   )
 
         model.save_weights('./output/model_weights.h5')
         model.save('./output/model.h5')
 
-        test_loss, test_acc = model.evaluate(X_test, y_test)
+        test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
         Logger.log(f'Accuracy {test_acc} - Loss {test_loss}')
 
         print(json.dumps({
@@ -277,7 +282,7 @@ if __name__ == "__main__":
 
     action = sys.argv[1]
 
-    if action == 'classify':
+    if action == 'training':
         if len(sys.argv) < 4:
             Logger.log(f'Missing parameters! Check again :)')
         else:
@@ -289,7 +294,7 @@ if __name__ == "__main__":
             """
             ClassifyAudio().classify(
                 learning_rate=learning_rate, training_time=training_time)
-    elif action == 'predict':
+    elif action == 'classify':
         if len(sys.argv) < 3:
             Logger.log(f'Missing the audio path!')
         else:
