@@ -30,11 +30,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-
-
 class ClassifyAudio():
     def __init__(self, create_csv=False, create_images=False, create_arff=False):
-        self.__path = './audios'
+        self.__path = os.path.dirname(__file__) + '/audios'
         self.__arff = create_arff
         self.__labels = ['cat', 'dog']
 
@@ -220,8 +218,8 @@ class ClassifyAudio():
                   verbose=0
                   )
 
-        model.save_weights('./output/model_weights.h5')
-        model.save('./output/model.h5')
+        model.save_weights(os.path.dirname(__file__) + '/output/model_weights.h5')
+        model.save(os.path.dirname(__file__) + '/output/model.h5')
 
         test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
         Logger.log(f'Accuracy {test_acc} - Loss {test_loss}')
@@ -249,8 +247,8 @@ class ClassifyAudio():
         scaler = joblib.load('std_scaler.bin')
         X_new = scaler.transform(X)
 
-        model = models.load_model('./output/model.h5')
-        model.load_weights('./output/model_weights.h5')
+        model = models.load_model(os.path.dirname(__file__) + '/output/model.h5')
+        model.load_weights(os.path.dirname(__file__) + '/output/model_weights.h5')
 
         predictions = model.predict(X_new)
         predict_result = np.argmax(predictions[0])

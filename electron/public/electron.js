@@ -54,14 +54,17 @@ class Main {
     ipcMain.on("classify-audio", (event, args) => {
       const { data } = args;
 
+      console.log(data);
+
       let pyshell = new PythonShell("classify_audio.py", {
         mode: "text",
         pythonPath: "python",
-        args: [data],
+        args: data,
         scriptPath: path.join(__dirname, "../../python"),
       });
 
       pyshell.on("message", function (results) {
+        console.log(results);
         event.reply("python-events", results);
       });
     });
