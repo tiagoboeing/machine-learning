@@ -26,7 +26,7 @@ export default class Header extends React.Component<
       loading: false,
       classifType: "",
       learning_rate: 0.01,
-      trainning_time: 1      
+      trainning_time: 1
     };
   }
 
@@ -45,20 +45,14 @@ export default class Header extends React.Component<
         ipcRenderer: window.require("electron").ipcRenderer,
       },
       () => {
-        this.state.ipcRenderer.on(
-          "reply-done-training",
-          (event: any, args: any) => {
-            console.log("HEADER", args);
-            this.setState({ loading: false });
-          }
-        );
+
       }
     );
   };
-  
+
   openTrainingMode = () => {
-    const { ipcRenderer, learning_rate, trainning_time } = this.state;    
-    
+    const { ipcRenderer, learning_rate, trainning_time } = this.state;
+
     this.setState(
       { classifType: "Áudio", loading: true },
       () => {
@@ -85,13 +79,6 @@ export default class Header extends React.Component<
           <DragWindow>
             <h1>Aprendizado de Máquina</h1>
           </DragWindow>
-          <NavButton
-            onClick={this.openTrainingMode}
-            disabled={this.state.loading}
-            useMinWidth={true}
-          >
-            {!this.state.loading ? "Treinamento com Áudios" : "Em treinamento..."}
-          </NavButton>
 
           <NavButton
             // style={{ color: "orange", background: "none" }}

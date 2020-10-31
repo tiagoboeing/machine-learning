@@ -23,6 +23,7 @@ export interface IContentState {
   classifType: string;
   learning_rate: number;
   trainning_time: number;
+  accResult: string;
 }
 
 export default class Content extends React.Component<
@@ -36,8 +37,9 @@ export default class Content extends React.Component<
       loading: false,
       loadingClassify: false,
       classifType: "",
-      learning_rate: 0.01,
-      trainning_time: 1
+      learning_rate: 0.3,
+      trainning_time: 1,
+      accResult: null,
     };
   }
   componentDidMount() {
@@ -58,17 +60,23 @@ export default class Content extends React.Component<
       },
       () => {
         this.state.ipcRenderer.on(
+          "reply-done-training",
+          (event: any, args: any) => {
+            console.log("HEADER", args);
+            this.setState({ loading: false });
+          }
+        );
+        this.state.ipcRenderer.on(
           "python-training",
           (event: any, args: any) => {
             this.state.ipcRenderer.send("done-training", true);
             if (this.isJson(args)) {
               let jsonData = JSON.parse(args);
-
-              if (Object.keys(jsonData)[0] === "uri") {
-                console.log("matriz de confusão " + jsonData.uri);
+              if (jsonData.accuracy) {
+                console.log("Resultado ", args);
                 this.setState({
                   loading: false,
-                  confusionMatrix: jsonData.uri,
+                  accResult: jsonData.accuracy.toFixed(3),
                 });
               }
             }
@@ -80,7 +88,7 @@ export default class Content extends React.Component<
             let json = JSON.parse(args);
             console.log("Obtained features", json);
 
-            if (json.features && json.prediction)
+            if (json.result && json.features)
               this.setState({
                 loadingClassify: false,
                 features: json,
@@ -98,8 +106,25 @@ export default class Content extends React.Component<
     this.setState({ audio });
   };
 
+  traineeAction = () => {
+    const { ipcRenderer, learning_rate, trainning_time } = this.state;
+    this.setState(
+      { classifType: "Áudio", loadingClassify: false, loading: true },
+      () => {
+        let data = [
+          'training',
+          learning_rate,
+          trainning_time
+        ];
+
+        ipcRenderer.send("open-training", { data: data });
+      }
+    );
+
+  };
+
   classifyAction = () => {
-    const { ipcRenderer, audio} = this.state;
+    const { ipcRenderer, audio } = this.state;
 
     if (typeof audio == "object") {
       this.setState(
@@ -107,9 +132,9 @@ export default class Content extends React.Component<
         () => {
           let data = [
             'classify',
-            audio.path            
+            audio.path
           ];
-          
+
           ipcRenderer.send("classify-audio", { data: data });
         }
       );
@@ -130,21 +155,33 @@ export default class Content extends React.Component<
     const {
       audio,
       loading,
-      loadingClassify,      
+      loadingClassify,
       features,
       classifType,
       learning_rate,
-      trainning_time
+      trainning_time,
+      accResult
     } = this.state;
     return (
       <ContentWrapper>
         <LeftContent>
+          <div className="traine">
+            {(!loading ? (
+              <>
+                <Btn onClick={() => this.traineeAction()}>Treinar</Btn>
+              </>
+            ) : (
+                <DisableBtn>Treinando...</DisableBtn>
+              ))}
+            {accResult && <p>Treinamento concluido e obtido acurácia de <strong>{(accResult * 100).toFixed(2)}%</strong></p>}
+          </div>
           <div className="parameters">
+
             <label>Learning Rate:
-                  <input type="number" value={learning_rate} onChange={(e) => this.setState({ learning_rate: parseFloat(e.target.value) })} />
+                  <input type="number" min="0.01" value={learning_rate} onChange={(e) => this.setState({ learning_rate: parseFloat(e.target.value) })} />
             </label>
             <label>Trainning Time:
-                  <input type="number" value={trainning_time} onChange={(e) => this.setState({ trainning_time: parseFloat(e.target.value) })} />
+                  <input type="number" min="0.01" value={trainning_time} onChange={(e) => this.setState({ trainning_time: parseFloat(e.target.value) })} />
             </label>
           </div>
           <AudioSelector changeImage={this.handleAudio} />
@@ -165,7 +202,7 @@ export default class Content extends React.Component<
           />
           {loading ? (
             <MessageInfo>Realizando treinamento...</MessageInfo>
-          ) : null}          
+          ) : null}
         </RightContent>
       </ContentWrapper>
     );

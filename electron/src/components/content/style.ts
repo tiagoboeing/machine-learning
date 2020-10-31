@@ -23,6 +23,12 @@ export const ColumnContent = styled.div`
 export const LeftContent = styled(ColumnContent)`
   border-right: 1px solid #7777;
 
+  .traine {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+  }
   .parameters {
     display: flex;
     justify-content: space-evenly;
@@ -90,6 +96,7 @@ export const MessageInfo = styled.p`
   width: 90%;
   height: 40px;
   padding: 10px;
+  font-size: 18px;
   color: #61dafb;
   border: 1px solid #333;
   background-color: #333;
