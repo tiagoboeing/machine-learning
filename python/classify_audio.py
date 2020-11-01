@@ -1,32 +1,32 @@
+import warnings
+from keras import optimizers
+from keras import layers
+from keras import models
+import keras
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+import joblib
+import json
+from config import IS_DEBUG
+from logger import Logger
+import csv
+import pathlib
+from PIL import Image
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import librosa
+import sys
+import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import tensorflow as tf
-import sys
-import librosa
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 
-from PIL import Image
-import pathlib
-import csv
-from logger import Logger
-from config import IS_DEBUG
-import json
-import joblib
 
 # Preprocessing
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 # Keras
-import keras
-from keras import models
-from keras import layers
-from keras import optimizers
 
 # Logging
-import warnings
 warnings.filterwarnings('ignore')
 
 
@@ -218,7 +218,8 @@ class ClassifyAudio():
                   verbose=0
                   )
 
-        model.save_weights(os.path.dirname(__file__) + '/output/model_weights.h5')
+        model.save_weights(os.path.dirname(__file__) +
+                           '/output/model_weights.h5')
         model.save(os.path.dirname(__file__) + '/output/model.h5')
 
         test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
@@ -247,8 +248,10 @@ class ClassifyAudio():
         scaler = joblib.load('std_scaler.bin')
         X_new = scaler.transform(X)
 
-        model = models.load_model(os.path.dirname(__file__) + '/output/model.h5')
-        model.load_weights(os.path.dirname(__file__) + '/output/model_weights.h5')
+        model = models.load_model(
+            os.path.dirname(__file__) + '/output/model.h5')
+        model.load_weights(os.path.dirname(__file__) +
+                           '/output/model_weights.h5')
 
         predictions = model.predict(X_new)
         predict_result = np.argmax(predictions[0])
@@ -290,7 +293,7 @@ if __name__ == "__main__":
             """
             When arff is True then create_csv should be True
             """
-            ClassifyAudio().classify(
+            ClassifyAudio(create_arff=True).classify(
                 learning_rate=learning_rate, training_time=training_time)
     elif action == 'classify':
         if len(sys.argv) < 3:
