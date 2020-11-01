@@ -286,7 +286,7 @@ if __name__ == "__main__":
             """
             When arff is True then create_csv should be True
             """
-            ClassifyAudio(create_csv=True, arff=True).classify(
+            ClassifyAudio(create_csv=False, arff=False).classify(
                 learning_rate=learning_rate, training_time=training_time)
     elif action == 'classify':
         if len(sys.argv) < 3:
