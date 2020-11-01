@@ -19,8 +19,8 @@ import librosa
 import sys
 import tensorflow as tf
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # Preprocessing
 
@@ -31,9 +31,9 @@ warnings.filterwarnings('ignore')
 
 
 class ClassifyAudio():
-    def __init__(self, create_csv=False, create_images=False, create_arff=False):
+    def __init__(self, create_csv=False, create_images=False, arff=False):
         self.__path = os.path.dirname(__file__) + '/audios'
-        self.__arff = create_arff
+        self.__generate_arff = arff
         self.__labels = ['cat', 'dog']
 
         if create_images:
@@ -105,7 +105,7 @@ class ClassifyAudio():
         for f in features:
             weka_body += ','.join(map(str, f)) + "\n"
 
-        with open(weka_file, 'w') as fp:
+        with open(f'{self.__path}/{weka_file}', 'w') as fp:
             fp.write(weka_header)
             fp.write(weka_body)
 
@@ -164,7 +164,7 @@ class ClassifyAudio():
 
                 Logger.log(f'Data added for CSV file', True)
 
-        if self.__arff is True:
+        if self.__generate_arff:
             self.__create_arff(features=all_features)
 
     def classify(self, learning_rate, training_time):
@@ -293,7 +293,7 @@ if __name__ == "__main__":
             """
             When arff is True then create_csv should be True
             """
-            ClassifyAudio(create_arff=True).classify(
+            ClassifyAudio(create_csv=True, arff=True).classify(
                 learning_rate=learning_rate, training_time=training_time)
     elif action == 'classify':
         if len(sys.argv) < 3:
