@@ -32,7 +32,7 @@ export default class IconSvg extends React.Component<IIconProps> {
   public render() {
     const { icon, color } = this.props;
     return (
-      <IconWrapper>{this.exitIcon(color ? color : '#61dafb')}</IconWrapper>
+      <IconWrapper>{this.exitIcon(color ? color : '#2ecc71')}</IconWrapper>
     );
   }
 }

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const primary = "#61dafb";
+const primary = "#2ecc71";
 
 export const HeaderWrapper = styled.div`
   display: flex;

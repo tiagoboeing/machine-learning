@@ -17,6 +17,7 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
 
   useEffect(() => {
     if (data) {
+      console.log("RESULT", Object.keys(data.features))
       setResult(data);
     }
   }, [data]);
@@ -25,15 +26,14 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
     <S.Container>
       {!loadingData && result ? (
         <S.Content>
-          <header>Classificação</header>
-          {result.features.length > 0 && (
+          <header>Características</header>
+          {result.features && (
             <S.Wrapper style={{ marginBottom: "50px" }}>
               <div>
-                <S.Subtitle>Cão</S.Subtitle>
                 <S.List>
-                  {result.features.map((item: Features, index) => (
+                  {Object.keys(result.features).map((item, index) => (
                     <S.ListItem key={index}>
-                      {item.name} = {item.value.toPrecision(4)}
+                      {item} = {result.features[item]}
                     </S.ListItem>
                   ))}
                 </S.List>
@@ -53,7 +53,7 @@ const Feature: React.FC<Props> = ({ data, loadingData }) => {
               justifyContent: "center",
             }}
           >
-            <p>Aguarde, classificando áudio...</p>
+            {loadingData ? <p>Aguarde, classificando áudio...</p> : <p>...</p>}
           </div>
         )}
     </S.Container>

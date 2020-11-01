@@ -23,7 +23,7 @@ export interface IContentState {
   classifType: string;
   learning_rate: number;
   trainning_time: number;
-  accResult: string;
+  accResult: any;
 }
 
 export default class Content extends React.Component<
@@ -37,8 +37,8 @@ export default class Content extends React.Component<
       loading: false,
       loadingClassify: false,
       classifType: "",
-      learning_rate: 0.3,
-      trainning_time: 1,
+      learning_rate: 0.1,
+      trainning_time: 5011,
       accResult: null,
     };
   }
@@ -186,7 +186,7 @@ export default class Content extends React.Component<
           </div>
           <AudioSelector changeImage={this.handleAudio} />
           {audio &&
-            (!loadingClassify ? (
+            (!loadingClassify && !loading ? (
               <>
                 <Btn onClick={() => this.classifyAction()}>Classificar</Btn>
               </>

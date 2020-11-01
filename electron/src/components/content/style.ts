@@ -65,7 +65,7 @@ export const Btn = styled.button`
   padding: 8px 12px;
   /* margin-top:15px; */
   color: #333;
-  background-color: #61dafb;
+  background-color: #2ecc71;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   -webkit-touch-callout: none;
@@ -76,7 +76,7 @@ export const Btn = styled.button`
   user-select: none;
 
   &:active {
-    color: #61dafb;
+    color: #2ecc71;
     background-color: #333;
   }
 `;
@@ -97,7 +97,7 @@ export const MessageInfo = styled.p`
   height: 40px;
   padding: 10px;
   font-size: 18px;
-  color: #61dafb;
+  color: #2ecc71;
   border: 1px solid #333;
   background-color: #333;
   text-align: center;

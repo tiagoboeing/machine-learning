@@ -98,7 +98,7 @@ class Main {
     const win = new BrowserWindow({
       width: 1200,
       height: 900,
-      frame: true,
+      frame: false,
       show: true,
       titleBarStyle: "customButtonsOnHover",
       transparent: true,

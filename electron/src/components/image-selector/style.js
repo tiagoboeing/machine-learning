@@ -4,7 +4,7 @@ export const ImageWrapper = styled.aside`
   display: block;
   width: 92%;
   margin: 40px auto 0px auto;
-  color: #61dafb;
+  color: #2ecc71;
   text-transform: uppercase;
   text-align: center;
   font-size: 14px;
@@ -13,7 +13,7 @@ export const ImageWrapper = styled.aside`
   .dropzone {
     width: 100%;
     padding: 20px;
-    border: 1px dashed #61dafb;
+    border: 1px dashed #2ecc71;
     cursor: pointer;
   }
 `;
@@ -53,7 +53,7 @@ export const AudioStyle = styled.audio`
   border-radius:4px;
   margin: 10px auto;
   text-align: center;
-  border: 1px solid #61dafb;
+  border: 1px solid #2ecc71;
   background: #ffffff;
   transition: all 0.2s ease-in-out;
 `;
