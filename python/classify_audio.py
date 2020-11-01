@@ -32,6 +32,7 @@ warnings.filterwarnings('ignore')
 
 class ClassifyAudio():
     def __init__(self, create_csv=False, create_images=False, arff=False):
+        self.__base_path = os.path.dirname(__file__)
         self.__path = os.path.dirname(__file__) + '/audios'
         self.__generate_arff = arff
         self.__labels = ['cat', 'dog']
@@ -105,7 +106,7 @@ class ClassifyAudio():
         for f in features:
             weka_body += ','.join(map(str, f)) + "\n"
 
-        with open(f'{self.__path}/{weka_file}', 'w') as fp:
+        with open(f'{self.__base_path}/{weka_file}', 'w') as fp:
             fp.write(weka_header)
             fp.write(weka_body)
 
