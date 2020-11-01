@@ -2,22 +2,18 @@ import warnings
 from keras import optimizers
 from keras import layers
 from keras import models
-import keras
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 import joblib
 import json
-from config import IS_DEBUG
 from logger import Logger
 import csv
 import pathlib
-from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import librosa
 import sys
-import tensorflow as tf
 import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
