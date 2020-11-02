@@ -1,5 +1,5 @@
 import * as React from "react";
-import Feature from "../Feature";
+import Feature from "../feature";
 import AudioSelector from "../image-selector/image-selector";
 import {
   Btn,
