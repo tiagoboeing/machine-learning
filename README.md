@@ -15,6 +15,16 @@ Extração de características de áudio, utilizando dataset com cachorros e gat
 
 ![](docs/screenshots/work2.png)
 
+## Definições de RNA
+
+- Momentum 0.9 (padrão da lib utilizada);
+- 5 Camadas ocultas com total de 962 neurônios:
+  - Camada 1 : 512 neurônios
+  - Camada 2 : 256 neurônios
+  - Camada 3 : 128 neurônios
+  - Camada 4 : 64 neurônios
+  - Camada 5 : 2 neurônios
+
 ## Características extraídas
 
 - [`chroma_stft`](https://librosa.org/doc/latest/generated/librosa.feature.chroma_stft.html) - Calcula um cromagrama de uma forma de onda ou espectrograma de potência
