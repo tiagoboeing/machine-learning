@@ -38,7 +38,7 @@ Extração de características de áudio, utilizando dataset com cachorros e gat
 <details>
 <summary>Trabalho 1 - Treinamento e classificação de imagens</summary>
 
-Veja [a tag v1.1.0, para Trabalho 1](https://github.com/tiagoboeing/machine-learning/tree/v1.1.1)
+Veja [este branch para Trabalho 1](https://github.com/tiagoboeing/machine-learning/tree/trabalho-1).
 
 ![](docs/screenshots/electron_Jvu1J6Guuy.png)
 
