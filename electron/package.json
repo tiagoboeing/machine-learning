@@ -6,8 +6,9 @@
   "homepage": "./",
   "scripts": {
     "start": "concurrently \"set BROWSER=NONE && npm run react-start\" \" electron . \" ",
-    "build": "npm-run-all clean react-build electron-build copy-react copy && rimraf build",
+    "build": "npm-run-all clean react-build electron-build copy-react copy copy-bin && rimraf build",
     "copy": "cp -R ../python/{*.py,audios/,*.bin,output/,*.arff} ./dist/win-unpacked/resources/python/",
+    "copy-bin": "cp -R ../python/{*.bin} ./dist/win-unpacked/",
     "copy-react": "cp -R ./build/* ./dist/win-unpacked/",
     "clean": "rimraf build && rimraf dist",
     "electron-build": "electron-builder",
