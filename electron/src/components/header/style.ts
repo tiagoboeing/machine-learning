@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-const primary = "#61dafb";
+const primary = "#2ecc71";
 
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-content: top;
-  padding: 15px 20px 0px 20px;
+  padding: 25px 20px 0px 20px;
   width: 100%;
   color: ${primary};
   background-color: #282c34;
@@ -19,6 +19,18 @@ export const HeaderWrapper = styled.div`
   user-select: none;
   position: fixed;
   top: 0;
+  &::after {
+    -webkit-app-region: drag;
+    content: "";
+    width: 100%;
+    height: 10px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0px;
+    left: 0;
+    cursor: grab !important;
+  }
 
   h1 {
     font-size: 1rem;
@@ -27,6 +39,9 @@ export const HeaderWrapper = styled.div`
 
 export const DragWindow = styled.div`
   -webkit-app-region: drag;
+  &:hover {
+    cursor: grab;
+  }
 `;
 
 export const GroupButtons = styled.div`
@@ -39,13 +54,14 @@ export const NavButton = styled.button`
   display: block;
   font-weight: 500;
   padding: 4px 10px;
+  margin-left: 20px;
   line-height: 26px;
-  font-size: 13px;
+  font-size: 14px;
   color: ${primary};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border-radius: 4px 4px 0px 0px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   background: none;
   min-width: ${(props: NavButtonProps) => props.useMinWidth && "200px"};
 
@@ -53,6 +69,9 @@ export const NavButton = styled.button`
     color: #000000;
     background: #999999;
     cursor: not-allowed;
+  }
+  &:last-child {
+    justify-self: flex-end;
   }
 
   &:hover {

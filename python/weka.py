@@ -5,8 +5,8 @@ from logger import Logger
 
 
 class Weka():
-    def __init__(self, images_directory):
-        self.images_directory = images_directory
+    def __init__(self, directory):
+        self.directory = directory
         self.header = '''
                         @relation caracteristicas\n
                         @attribute apu_body real
@@ -22,10 +22,10 @@ class Weka():
 
     def list_directory_files(self):
         Logger.log('Reading all folder files')
-        only_files = [f for f in listdir(self.images_directory) if isfile(
-            join(self.images_directory, f))]
+        only_files = [f for f in listdir(self.directory) if isfile(
+            join(self.directory, f))]
         Logger.log(
-            f'\n{len(only_files)} images found in {self.images_directory} directory!', True)
+            f'\n{len(only_files)} files found in {self.directory} directory!', True)
 
         return only_files[610:630]
         # return only_files
@@ -37,7 +37,7 @@ class Weka():
         for index, image in enumerate(list(self.list_directory_files())):
             Logger.log(f'Extracting characteristics from {image}')
 
-            features = ReadImage().read(f'{self.images_directory}/{image}')
+            features = ReadImage().read(f'{self.directory}/{image}')
             features[6] = "Apu" if features[6] == 0.0 else "Marge"
             images_data.append(features)
 

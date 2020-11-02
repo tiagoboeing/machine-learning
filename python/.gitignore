@@ -1,3 +1,6 @@
+# if accidentally npm i on directory
+node_modules
+
 venv/
 .idea
 __pycache__/
@@ -6,3 +9,6 @@ __pycache__/
 *.arff
 output/data.h5
 output/labels.h5
+
+# audio training
+audios/spectograms

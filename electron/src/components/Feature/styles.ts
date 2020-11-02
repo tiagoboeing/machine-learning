@@ -4,6 +4,11 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   color: #fff;
+
+  p {
+    color: #2ecc71;
+    font-size: 18px;
+  }
 `;
 
 export const Content = styled.div`
@@ -16,8 +21,8 @@ export const Content = styled.div`
   header {
     font-size: 1.2rem;
     font-weight: 600;
-    text-align: center;
-    padding-bottom: 0.5rem;
+    text-align: left;
+    padding-bottom: 1.8rem;
   }
 `;
 

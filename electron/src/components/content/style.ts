@@ -22,6 +22,33 @@ export const ColumnContent = styled.div`
 
 export const LeftContent = styled(ColumnContent)`
   border-right: 1px solid #7777;
+
+  .traine {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+  }
+  .parameters {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 20px;
+    label {
+      color: #fff;
+      height: 20px;
+      margin: 0px;
+      input {
+        font-size: 14px;
+        margin-left: 8px;
+        background-color: #777;
+        color: #fff;
+        width: 70px;
+        padding: 8px 10px;
+        border-radius: 4px;
+      }
+    }
+  }
 `;
 
 export const RightContent = styled(ColumnContent)``;
@@ -38,7 +65,7 @@ export const Btn = styled.button`
   padding: 8px 12px;
   /* margin-top:15px; */
   color: #333;
-  background-color: #61dafb;
+  background-color: #2ecc71;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   -webkit-touch-callout: none;
@@ -49,7 +76,7 @@ export const Btn = styled.button`
   user-select: none;
 
   &:active {
-    color: #61dafb;
+    color: #2ecc71;
     background-color: #333;
   }
 `;
@@ -69,7 +96,8 @@ export const MessageInfo = styled.p`
   width: 90%;
   height: 40px;
   padding: 10px;
-  color: #61dafb;
+  font-size: 18px;
+  color: #2ecc71;
   border: 1px solid #333;
   background-color: #333;
   text-align: center;

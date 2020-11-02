@@ -36,44 +36,35 @@ class Main {
   listenerActions() {
     //Training Action
     ipcMain.on("open-training", (event, args) => {
-      let pyshell = new PythonShell("open_training.py", {
-        mode: "text",
-        pythonPath: "python",
-        scriptPath: path.join(__dirname, "../../python"),
-      });
-
-      pyshell.on("message", function (results) {
-        console.log(results);
-        event.reply("python-training", results);
-      });
-    });
-
-    ipcMain.on("open-training-tree", (event, args) => {
-      event.reply("starting-training", "timer");
-      let pyshell = new PythonShell("open_training.py", {
-        mode: "text",
-        args: ["decision-tree"],
-        pythonPath: "python",
-        scriptPath: path.join(__dirname, "../../python"),
-      });
-
-      pyshell.on("message", function (results) {
-        console.log(results);
-        event.reply("python-training", results);
-      });
-    });
-
-    ipcMain.on("classify-image", (event, args) => {
       const { data } = args;
 
-      let pyshell = new PythonShell("classify_image.py", {
+      let pyshell = new PythonShell("classify_audio.py", {
         mode: "text",
         pythonPath: "python",
-        args: [data],
+        args: data,
         scriptPath: path.join(__dirname, "../../python"),
       });
 
       pyshell.on("message", function (results) {
+        console.log(results);
+        event.reply("python-training", results);
+      });
+    });
+
+    ipcMain.on("classify-audio", (event, args) => {
+      const { data } = args;
+
+      console.log(data);
+
+      let pyshell = new PythonShell("classify_audio.py", {
+        mode: "text",
+        pythonPath: "python",
+        args: data,
+        scriptPath: path.join(__dirname, "../../python"),
+      });
+
+      pyshell.on("message", function (results) {
+        console.log(results);
         event.reply("python-events", results);
       });
     });

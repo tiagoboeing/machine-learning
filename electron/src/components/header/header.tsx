@@ -2,17 +2,20 @@ import * as React from "react";
 import IconSvg from "../icons-svg/icons";
 import { HeaderWrapper, GroupButtons, NavButton, DragWindow } from "./style";
 
-export interface IHeaderProps {}
+export interface IHeaderProps { }
 
 export interface IHeaderState {
   ipcRenderer?: any;
   loading: boolean;
+  classifType: string;
+  learning_rate: number;
+  trainning_time: number;
 }
 
 export default class Header extends React.Component<
   IHeaderProps,
   IHeaderState
-> {
+  > {
   private ipcRenderer?: any;
 
   constructor(props: IHeaderProps) {
@@ -21,6 +24,9 @@ export default class Header extends React.Component<
     this.state = {
       ipcRenderer: null,
       loading: false,
+      classifType: "",
+      learning_rate: 0.01,
+      trainning_time: 1
     };
   }
 
@@ -39,31 +45,26 @@ export default class Header extends React.Component<
         ipcRenderer: window.require("electron").ipcRenderer,
       },
       () => {
-        this.state.ipcRenderer.on(
-          "reply-done-training",
-          (event: any, args: any) => {
-            console.log("HEADER", args);
-            this.setState({ loading: false });
-          }
-        );
+
       }
     );
   };
 
   openTrainingMode = () => {
-    const { ipcRenderer } = this.state;
+    const { ipcRenderer, learning_rate, trainning_time } = this.state;
 
-    this.setState({ loading: true }, () => {
-      ipcRenderer.send("open-training");
-    });
-  };
+    this.setState(
+      { classifType: "Áudio", loading: true },
+      () => {
+        let data = [
+          'training',
+          learning_rate,
+          trainning_time
+        ];
 
-  openTreeTrainingMode = () => {
-    const { ipcRenderer } = this.state;
-
-    this.setState({ loading: true }, () => {
-      ipcRenderer.send("open-training-tree");
-    });
+        ipcRenderer.send("open-training", { data: data });
+      }
+    );
   };
 
   exitApp = () => {
@@ -76,27 +77,11 @@ export default class Header extends React.Component<
       <HeaderWrapper>
         <GroupButtons>
           <DragWindow>
-            <h1>Aprendizado de máquina</h1>
+            <h1>Aprendizado de Máquina</h1>
           </DragWindow>
-          <NavButton
-            onClick={this.openTrainingMode}
-            disabled={this.state.loading}
-            useMinWidth={true}
-          >
-            {!this.state.loading ? "Treinar Naive Bayes" : "Em treinamento..."}
-          </NavButton>
-          <NavButton
-            onClick={this.openTreeTrainingMode}
-            disabled={this.state.loading}
-            useMinWidth={true}
-          >
-            {!this.state.loading
-              ? "Treinar árvore de decisão"
-              : "Em treinamento..."}
-          </NavButton>
 
           <NavButton
-            style={{ color: "orange", background: "none" }}
+            // style={{ color: "orange", background: "none" }}
             onClick={() => window.close()}
           >
             Sair da aplicação
