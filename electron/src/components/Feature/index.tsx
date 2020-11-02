@@ -13,34 +13,38 @@ interface Features {
 }
 
 const Feature: React.FC<Props> = ({ data, loadingData }) => {
-  const [result, setResult] = useState(null);
+  const [response, setResponse] = useState({
+    features: [],
+    audioname: "",
+    result: ""
+  });
 
   useEffect(() => {
     if (data) {
       console.log("RESULT", Object.keys(data.features))
-      setResult(data);
+      setResponse(data);
     }
   }, [data]);
 
   return (
     <S.Container>
-      {!loadingData && result ? (
+      {!loadingData && response ? (
         <S.Content>
           <header>Características</header>
-          {result.features && (
+          {response.features && (
             <S.Wrapper style={{ marginBottom: "50px" }}>
               <div>
                 <S.List>
-                  {Object.keys(result.features).map((item, index) => (
+                  {Object.keys(response.features).map((item: any, index) => (
                     <S.ListItem key={index}>
-                      {item} = {result.features[item]}
+                      {item} = {(response.features as any)[item]}
                     </S.ListItem>
                   ))}
                 </S.List>
               </div>
             </S.Wrapper>
           )}
-          {result && <p>Resultado da classificação: <strong>{result.result == 'cat' ? "GATO" : "CÃO"}</strong></p>}
+          {response && <p>Resultado da classificação: <strong>{response.result == 'cat' ? "GATO" : "CÃO"}</strong></p>}
 
         </S.Content>
       ) : (
