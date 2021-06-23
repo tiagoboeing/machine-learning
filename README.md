@@ -9,7 +9,7 @@ A comunicação entre Python e Electron ocorre via eventos através de uma bridg
 
 <br>
 
-> [Arquivo .ARFF](./python/audio_features.arff)
+> [Arquivo .ARFF](./audio_features.arff)
 
 Extração de características de áudio, utilizando dataset com cachorros e gatos. É realizado o treinamento extraindo algumas características dos arquivos de treinamento e populando um `.csv` com as informações obtidas para posterior classificação baseada em determinado arquivo.
 
